@@ -1,1 +1,31 @@
-PLACEHOLDER
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mystery Puzzle</title>
+</head>
+<body>
+<script>window.__htmlParts=[];</script>
+<script src="index_parts/00.js"></script>
+<script src="index_parts/01.js"></script>
+<script src="index_parts/02.js"></script>
+<script src="index_parts/03.js"></script>
+<script src="index_parts/04.js"></script>
+<script src="index_parts/05.js"></script>
+<script src="index_parts/06.js"></script>
+<script src="index_parts/07.js"></script>
+<script src="index_parts/08.js"></script>
+<script src="index_parts/09.js"></script>
+<script>
+(() => {
+  const binary = atob(window.__htmlParts.join(""));
+  const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0));
+  const html = new TextDecoder("utf-8").decode(bytes);
+  document.open();
+  document.write(html);
+  document.close();
+})();
+</script>
+</body>
+</html>
