@@ -15,21 +15,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Diagnose and reconstruct index.html
+      - name: Reconstruct exact index.html
         run: |
           node <<'NODE'
           const fs = require('fs');
           const vm = require('vm');
-          const crypto = require('crypto');
           global.window = { __htmlParts: [] };
           for (const file of fs.readdirSync('index_parts').filter(f => f.endsWith('.js')).sort()) {
             vm.runInThisContext(fs.readFileSync(`index_parts/${file}`, 'utf8'), { filename: file });
           }
-          window.__htmlParts.forEach((part,i) => {
-            console.log(String(i).padStart(2,'0'), part.length, crypto.createHash('sha256').update(part).digest('hex'));
-          });
-          fs.writeFileSync('index.html', Buffer.from(window.__htmlParts.join(''), 'base64'));
-          console.log('blob', require('child_process').execSync('git hash-object index.html').toString().trim());
+          const expectedLengths = [8000,8000,8000,8000,8000,8000,8000,8000,8000,3416];
+          const parts = window.__htmlParts.map((part,i) => part.slice(0, expectedLengths[i]));
+          fs.writeFileSync('index.html', Buffer.from(parts.join(''), 'base64'));
           NODE
           test "$(git hash-object index.html)" = "e43d4aee629ff3c3dd96485f9744eb26580a857c"
       - name: Commit reconstructed index.html
