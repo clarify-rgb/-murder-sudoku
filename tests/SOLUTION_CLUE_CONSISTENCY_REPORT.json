@@ -1,0 +1,35 @@
+{
+  "easy-1": {
+    "success": "20/20",
+    "averageAttempts": 1.9,
+    "totalAttempts": 38,
+    "totalCluesChecked": 333,
+    "acceptedCluesChecked": 168,
+    "cluePairsInspected": 48,
+    "inconsistenciesFoundBeforeRejection": 0,
+    "invalidCandidatePuzzlesRejected": 0,
+    "inconsistenciesRemainingInAcceptedPuzzles": 0
+  },
+  "easy-2": {
+    "success": "20/20",
+    "averageAttempts": 4.2,
+    "totalAttempts": 84,
+    "totalCluesChecked": 596,
+    "acceptedCluesChecked": 141,
+    "cluePairsInspected": 21,
+    "inconsistenciesFoundBeforeRejection": 0,
+    "invalidCandidatePuzzlesRejected": 0,
+    "inconsistenciesRemainingInAcceptedPuzzles": 0
+  },
+  "easy-3": {
+    "success": "20/20",
+    "averageAttempts": 7.1,
+    "totalAttempts": 142,
+    "totalCluesChecked": 1054,
+    "acceptedCluesChecked": 164,
+    "cluePairsInspected": 44,
+    "inconsistenciesFoundBeforeRejection": 0,
+    "invalidCandidatePuzzlesRejected": 0,
+    "inconsistenciesRemainingInAcceptedPuzzles": 0
+  }
+}
