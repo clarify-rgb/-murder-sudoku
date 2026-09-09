@@ -12,53 +12,79 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Smoke exact approved checkpoint
+        run: |
+          set -euo pipefail
+          APPROVED=f49f2e35a7fe8e4cf57c5e0fccf14ff73ee85147
+          git show "$APPROVED:engine/easy-6x6-profiles.js" > /tmp/easy-engine.js
+          git show "$APPROVED:index.html" > /tmp/easy-player.html
+          node - <<'NODE'
+          const E=require('/tmp/easy-engine.js');
+          function seedHash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+          function seededRandom(seed){let a=seedHash(seed);return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+          function withSeed(seed,fn){const old=Math.random;Math.random=seededRandom(seed);try{return fn()}finally{Math.random=old}}
+          function gen(profile,seed){return withSeed(seed,()=>E.generate(profile,6000))}
+          for(const pr of ['easy-1','easy-2','easy-3']){
+            const P=gen(pr,'DEPLOY-'+pr); if(!P) throw Error('smoke generation failed '+pr);
+            if(P.validation.solutions!==1) throw Error('nonunique '+pr);
+            const s=E.strictSolve(P); if(!s.ok||s.searchCalls!==0) throw Error('human solve failed '+pr);
+            if(!P.clues.F?.length||P.clues.F.some(c=>c.type==='victim'||/culprit/i.test(c.text||''))) throw Error('F ordinary clue check failed '+pr);
+            console.log('SMOKE',pr,'PASS','attempts',P.generationAttempts);
+          }
+          let found={occupiable:null,locked:null,multi:null};
+          for(let i=0;i<80 && Object.values(found).some(v=>!v);i++){
+            const pr=['easy-1','easy-2','easy-3'][i%3],seed='RENDER-'+i,P=gen(pr,seed); if(!P) continue;
+            for(const o of P.objects){const occ=E.objectOccurrences(P,o.name);if(occ.length>1){if(o.blocking&&!found.locked)found.locked={seed,pr,name:o.name,occ};if(!o.blocking&&!found.occupiable)found.occupiable={seed,pr,name:o.name,occ};if(occ.some(q=>q.cells.length>1)&&!found.multi)found.multi={seed,pr,name:o.name,blocking:!!o.blocking,occ}}}
+          }
+          if(Object.values(found).some(v=>!v)) throw Error('repeated-object deterministic smoke cases not found');
+          console.log('REPEATED_SMOKE',JSON.stringify(found));
+          NODE
+          grep -q "feedback.innerHTML=n===N?'<b>Puzzle solved!</b>'" /tmp/easy-player.html
+          grep -q "E.objectOccurrences(P,o.name).find" /tmp/easy-player.html
+          grep -q "E.blockedCell(P,{r,c})" /tmp/easy-player.html
+          grep -q 'COPY PUZZLE DEBUG' /tmp/easy-player.html
+          grep -q 'LOAD PUZZLE ID' /tmp/easy-player.html
+          grep -q 'New Puzzle' /tmp/easy-player.html
+          ! grep -qi 'alone with the culprit' /tmp/easy-player.html
       - name: Copy approved checkpoint to main/easy-test
         run: |
           set -euo pipefail
-          APPROVED=a54a915b49ff2df82ef022525d2b02e92e55cd04
+          APPROVED=f49f2e35a7fe8e4cf57c5e0fccf14ff73ee85147
           git fetch origin main
-          ENGINE_HASH=$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")
+          APPROVED_ENGINE=$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")
+          APPROVED_PLAYER=$(git rev-parse "$APPROVED:index.html")
           MAIN_INDEX_HASH=$(git rev-parse origin/main:index.html)
           git checkout -B main origin/main
           mkdir -p easy-test/engine
           git show "$APPROVED:engine/easy-6x6-profiles.js" > easy-test/engine/easy-6x6-profiles.js
           git show "$APPROVED:index.html" > easy-test/index.html
-          # Deployment-only UI cleanup: the approved checkpoint still contained a stale
-          # murder-result string in Submit/debug. Keep engine byte-exact while showing
-          # only the approved locatePerson(F) objective in the temporary player.
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('easy-test/index.html')
-          s=p.read_text()
-          s=s.replace(',culprit:P.culprit,solutionCount:', ',solutionCount:')
-          s=s.replace('`<b>CASE SOLVED ✅</b> — ${P.culprit} was the culprit.`', '`<b>PUZZLE SOLVED ✅</b> — F located.`')
-          p.write_text(s)
-          PY
-          test "$(git hash-object easy-test/engine/easy-6x6-profiles.js)" = "$ENGINE_HASH"
+          test "$(git hash-object easy-test/engine/easy-6x6-profiles.js)" = "$APPROVED_ENGINE"
+          test "$(git hash-object easy-test/index.html)" = "$APPROVED_PLAYER"
           test "$(git rev-parse HEAD:index.html)" = "$MAIN_INDEX_HASH"
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add easy-test/engine/easy-6x6-profiles.js easy-test/index.html
-          git commit -m "Deploy approved victim-objective Easy playtest"
+          git commit -m "Deploy exact approved repeated-object Easy playtest"
           git push origin main
           echo "DEPLOYED_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-          echo "ENGINE_HASH=$ENGINE_HASH" >> "$GITHUB_ENV"
+          echo "APPROVED_ENGINE=$APPROVED_ENGINE" >> "$GITHUB_ENV"
+          echo "APPROVED_PLAYER=$APPROVED_PLAYER" >> "$GITHUB_ENV"
           echo "MAIN_INDEX_HASH=$MAIN_INDEX_HASH" >> "$GITHUB_ENV"
-      - name: Verify deployed engine and main index
+      - name: Verify deployed hashes
         run: |
           set -euo pipefail
-          APPROVED=a54a915b49ff2df82ef022525d2b02e92e55cd04
           git fetch origin main
           DEPLOYED_ENGINE=$(git rev-parse origin/main:easy-test/engine/easy-6x6-profiles.js)
-          APPROVED_ENGINE=$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")
+          DEPLOYED_PLAYER=$(git rev-parse origin/main:easy-test/index.html)
           CURRENT_MAIN_INDEX=$(git rev-parse origin/main:index.html)
           test "$DEPLOYED_ENGINE" = "$APPROVED_ENGINE"
+          test "$DEPLOYED_PLAYER" = "$APPROVED_PLAYER"
           test "$CURRENT_MAIN_INDEX" = "$MAIN_INDEX_HASH"
-          grep -q 'Determine where F was.' <(git show origin/main:easy-test/index.html)
-          ! grep -q 'Victim. Was alone with the culprit.' <(git show origin/main:easy-test/index.html)
-          ! grep -q 'was the culprit' <(git show origin/main:easy-test/index.html)
           echo "Deployed commit: $DEPLOYED_SHA"
-          echo "Approved source: $APPROVED"
-          echo "Approved engine hash: $APPROVED_ENGINE"
-          echo "Deployed engine hash: $DEPLOYED_ENGINE"
+          echo "Approved source: f49f2e35a7fe8e4cf57c5e0fccf14ff73ee85147"
+          echo "Approved/deployed engine hash: $DEPLOYED_ENGINE"
+          echo "Approved/deployed player hash: $DEPLOYED_PLAYER"
           echo "Main index hash: $CURRENT_MAIN_INDEX"
