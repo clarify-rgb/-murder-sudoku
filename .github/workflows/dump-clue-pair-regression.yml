@@ -5,6 +5,8 @@ on:
     paths:
       - 'tests/dump-clue-pair-regression.js'
       - '.github/workflows/dump-clue-pair-regression.yml'
+permissions:
+  contents: write
 jobs:
   dump:
     runs-on: ubuntu-latest
@@ -13,4 +15,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node tests/dump-clue-pair-regression.js
+      - run: node tests/dump-clue-pair-regression.js > tests/fixture-1HBGDQC.json
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add tests/fixture-1HBGDQC.json
+          git commit -m "Store 1HBGDQC regression fixture"
+          git push origin HEAD:easy-6x6-profiles
