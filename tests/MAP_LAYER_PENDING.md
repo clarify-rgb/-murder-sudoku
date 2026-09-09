@@ -1,1 +1,1 @@
-Temporary marker for the controlled variable-room and locked-object branch test. Not deployed.
+Exact-SHA validation trigger for the controlled variable-room and locked-object branch test. Not deployed.
