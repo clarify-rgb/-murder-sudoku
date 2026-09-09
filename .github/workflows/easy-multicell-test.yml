@@ -15,9 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Apply existing clue-pair safeguard
-        run: python3 scripts/apply-clue-pair-coherence.py
-      - name: Apply solution/clue safety correction
+      - name: Verify solution/clue safety patch is present
         run: python3 scripts/apply-solution-clue-safety.py
       - name: Engine syntax
         run: node --check engine/easy-6x6-profiles.js
@@ -39,11 +37,7 @@ jobs:
           grep -F "<b>Puzzle solved!</b>" index.html
       - name: Practical stored-solution clue audit 20x3
         run: node tests/solution-clue-practical-20x3.js
-      - name: Commit exact tested implementation
+      - name: Ensure exact checkpoint remains unchanged by test preparation
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add engine/easy-6x6-profiles.js index.html tests/SOLUTION_CLUE_CONSISTENCY_REPORT.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Enforce stored solution clue consistency"
-          git push origin HEAD:easy-6x6-profiles
+          git diff --exit-code engine/easy-6x6-profiles.js index.html
+          git diff --exit-code tests/SOLUTION_CLUE_CONSISTENCY_REPORT.json
