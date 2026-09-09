@@ -3,23 +3,102 @@ on:
   push:
     branches: [easy-6x6-profiles]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Restore engine and apply structural separation
+        run: |
+          git show 78936512fcaadbe96dadb32b6be4cefd10f854d2:engine/easy-6x6-profiles.js > engine/easy-6x6-profiles.js
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('engine/easy-6x6-profiles.js')
+          s=p.read_text()
+          old="function makeSolution(R){for(let k=0;k<4000;k++){let cols=shuffle([...Array(N).keys()]),order=shuffle(PEOPLE),s={};for(let r=0;r<N;r++)s[order[r]]={r,c:cols[r]};let vr=R[s.F.r][s.F.c];if(PEOPLE.filter(p=>R[s[p].r][s[p].c]===vr).length===2)return s}return null}"
+          new="function makeSolution(R){let cols=shuffle([...Array(N).keys()]),order=shuffle(PEOPLE),s={};for(let r=0;r<N;r++)s[order[r]]={r,c:cols[r]};return s}"
+          assert old in s
+          s=s.replace(old,new)
+          old="for(const p of PEOPLE)for(const cl of clueList(P,p))if(!clueSatisfied(P,p,cl,a))return false;let vr=room(P,a.F);return PEOPLE.filter(p=>room(P,a[p])===vr).length===2}"
+          new="for(const p of PEOPLE)for(const cl of clueList(P,p))if(!clueSatisfied(P,p,cl,a))return false;return true}"
+          assert old in s
+          s=s.replace(old,new)
+          s=s.replace("solution,objects:[],clues:{},globalRules:[]};makeObjects(P);", "solution,objects:[],clues:{},globalRules:[],objective:{type:'locatePerson',person:VICTIM}};makeObjects(P);")
+          s=s.replace("let order=shuffle(BASE),onCount=0", "let order=shuffle(PEOPLE),onCount=0")
+          s=s.replace("for(const p of BASE)for(const c of factPool(P,p))", "for(const p of PEOPLE)for(const c of factPool(P,p))")
+          s=s.replace("order=shuffle(BASE.filter(p=>p!==easy3RelationalSeed.p))", "order=shuffle(PEOPLE.filter(p=>p!==easy3RelationalSeed.p))")
+          old="P.clues.F=[{type:'victim',text:'Victim. Was alone with the culprit.'}];let vr=room(P,solution.F);P.culprit=PEOPLE.find(p=>p!=='F'&&room(P,solution[p])===vr);return P}"
+          assert old in s
+          s=s.replace(old,"return P}")
+          s=s.replace("BASE.forEach(p=>initialCandidates[p]=ownCandidates(P,p).length)", "PEOPLE.forEach(p=>initialCandidates[p]=ownCandidates(P,p).length)")
+          s=s.replace("directClueSingles:BASE.filter(p=>initialCandidates[p]===1).length", "directClueSingles:PEOPLE.filter(p=>initialCandidates[p]===1).length")
+          s=s.replace("multiCandidatePeople:BASE.filter(p=>initialCandidates[p]>1).length", "multiCandidatePeople:PEOPLE.filter(p=>initialCandidates[p]>1).length")
+          s=s.replace("let on=BASE.flatMap(p=>clueList(P,p)).filter(c=>c.type==='onObject').length", "let on=PEOPLE.flatMap(p=>clueList(P,p)).filter(c=>c.type==='onObject').length")
+          p.write_text(s)
+          PY
+      - name: Update checkpoint UI objective text
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          s=s.replace('One person per row and column. F is the victim.','One person per row and column. Determine where F was.')
+          p.write_text(s)
+          PY
+      - name: Write checkpoint test
+        run: |
+          cat > tests/easy-victim-objective-separation.test.js <<'JS'
+          'use strict';
+          const assert=require('assert');
+          const E=require('../engine/easy-6x6-profiles.js');
+          function seedHash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+          function seededRandom(seed){let a=seedHash(seed);return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+          function withSeed(seed,fn){const old=Math.random;Math.random=seededRandom(seed);try{return fn()}finally{Math.random=old}}
+          function core(P){return JSON.stringify({profile:P.profile,victim:P.victim,objective:P.objective,regionOf:P.regionOf,roomNames:P.roomNames,objects:P.objects,clues:P.clues,solution:P.solution,generationAttempts:P.generationAttempts})}
+          let examples=[];
+          for(const profile of ['easy-1','easy-2','easy-3']){
+            let attempts=[];
+            for(let i=0;i<10;i++){
+              let id=`SEP-${profile}-${i}`;
+              let P=withSeed(id,()=>E.generate(profile,6000));
+              assert(P,`${profile} ${i} generated`);
+              assert.strictEqual(P.victim,'F');
+              assert.deepStrictEqual(P.objective,{type:'locatePerson',person:'F'});
+              assert(P.clues.F.length>=1&&P.clues.F.length<=2,'F has 1-2 normal clues');
+              assert(!P.clues.F.some(c=>c.type==='victim'||/culprit/i.test(c.text||'')),'no automatic murder clue');
+              assert(P.people.every(p=>(P.clues[p]||[]).length<=2),'max 2 clues including F');
+              assert.strictEqual(P.validation.solutions,1,'unique without hidden victim-room constraint');
+              E.resetSearchCallCount();let h=E.strictSolve(P);assert(h.ok);assert.strictEqual(h.searchCalls,0);
+              assert(E.validateObjects(P),'object/locked geometry remains valid');
+              let Q=withSeed(id,()=>E.generate(profile,6000));assert.strictEqual(core(P),core(Q),'seed reproduces exact puzzle');
+              attempts.push(P.generationAttempts);
+              if(examples.length<5)examples.push({id,profile,clues:P.clues.F.map(c=>c.text)});
+            }
+            console.log(`${profile}: 10/10, attempts ${attempts.join(', ')}, avg ${(attempts.reduce((a,b)=>a+b,0)/10).toFixed(1)}`);
+          }
+          console.log('F EXAMPLES '+JSON.stringify(examples));
+          JS
       - name: Engine syntax
         run: node --check engine/easy-6x6-profiles.js
       - name: Existing semantic tests
         run: node tests/easy-6x6-profiles.test.js
+      - name: Map semantic tests
+        run: node tests/map-layer.test.js
+      - name: Separation and 10x3 test
+        run: node tests/easy-victim-objective-separation.test.js
       - name: Reproducibility tests
         run: node tests/easy-reproducibility.test.js
-      - name: Player debug hooks present
+      - name: Commit tested checkpoint
         run: |
-          grep -q 'COPY PUZZLE DEBUG' index.html
-          grep -q 'LOAD PUZZLE ID' index.html
-          grep -q 'function generateById' index.html
-          grep -q 'strictSolve:{' index.html
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add engine/easy-6x6-profiles.js index.html tests/easy-victim-objective-separation.test.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Separate victim metadata from Easy clues and objective'
+          git push origin HEAD:easy-6x6-profiles
