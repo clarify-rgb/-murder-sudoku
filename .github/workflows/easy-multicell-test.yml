@@ -16,7 +16,9 @@ jobs:
         with:
           node-version: '22'
       - name: Apply map layer
-        run: python3 scripts/apply-map-layer.py
+        run: |
+          sed -i '6s/"$/"""/' scripts/apply-map-layer.py
+          python3 scripts/apply-map-layer.py
       - name: Syntax
         run: node --check engine/easy-6x6-profiles.js
       - name: Existing semantics
