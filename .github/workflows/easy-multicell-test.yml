@@ -29,11 +29,11 @@ jobs:
         run: node tests/repeated-objects.test.js
       - name: Practical clue-pair audit 20x3
         run: node tests/clue-pair-practical-20x3.js
-      - name: Commit exact tested implementation
+      - name: Store tested metrics
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add engine/easy-6x6-profiles.js
+          git add engine/easy-6x6-profiles.js tests/CLUE_PAIR_PRACTICAL_REPORT.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Reject dead branches in personal clue pairs"
+          git commit -m "Store clue-pair checkpoint results"
           git push origin HEAD:easy-6x6-profiles
