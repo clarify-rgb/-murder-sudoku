@@ -1,0 +1,26 @@
+{
+  "easy-1": {
+    "success": 20,
+    "total": 20,
+    "averageAttempts": 1.8,
+    "cluePairsInspected": 63,
+    "deadBranchCandidatePuzzlesRejected": 3,
+    "deadBranchPairsRemaining": 0
+  },
+  "easy-2": {
+    "success": 20,
+    "total": 20,
+    "averageAttempts": 3.35,
+    "cluePairsInspected": 28,
+    "deadBranchCandidatePuzzlesRejected": 1,
+    "deadBranchPairsRemaining": 0
+  },
+  "easy-3": {
+    "success": 20,
+    "total": 20,
+    "averageAttempts": 8.6,
+    "cluePairsInspected": 44,
+    "deadBranchCandidatePuzzlesRejected": 1,
+    "deadBranchPairsRemaining": 0
+  }
+}
