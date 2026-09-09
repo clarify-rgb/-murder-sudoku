@@ -1,0 +1,13 @@
+const assert=require('assert'),E=require('../engine/easy-6x6-profiles.js');
+const cellsOf=(R,id)=>{let a=[];for(let r=0;r<6;r++)for(let c=0;c<6;c++)if(R[r][c]===id)a.push({r,c});return a};
+const connected=(R,id)=>{let cs=cellsOf(R,id),seen=new Set([`${cs[0].r},${cs[0].c}`]),q=[cs[0]];while(q.length){let a=q.pop();for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){let r=a.r+dr,c=a.c+dc,k=`${r},${c}`;if(r>=0&&r<6&&c>=0&&c<6&&R[r][c]===id&&!seen.has(k)){seen.add(k);q.push({r,c})}}}return seen.size===cs.length};
+let sigs=new Set(),differentSizes=false;
+for(let n=0;n<30;n++){let R=E.generateRegionGrid();assert(R);let ids=[...new Set(R.flat())].sort((a,b)=>a-b);assert(ids.length>=5&&ids.length<=7);assert.deepStrictEqual(ids,Array.from({length:ids.length},(_,i)=>i));let sizes=ids.map(id=>cellsOf(R,id).length);if(new Set(sizes).size>1)differentSizes=true;ids.forEach(id=>assert(connected(R,id)));assert.equal(sizes.reduce((a,b)=>a+b,0),36);sigs.add(R.flat().join(','))}
+assert(differentSizes&&sigs.size>1);
+let P=null;for(let i=0;i<400&&!P;i++)P=E.buildCandidate('easy-1');assert(P);assert.equal(new Set(P.roomNames).size,P.roomNames.length);P.roomNames.forEach((x,i)=>assert.equal(x,'R'+(i+1)));
+for(const o of P.objects){let cs=E.objectCells(P,o.name);assert(cs.length>=1&&cs.length<=3);assert(cs.every(x=>P.regionOf[x.r][x.c]===P.regionOf[cs[0].r][cs[0].c]));cs.forEach(x=>assert.equal(E.blockedCell(P,x),!!o.blocking))}
+for(const p of E.BASE)for(const c of E.factPool(P,p))if(c.type==='onObject'||c.type==='onlyOnObject')assert(!E.objectByName(P,c.object).blocking);
+let locked=P.objects.find(o=>o.blocking);for(let i=0;i<400&&!locked;i++){P=E.buildCandidate('easy-1');locked=P&&P.objects.find(o=>o.blocking)}assert(locked);assert(E.BASE.flatMap(p=>E.factPool(P,p)).some(c=>c.object===locked.name&&['besideObject','notBesideObject','westOfObject','eastOfObject','northOfObject','southOfObject','diagonal','roomNotBesideObject'].includes(c.type)));
+let wall=false;for(let r=0;r<6;r++)for(let c=0;c<6;c++)for(const [dr,dc] of [[1,0],[0,1]]){let rr=r+dr,cc=c+dc;if(rr<6&&cc<6&&P.regionOf[r][c]!==P.regionOf[rr][cc]){assert(!E.adjacent(P,{r,c},{r:rr,c:cc}));wall=true}}assert(wall);
+let base={regionOf:Array.from({length:6},()=>Array(6).fill(0)),objects:[]};for(const cs of [[{r:0,c:0}],[{r:0,c:0},{r:0,c:1}],[{r:0,c:0},{r:0,c:1},{r:1,c:1}]])assert(E.validObject(base,{name:'Object X',cells:cs},[]));assert(!E.validObject(base,{name:'Object X',cells:[{r:0,c:0},{r:0,c:1},{r:0,c:2},{r:0,c:3}]},[]));assert(!E.validObject(base,{name:'Object X',cells:[{r:0,c:0},{r:0,c:2}]},[]));
+console.log('MAP SEMANTIC TESTS PASSED: 14');
