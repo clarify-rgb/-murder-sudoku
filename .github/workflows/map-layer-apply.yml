@@ -1,0 +1,85 @@
+name: Easy map layer apply and test
+on:
+  push:
+    branches: [easy-6x6-profiles]
+permissions:
+  contents: write
+jobs:
+  map-layer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply controlled map-layer patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          eng=Path('engine/easy-6x6-profiles.js')
+          s=eng.read_text()
+          marker='function generateRegionGrid()'
+          if marker not in s:
+              old="function regionGrid(){return Array.from({length:N},(_,r)=>Array.from({length:N},(_,c)=>Math.floor(r/2)*2+Math.floor(c/3)))}function room(P,x){return P.regionOf[x.r][x.c]}function clueList(P,p){return P.clues[p]||[]}"
+              new="""function generateRegionGrid(){for(let tries=0;tries<500;tries++){let k=5+rand(3),R=Array.from({length:N},()=>Array(N).fill(-1)),seeds=shuffle([...Array(N*N).keys()]).slice(0,k).map(cell),front=[];seeds.forEach((x,i)=>{R[x.r][x.c]=i;front.push(x)});let left=N*N-k,guard=0;while(left&&guard++<1000){let candidates=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(R[r][c]<0){let near=[];for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){let rr=r+dr,cc=c+dc;if(rr>=0&&rr<N&&cc>=0&&cc<N&&R[rr][cc]>=0)near.push(R[rr][cc])}if(near.length)candidates.push({r,c,near})}if(!candidates.length)break;let q=candidates[rand(candidates.length)],counts=Array(k).fill(0);for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(R[r][c]>=0)counts[R[r][c]]++;let choices=shuffle([...new Set(q.near)]).sort((a,b)=>counts[a]-counts[b]);R[q.r][q.c]=choices[0];left--}if(left)continue;let sizes=Array(k).fill(0);R.flat().forEach(v=>sizes[v]++);if(Math.min(...sizes)<3||Math.max(...sizes)>11)continue;return R}return null}function regionGrid(){return generateRegionGrid()}function room(P,x){return P.regionOf[x.r][x.c]}function clueList(P,p){return P.clues[p]||[]}"
+              assert old in s
+              s=s.replace(old,new)
+              s=re.sub(r"function makeObjects\(P\)\{.*?\nfunction factPool",'''function makeObjects(P){let used=new Set(),wanted=7+rand(3),normalN=0,lockedN=0;for(let i=0;i<wanted;i++){let blocking=Math.random()<.38,free=shuffle([...Array(N*N).keys()]).map(cell).filter(x=>!used.has(idx(x.r,x.c))&&(!blocking||!PEOPLE.some(p=>same(P.solution[p],x))));if(!free.length)break;let roll=Math.random(),size=roll<.55?1:roll<.88?2:3,start=free[0],cells=growFootprint(P,start,size,used);if(cells.length<size)cells=[start];if(blocking&&cells.some(x=>PEOPLE.some(p=>same(P.solution[p],x)))){i--;continue}cells.forEach(x=>used.add(idx(x.r,x.c)));let n=blocking?++lockedN:++normalN,name=(blocking?'Locked ':'Object ')+n;P.objects.push({id:(blocking?'locked-':'object-')+n,name,icon:(blocking?'L':'')+n,cells,blocking})}for(const p of BASE){let x=P.solution[p];if(!P.objects.some(o=>objectCells(P,o.name).some(c=>same(c,x)))&&Math.random()<.35&&!used.has(idx(x.r,x.c))){let n=++normalN;P.objects.push({id:'object-'+n,name:'Object '+n,icon:String(n),cells:[{r:x.r,c:x.c}],blocking:false});used.add(idx(x.r,x.c))}}}
+function factPool''',s,flags=re.S)
+              s=re.sub(r"function factPool\(P,p\)\{.*?return pool\}",'''function factPool(P,p){let x=P.solution[p],pool=[],rn=P.roomNames[room(P,x)],add=(type,data,text)=>pool.push({type,...data,text});add('row',{row:x.r},`${p} was in row ${x.r+1}.`);add('column',{column:x.c},`${p} was in column ${x.c+1}.`);add('room',{room:room(P,x)},`${p} was in ${rn}.`);if(isCorner(P,x))add('corner',{room:room(P,x)},`${p} was in a corner of ${rn}.`);for(const o of P.objects){let cs=objectCells(P,o.name),ex=objectExtent(P,o.name);if(!o.blocking&&cs.some(z=>same(x,z))){add('onObject',{object:o.name},`${p} was on ${o.name}.`);let others=PEOPLE.filter(q=>q!==p&&cs.some(z=>same(z,P.solution[q])));if(!others.length)add('onlyOnObject',{object:o.name},`${p} was the only person on ${o.name}.`)}if(besideObject(P,x,o.name))add('besideObject',{object:o.name},`${p} was beside ${o.name}.`);else add('notBesideObject',{object:o.name},`${p} was not beside ${o.name}.`);if(room(P,x)===room(P,cs[0])&&!besideObject(P,x,o.name))add('roomNotBesideObject',{room:room(P,x),object:o.name},`${p} was in ${rn}, but not beside ${o.name}.`);if(cs.some(z=>diag(x,z)))add('diagonal',{object:o.name},`${p} was diagonal to ${o.name}.`);if(x.c<ex.minC)add('westOfObject',{object:o.name},`${p} was west of ${o.name}.`);if(x.c>ex.maxC)add('eastOfObject',{object:o.name},`${p} was east of ${o.name}.`);if(x.r<ex.minR)add('northOfObject',{object:o.name},`${p} was north of ${o.name}.`);if(x.r>ex.maxR)add('southOfObject',{object:o.name},`${p} was south of ${o.name}.`)}for(const q of PEOPLE){if(q===p)continue;let y=P.solution[q];if(room(P,x)!==room(P,y))add('notWithPerson',{person:q},`${p} was not in the same room as ${q}.`);if(adjacent(P,x,y))add('besidePerson',{person:q},`${p} was beside ${q}.`);if(x.c<y.c)add('westOfPerson',{person:q},`${p} was west of ${q}.`);if(x.c>y.c)add('eastOfPerson',{person:q},`${p} was east of ${q}.`);if(x.r<y.r)add('northOfPerson',{person:q},`${p} was north of ${q}.`);if(x.r>y.r)add('southOfPerson',{person:q},`${p} was south of ${q}.`)}let occupants=PEOPLE.filter(q=>room(P,P.solution[q])===room(P,x));if(occupants.length===1){add('alone',{},`${p} was alone in ${rn}.`);let choices=P.roomNames.map((_,i)=>i).filter(i=>i!==room(P,x)),alt=choices[rand(choices.length)];add('aloneInRooms',{rooms:[room(P,x),alt]},`${p} was alone in either ${rn} or ${P.roomNames[alt]}.`)}if(occupants.length===2){let q=occupants.find(q=>q!==p);add('aloneWithPerson',{person:q},`${p} was alone with ${q} in ${rn}.`)}return pool}''',s,flags=re.S)
+              s=s.replace("let R=regionGrid(),solution=makeSolution(R);if(!solution)return null;let P={profile:profileId,people:[...PEOPLE],victim:VICTIM,regionOf:R,roomNames:['Library','Study','Gallery','Foyer','Archive','Lounge'],solution,objects:[],clues:{},globalRules:[]};","let R=regionGrid();if(!R)return null;let solution=makeSolution(R);if(!solution)return null;let roomCount=Math.max(...R.flat())+1,P={profile:profileId,people:[...PEOPLE],victim:VICTIM,regionOf:R,roomNames:Array.from({length:roomCount},(_,i)=>'R'+(i+1)),solution,objects:[],clues:{},globalRules:[]};")
+              s=s.replace("return{N,PEOPLE,VICTIM,BASE,PROFILES,CLUE_TYPES,RELATIONAL,","return{N,PEOPLE,VICTIM,BASE,PROFILES,CLUE_TYPES,RELATIONAL,generateRegionGrid,")
+              eng.write_text(s)
+
+          html=Path('index.html'); h=html.read_text()
+          if 'data-profile="easy-1"' in h:
+              h=re.sub(r'<div class="profilebar">.*?</div><div class="game">','<div class="game">',h,count=1)
+              h=h.replace("let profile='easy-1',P,selected=null","let profile=null,P,selected=null")
+              h=h.replace("document.getElementById('caseTitle').textContent=E.PROFILES[P.profile].label;let m=P.validation.metrics;document.getElementById('debug').textContent=`direct ${m.directClueSingles} · row/col ${m.rowColumnForcedDeductions} · occupancy ${m.rowColumnOccupancyDeductions} · relational ${m.relationalDeductions} · attempts ${P.generationAttempts}`;","document.getElementById('caseTitle').textContent='Easy Puzzle';let m=P.validation.metrics;document.getElementById('debug').textContent=`${P.profile} · solutions ${P.validation.solutions} · forced ${m.totalForcedSteps} · relational ${m.relationalDeductions} · attempts ${P.generationAttempts}`;")
+              h=h.replace("function load(){let n=E.generate(profile,2000);","function load(){profile=['easy-1','easy-2','easy-3'][Math.floor(Math.random()*3)];let n=E.generate(profile,4000);")
+              h=re.sub(r"document\.querySelectorAll\('\.profile-btn'\).*?;document\.getElementById\('newPuzzleBtn'\)\.onclick=load;","document.getElementById('newPuzzleBtn').onclick=load;",h,count=1)
+          if '.room-label{' not in h:
+              h=h.replace('.notes,.final,.xmark{z-index:2}', '.room-label{position:absolute;top:2px;left:3px;z-index:1;font-size:8px;font-weight:800;opacity:.55;pointer-events:none}.locked-footprint{background:#3333;border-style:double}.notes,.final,.xmark{z-index:2}')
+              needle="function renderBoard(){board.innerHTML='';for(let r=0;r<N;r++)for(let c=0;c<N;c++){"
+              repl="function renderBoard(){board.innerHTML='';let labelCells={};for(let r=0;r<N;r++)for(let c=0;c<N;c++){let rid=P.regionOf[r][c];if(labelCells[rid]===undefined&&!P.objects.some(o=>E.objectCells(P,o.name).some(x=>same(x,{r,c}))))labelCells[rid]=r+','+c}for(let r=0;r<N;r++)for(let c=0;c<N;c++){"
+              h=h.replace(needle,repl)
+              h=h.replace("d.appendChild(fp);if(same(here,cs[0]))", "if(o.blocking)fp.classList.add('locked-footprint');d.appendChild(fp);if(same(here,cs[0]))")
+              h=h.replace("let who=at(r,c);", "if(labelCells[rid]===r+','+c){let rl=document.createElement('span');rl.className='room-label';rl.textContent=P.roomNames[rid];d.appendChild(rl)}let who=at(r,c);")
+          html.write_text(h)
+          PY
+      - name: Write map semantic and practical tests
+        run: |
+          cat > tests/map-layer.test.js <<'JS'
+          const assert=require('assert'),E=require('../engine/easy-6x6-profiles.js');
+          const cellsOf=(R,id)=>{let a=[];for(let r=0;r<6;r++)for(let c=0;c<6;c++)if(R[r][c]===id)a.push({r,c});return a};
+          const connected=(R,id)=>{let cs=cellsOf(R,id),seen=new Set([`${cs[0].r},${cs[0].c}`]),q=[cs[0]];while(q.length){let a=q.pop();for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){let r=a.r+dr,c=a.c+dc,k=`${r},${c}`;if(r>=0&&r<6&&c>=0&&c<6&&R[r][c]===id&&!seen.has(k)){seen.add(k);q.push({r,c})}}}return seen.size===cs.length};
+          let sigs=new Set(),differentSizes=false;
+          for(let n=0;n<30;n++){let R=E.generateRegionGrid();assert(R&&R.length===6&&R.every(row=>row.length===6));let ids=[...new Set(R.flat())].sort((a,b)=>a-b);assert(ids.length>=5&&ids.length<=7);assert.deepStrictEqual(ids,Array.from({length:ids.length},(_,i)=>i));let sizes=ids.map(id=>cellsOf(R,id).length);if(new Set(sizes).size>1)differentSizes=true;ids.forEach(id=>assert(connected(R,id)));assert.equal(sizes.reduce((a,b)=>a+b,0),36);sigs.add(R.flat().join(','))}
+          assert(differentSizes);assert(sigs.size>1);
+          let P=null;for(let i=0;i<400&&!P;i++)P=E.buildCandidate('easy-1');assert(P);assert.equal(new Set(P.roomNames).size,P.roomNames.length);P.roomNames.forEach((x,i)=>assert.equal(x,'R'+(i+1)));
+          for(const o of P.objects){let cs=E.objectCells(P,o.name);assert(cs.length>=1&&cs.length<=3);assert(cs.every(x=>P.regionOf[x.r][x.c]===P.regionOf[cs[0].r][cs[0].c]));if(o.blocking)cs.forEach(x=>assert(E.blockedCell(P,x)));else cs.forEach(x=>assert(!E.blockedCell(P,x)))}
+          for(const p of E.BASE)for(const c of E.factPool(P,p)){if(c.type==='onObject'||c.type==='onlyOnObject')assert(!E.objectByName(P,c.object).blocking)}
+          let locked=P.objects.find(o=>o.blocking);if(!locked){for(let i=0;i<400&&!locked;i++){P=E.buildCandidate('easy-1');locked=P&&P.objects.find(o=>o.blocking)}}assert(locked);let spatial=E.BASE.flatMap(p=>E.factPool(P,p)).filter(c=>c.object===locked.name&&['besideObject','notBesideObject','westOfObject','eastOfObject','northOfObject','southOfObject','diagonal','roomNotBesideObject'].includes(c.type));assert(spatial.length>0);
+          let wallChecked=false;for(let r=0;r<6;r++)for(let c=0;c<6;c++)for(const [dr,dc] of [[1,0],[0,1]]){let rr=r+dr,cc=c+dc;if(rr<6&&cc<6&&P.regionOf[r][c]!==P.regionOf[rr][cc]){assert(!E.adjacent(P,{r,c},{r:rr,c:cc}));wallChecked=true}}assert(wallChecked);
+          let base={regionOf:Array.from({length:6},()=>Array(6).fill(0)),objects:[]};for(const cs of [[{r:0,c:0}],[{r:0,c:0},{r:0,c:1}],[{r:0,c:0},{r:0,c:1},{r:1,c:1}]])assert(E.validObject(base,{name:'Object X',cells:cs},[]));assert(!E.validObject(base,{name:'Object X',cells:[{r:0,c:0},{r:0,c:1},{r:0,c:2},{r:0,c:3}]},[]));assert(!E.validObject(base,{name:'Object X',cells:[{r:0,c:0},{r:0,c:2}]},[]));
+          console.log('MAP SEMANTIC TESTS PASSED: 14');
+          JS
+          cat > tests/map-practical-10x3.js <<'JS'
+          const E=require('../engine/easy-6x6-profiles.js');
+          const profiles=['easy-1','easy-2','easy-3'],allLayouts=new Set(),examples=[];let overall={};
+          for(const profile of profiles){let pass=0,attempts=0,rooms={},sizes={},obj={normal:0,locked:0,s1:0,s2:0,s3:0},rejects={};for(let i=0;i<10;i++){let P=E.generate(profile,6000);if(!P)continue;let V=E.validate(P);if(!V.ok||V.solutions!==1)continue;pass++;attempts+=P.generationAttempts;let ids=[...new Set(P.regionOf.flat())];rooms[ids.length]=(rooms[ids.length]||0)+1;ids.forEach(id=>{let z=P.regionOf.flat().filter(x=>x===id).length;sizes[z]=(sizes[z]||0)+1});let sig=P.regionOf.flat().join(',');allLayouts.add(sig);if(examples.length<5)examples.push(P.regionOf.map(row=>row.map(x=>'R'+(x+1)).join(' ')).join('\n'));for(const o of P.objects){obj[o.blocking?'locked':'normal']++;obj['s'+E.objectCells(P,o.name).length]++}for(const [k,v] of Object.entries(P.rejections||{}))rejects[k]=(rejects[k]||0)+v}overall[profile]={pass,avgAttempts:pass?+(attempts/pass).toFixed(2):null,roomCounts:rooms,roomSizes:sizes,objects:obj,rejections:rejects}}
+          console.log(JSON.stringify({overall,distinctLayouts:allLayouts.size,examples},null,2));if(Object.values(overall).some(x=>x.pass<10))process.exit(1);
+          JS
+      - name: Run existing semantics plus map tests and practical 10x3
+        run: |
+          node tests/easy-6x6-profiles.test.js
+          node tests/map-layer.test.js
+          node tests/map-practical-10x3.js | tee /tmp/map-report.txt
+      - name: Commit exact tested implementation
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add engine/easy-6x6-profiles.js index.html tests/map-layer.test.js tests/map-practical-10x3.js
+          if git diff --cached --quiet; then echo 'No implementation changes to commit'; exit 0; fi
+          git commit -m 'Add variable rooms and locked Easy objects'
+          git push origin HEAD:easy-6x6-profiles
