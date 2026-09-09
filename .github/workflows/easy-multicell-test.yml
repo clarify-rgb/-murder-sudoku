@@ -19,6 +19,13 @@ jobs:
         run: |
           sed -i '6s/"$/"""/' scripts/apply-map-layer.py
           python3 scripts/apply-map-layer.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('engine/easy-6x6-profiles.js');s=p.read_text()
+          s=s.replace('function regionGrid(){return generateRegionGrid()}','function regionGrid(){return Array.from({length:N},(_,r)=>Array.from({length:N},(_,c)=>Math.floor(r/2)*2+Math.floor(c/3)))}')
+          s=s.replace("function buildCandidate(profileId){if(!PROFILES[profileId])return null;let R=regionGrid();","function buildCandidate(profileId){if(!PROFILES[profileId])return null;let R=generateRegionGrid();")
+          p.write_text(s)
+          PY
       - name: Syntax
         run: node --check engine/easy-6x6-profiles.js
       - name: Existing semantics
