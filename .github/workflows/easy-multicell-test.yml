@@ -15,11 +15,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Apply clue-pair coherence safeguard
+      - name: Apply existing clue-pair safeguard
         run: python3 scripts/apply-clue-pair-coherence.py
-      - name: Syntax
+      - name: Apply solution/clue safety correction
+        run: python3 scripts/apply-solution-clue-safety.py
+      - name: Engine syntax
         run: node --check engine/easy-6x6-profiles.js
-      - name: Clue-pair regression and synthetic tests
+      - name: Solution/clue repeated-object regressions
+        run: node tests/solution-clue-consistency.test.js
+      - name: Existing clue-pair regression and synthetic tests
         run: node tests/clue-pair-coherence.test.js
       - name: Existing semantics 22
         run: node tests/easy-6x6-profiles.test.js
@@ -27,13 +31,19 @@ jobs:
         run: node tests/map-layer.test.js
       - name: Repeated object semantics 12
         run: node tests/repeated-objects.test.js
-      - name: Practical clue-pair audit 20x3
-        run: node tests/clue-pair-practical-20x3.js
-      - name: Store tested metrics
+      - name: Reproducibility regression
+        run: node tests/easy-reproducibility.test.js
+      - name: Submit canonical validation safety
+        run: |
+          grep -F "valid=E.fullValid(P,placed)" index.html
+          grep -F "<b>Puzzle solved!</b>" index.html
+      - name: Practical stored-solution clue audit 20x3
+        run: node tests/solution-clue-practical-20x3.js
+      - name: Commit exact tested implementation
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add engine/easy-6x6-profiles.js tests/CLUE_PAIR_PRACTICAL_REPORT.json
+          git add engine/easy-6x6-profiles.js index.html tests/SOLUTION_CLUE_CONSISTENCY_REPORT.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Store clue-pair checkpoint results"
+          git commit -m "Enforce stored solution clue consistency"
           git push origin HEAD:easy-6x6-profiles
