@@ -15,6 +15,8 @@ jobs:
         run: node --check engine/easy-6x6-profiles.js
       - name: Syntax check attribution layer
         run: node --check engine/easy-6x6-attribution.js
+      - name: Syntax check attributed generator route
+        run: node --check engine/easy-6x6-generator-attributed.js
       - name: Syntax check semantic tests
         run: node --check tests/easy-6x6-profiles.test.js
       - name: Syntax check attribution tests
