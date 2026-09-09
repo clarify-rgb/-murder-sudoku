@@ -23,7 +23,9 @@ jobs:
         run: node tests/repeated-diagonal-stress.js
       - name: Show stress report
         run: cat tests/REPEATED_DIAGONAL_STRESS_REPORT.json
-      - name: Store deterministic audit report
+      - name: Verify deterministic report remains unchanged
+        run: git diff --exit-code -- tests/REPEATED_DIAGONAL_STRESS_REPORT.json
+      - name: Store deterministic audit report if needed
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
