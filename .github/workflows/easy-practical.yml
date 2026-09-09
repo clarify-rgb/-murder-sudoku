@@ -3,14 +3,28 @@ on:
   push:
     branches: [easy-6x6-profiles]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: easy-6x6-profiles
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Apply targeted Easy 3 sampling fix once
+        run: |
+          node scripts/seed-easy3-relational.js
+          if ! git diff --quiet -- engine/easy-6x6-profiles.js; then
+            git config user.name github-actions[bot]
+            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+            git add engine/easy-6x6-profiles.js
+            git commit -m "Seed viable relational clues for Easy 3"
+            git push origin HEAD:easy-6x6-profiles
+          fi
       - name: Semantic suite
         run: node tests/easy-6x6-profiles.test.js
       - name: Practical 25x3
