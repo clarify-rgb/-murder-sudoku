@@ -1,0 +1,3 @@
+'use strict';
+const E=require('../engine/easy-6x6-profiles.js');
+for(const profile of ['easy-1','easy-2','easy-3']){let success=0,attempts=0,pairs=0,rejected=0,remaining=0;for(let i=0;i<20;i++){let p=E.generate(profile,6000);if(!p)continue;success++;attempts+=p.generationAttempts;rejected+=p.rejections?.['dead clue branch']||0;let audit=E.validateCluePairs(p);pairs+=audit.inspected;remaining+=audit.deadBranches.length;if(!audit.ok)throw Error(profile+' accepted dead branch')}console.log(`${profile}: success ${success}/20; avg attempts ${(attempts/Math.max(1,success)).toFixed(2)}; clue pairs inspected ${pairs}; dead-branch candidate puzzles rejected ${rejected}; dead-branch pairs remaining ${remaining}`);if(success!==20||remaining!==0)process.exitCode=1}
