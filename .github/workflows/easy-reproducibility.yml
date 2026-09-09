@@ -1,0 +1,25 @@
+name: Easy reproducibility
+on:
+  push:
+    branches: [easy-6x6-profiles]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Engine syntax
+        run: node --check engine/easy-6x6-profiles.js
+      - name: Existing semantic tests
+        run: node tests/easy-6x6-profiles.test.js
+      - name: Reproducibility tests
+        run: node tests/easy-reproducibility.test.js
+      - name: Player debug hooks present
+        run: |
+          grep -q 'COPY PUZZLE DEBUG' index.html
+          grep -q 'LOAD PUZZLE ID' index.html
+          grep -q 'function generateById' index.html
+          grep -q 'strictSolve:{' index.html
