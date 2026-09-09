@@ -1,4 +1,5 @@
 'use strict';
+// Reproducibility-only diagnostic test. No engine semantics are modified here.
 const assert=require('assert');
 const E=require('../engine/easy-6x6-profiles.js');
 function seedHash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
