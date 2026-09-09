@@ -1,0 +1,16 @@
+name: Easy multi-cell tests
+on:
+  push:
+    branches: [easy-6x6-profiles]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check engine/easy-6x6-profiles.js
+      - run: node tests/easy-6x6-profiles.test.js
+      - run: node tests/easy-multicell-smoke.js
