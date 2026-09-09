@@ -1,0 +1,44 @@
+name: Deploy approved Easy playtest
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths: ['.github/workflows/deploy-approved-easy-test.yml']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Copy exact approved files to main/easy-test
+        run: |
+          set -euo pipefail
+          APPROVED=0eb99c0b79fcc7be6d94d083883725f96d4514c5
+          git fetch origin main
+          ENGINE_HASH=$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")
+          HTML_HASH=$(git rev-parse "$APPROVED:index.html")
+          MAIN_INDEX_HASH=$(git rev-parse origin/main:index.html)
+          git checkout -B main origin/main
+          mkdir -p easy-test/engine
+          git show "$APPROVED:engine/easy-6x6-profiles.js" > easy-test/engine/easy-6x6-profiles.js
+          git show "$APPROVED:index.html" > easy-test/index.html
+          test "$(git hash-object easy-test/engine/easy-6x6-profiles.js)" = "$ENGINE_HASH"
+          test "$(git hash-object easy-test/index.html)" = "$HTML_HASH"
+          test "$(git rev-parse HEAD:index.html)" = "$MAIN_INDEX_HASH"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add easy-test/engine/easy-6x6-profiles.js easy-test/index.html
+          git commit -m "Deploy approved multi-cell Easy playtest"
+          git push origin main
+          echo "DEPLOYED_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Verify deployed content and main index
+        run: |
+          set -euo pipefail
+          APPROVED=0eb99c0b79fcc7be6d94d083883725f96d4514c5
+          git fetch origin main
+          test "$(git rev-parse origin/main:easy-test/engine/easy-6x6-profiles.js)" = "$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")"
+          test "$(git rev-parse origin/main:easy-test/index.html)" = "$(git rev-parse "$APPROVED:index.html")"
+          echo "Deployed commit: $DEPLOYED_SHA"
+          echo "Approved source: $APPROVED"
