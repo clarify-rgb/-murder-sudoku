@@ -15,13 +15,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Capture 1HBGDQC regression geometry
-        run: node tests/dump-clue-pair-regression.js
+      - name: Apply clue-pair coherence safeguard
+        run: python3 scripts/apply-clue-pair-coherence.py
       - name: Syntax
         run: node --check engine/easy-6x6-profiles.js
-      - name: Existing semantics
+      - name: Clue-pair regression and synthetic tests
+        run: node tests/clue-pair-coherence.test.js
+      - name: Existing semantics 22
         run: node tests/easy-6x6-profiles.test.js
-      - name: Map semantics
+      - name: Map semantics 14
         run: node tests/map-layer.test.js
-      - name: Repeated object semantics
+      - name: Repeated object semantics 12
         run: node tests/repeated-objects.test.js
+      - name: Practical clue-pair audit 20x3
+        run: node tests/clue-pair-practical-20x3.js
+      - name: Commit exact tested implementation
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add engine/easy-6x6-profiles.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Reject dead branches in personal clue pairs"
+          git push origin HEAD:easy-6x6-profiles
