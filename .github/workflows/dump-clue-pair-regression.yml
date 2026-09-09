@@ -1,0 +1,16 @@
+name: Dump clue-pair regression
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths:
+      - 'tests/dump-clue-pair-regression.js'
+      - '.github/workflows/dump-clue-pair-regression.yml'
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/dump-clue-pair-regression.js
