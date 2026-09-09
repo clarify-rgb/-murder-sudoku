@@ -1,4 +1,4 @@
-name: Easy semantic tests
+name: Easy semantic and attribution tests
 on:
   push:
     branches: [easy-6x6-profiles]
@@ -11,9 +11,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Syntax check engine
+      - name: Syntax check semantic engine
         run: node --check engine/easy-6x6-profiles.js
-      - name: Syntax check tests
+      - name: Syntax check attribution layer
+        run: node --check engine/easy-6x6-attribution.js
+      - name: Syntax check semantic tests
         run: node --check tests/easy-6x6-profiles.test.js
+      - name: Syntax check attribution tests
+        run: node --check tests/easy-6x6-attribution.test.js
       - name: Semantic tests
         run: node tests/easy-6x6-profiles.test.js
+      - name: Attribution tests
+        run: node tests/easy-6x6-attribution.test.js
