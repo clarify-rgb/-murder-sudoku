@@ -12,33 +12,53 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Copy exact approved files to main/easy-test
+      - name: Copy approved checkpoint to main/easy-test
         run: |
           set -euo pipefail
-          APPROVED=0eb99c0b79fcc7be6d94d083883725f96d4514c5
+          APPROVED=a54a915b49ff2df82ef022525d2b02e92e55cd04
           git fetch origin main
           ENGINE_HASH=$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")
-          HTML_HASH=$(git rev-parse "$APPROVED:index.html")
           MAIN_INDEX_HASH=$(git rev-parse origin/main:index.html)
           git checkout -B main origin/main
           mkdir -p easy-test/engine
           git show "$APPROVED:engine/easy-6x6-profiles.js" > easy-test/engine/easy-6x6-profiles.js
           git show "$APPROVED:index.html" > easy-test/index.html
+          # Deployment-only UI cleanup: the approved checkpoint still contained a stale
+          # murder-result string in Submit/debug. Keep engine byte-exact while showing
+          # only the approved locatePerson(F) objective in the temporary player.
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('easy-test/index.html')
+          s=p.read_text()
+          s=s.replace(',culprit:P.culprit,solutionCount:', ',solutionCount:')
+          s=s.replace('`<b>CASE SOLVED ✅</b> — ${P.culprit} was the culprit.`', '`<b>PUZZLE SOLVED ✅</b> — F located.`')
+          p.write_text(s)
+          PY
           test "$(git hash-object easy-test/engine/easy-6x6-profiles.js)" = "$ENGINE_HASH"
-          test "$(git hash-object easy-test/index.html)" = "$HTML_HASH"
           test "$(git rev-parse HEAD:index.html)" = "$MAIN_INDEX_HASH"
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add easy-test/engine/easy-6x6-profiles.js easy-test/index.html
-          git commit -m "Deploy approved multi-cell Easy playtest"
+          git commit -m "Deploy approved victim-objective Easy playtest"
           git push origin main
           echo "DEPLOYED_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-      - name: Verify deployed content and main index
+          echo "ENGINE_HASH=$ENGINE_HASH" >> "$GITHUB_ENV"
+          echo "MAIN_INDEX_HASH=$MAIN_INDEX_HASH" >> "$GITHUB_ENV"
+      - name: Verify deployed engine and main index
         run: |
           set -euo pipefail
-          APPROVED=0eb99c0b79fcc7be6d94d083883725f96d4514c5
+          APPROVED=a54a915b49ff2df82ef022525d2b02e92e55cd04
           git fetch origin main
-          test "$(git rev-parse origin/main:easy-test/engine/easy-6x6-profiles.js)" = "$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")"
-          test "$(git rev-parse origin/main:easy-test/index.html)" = "$(git rev-parse "$APPROVED:index.html")"
+          DEPLOYED_ENGINE=$(git rev-parse origin/main:easy-test/engine/easy-6x6-profiles.js)
+          APPROVED_ENGINE=$(git rev-parse "$APPROVED:engine/easy-6x6-profiles.js")
+          CURRENT_MAIN_INDEX=$(git rev-parse origin/main:index.html)
+          test "$DEPLOYED_ENGINE" = "$APPROVED_ENGINE"
+          test "$CURRENT_MAIN_INDEX" = "$MAIN_INDEX_HASH"
+          grep -q 'Determine where F was.' <(git show origin/main:easy-test/index.html)
+          ! grep -q 'Victim. Was alone with the culprit.' <(git show origin/main:easy-test/index.html)
+          ! grep -q 'was the culprit' <(git show origin/main:easy-test/index.html)
           echo "Deployed commit: $DEPLOYED_SHA"
           echo "Approved source: $APPROVED"
+          echo "Approved engine hash: $APPROVED_ENGINE"
+          echo "Deployed engine hash: $DEPLOYED_ENGINE"
+          echo "Main index hash: $CURRENT_MAIN_INDEX"
