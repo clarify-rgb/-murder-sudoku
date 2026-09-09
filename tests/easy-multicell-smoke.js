@@ -1,5 +1,5 @@
 'use strict';
-const E=require('../engine/easy-6x6-profiles.js');
+const fs=require('fs'),E=require('../engine/easy-6x6-profiles.js'),results=[];
 for(const profile of ['easy-1','easy-2','easy-3']){
   let passed=0,totalAttempts=0,sizes={1:0,2:0,3:0},rejects={},examples=[];
   for(let i=0;i<10;i++){
@@ -10,5 +10,6 @@ for(const profile of ['easy-1','easy-2','easy-3']){
     for(const o of P.objects)sizes[E.objectCells(P,o.name).length]++;
     if(examples.length<1)examples.push(P.objects.map(o=>o.name+':'+E.objectCells(P,o.name).map(c=>'R'+(c.r+1)+'C'+(c.c+1)).join('+')).join(' | '));
   }
-  console.log(JSON.stringify({profile,passed,averageAttempts:totalAttempts/passed,objectSizes:sizes,rejections:rejects,example:examples[0]}));
+  const row={profile,passed,averageAttempts:totalAttempts/passed,objectSizes:sizes,rejections:rejects,example:examples[0]};results.push(row);console.log(JSON.stringify(row));
 }
+fs.writeFileSync('easy-multicell-smoke-results.json',JSON.stringify(results,null,2));
