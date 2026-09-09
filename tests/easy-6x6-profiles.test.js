@@ -1,141 +1,32 @@
 'use strict';
-/*
-  Standalone validation fixture for the three first 6x6 Easy profiles.
-  It deliberately does NOT touch index.html. The fixture mirrors the existing
-  engine invariants: one person per row/column, victim shares a room with
-  exactly one other person, max two clues, exactly one complete solution,
-  and a forced deduction chain with no guessing.
+const assert=require('assert');
+const E=require('../engine/easy-6x6-profiles.js');
+const N=E.N,people=E.PEOPLE;
+const R=E.regionGrid();
+const rooms=['Library','Study','Gallery','Foyer','Archive','Lounge'];
+function base(){return{profile:'easy-1',people:[...people],victim:'F',regionOf:R,roomNames:rooms,objects:[],clues:Object.fromEntries(people.map(p=>[p,[]])),globalRules:[]}}
+function assignment(cells){return Object.fromEntries(people.map((p,i)=>[p,cells[i]]))}
+function ok(P,p,cl,a){return E.clueSatisfied(P,p,cl,a)}
+let passed=0;function test(name,fn){fn();passed++;console.log('PASS',name)}
+const A=assignment([{r:0,c:0},{r:1,c:1},{r:2,c:2},{r:3,c:3},{r:4,c:4},{r:5,c:5}]);
 
-  In the live engine, fixture type `cell` maps to an `onObject` clue whose
-  object occurs once at that cell. It is kept as `cell` here to make the
-  validation fixture independent of rendering/object decoration.
-*/
-const N=6;
-const people=['A','B','C','D','E','F'];
-const victim='F';
-const regionOf=Array.from({length:N},(_,r)=>
-  Array.from({length:N},(_,c)=>(Math.floor(r/2)*2+Math.floor(c/3)))
-);
-const solution=Object.fromEntries(people.map((p,i)=>[p,{r:i,c:i}]));
-
-const profiles=[
-  {id:'easy-1',minRelational:0,clues:{
-    A:[['cell',0,0]],B:[['cell',1,1]],C:[['cell',2,2]],
-    D:[['cell',3,3]],E:[['cell',4,4]],F:[['victim']]
-  }},
-  {id:'easy-2',minRelational:0,clues:{
-    A:[['cell',0,0]],B:[['cell',1,1]],C:[['cell',2,2]],D:[['cell',3,3]],
-    E:[['row',4],['column',4]],F:[['victim']]
-  }},
-  {id:'easy-3',minRelational:1,clues:{
-    A:[['cell',0,0]],B:[['cell',1,1]],C:[['cell',2,2]],
-    D:[['southOfPerson','C'],['westOfPerson','E']],E:[['cell',4,4]],F:[['victim']]
-  }}
-];
-
-const room=x=>regionOf[x.r][x.c];
-function clueSatisfied(x,cl,a,partial=false){
-  const t=cl[0];
-  if(t==='victim')return true;
-  if(t==='cell')return x.r===cl[1]&&x.c===cl[2];
-  if(t==='row')return x.r===cl[1];
-  if(t==='column')return x.c===cl[1];
-  const ref=cl[1];
-  if(!a[ref])return partial;
-  const y=a[ref];
-  if(t==='southOfPerson')return x.r>y.r;
-  if(t==='northOfPerson')return x.r<y.r;
-  if(t==='westOfPerson')return x.c<y.c;
-  if(t==='eastOfPerson')return x.c>y.c;
-  return true;
-}
-function victimRule(a){
-  const vr=room(a[victim]);
-  return people.filter(p=>room(a[p])===vr).length===2;
-}
-function fullValid(P,a){
-  if(new Set(people.map(p=>a[p].r)).size!==N)return false;
-  if(new Set(people.map(p=>a[p].c)).size!==N)return false;
-  for(const p of people)for(const cl of P.clues[p]||[])
-    if(!clueSatisfied(a[p],cl,a,false))return false;
-  return victimRule(a);
-}
-function countSolutions(P,cap=2,fixed={}){
-  let n=0;
-  const a={...fixed};
-  const ur=new Set(Object.values(fixed).map(x=>x.r));
-  const uc=new Set(Object.values(fixed).map(x=>x.c));
-  function rec(left){
-    if(n>=cap)return;
-    if(!left.length){if(fullValid(P,a))n++;return;}
-    let best=null,opts=null;
-    for(const p of left){
-      const q=[];
-      for(let r=0;r<N;r++)for(let c=0;c<N;c++){
-        if(ur.has(r)||uc.has(c))continue;
-        const x={r,c};
-        if((P.clues[p]||[]).every(cl=>clueSatisfied(x,cl,a,true)))q.push(x);
-      }
-      if(opts===null||q.length<opts.length){best=p;opts=q;}
-    }
-    if(!opts?.length)return;
-    for(const x of opts){
-      a[best]=x;ur.add(x.r);uc.add(x.c);
-      rec(left.filter(p=>p!==best));
-      ur.delete(x.r);uc.delete(x.c);delete a[best];
-      if(n>=cap)return;
-    }
-  }
-  rec(people.filter(p=>!a[p]));
-  return n;
-}
-function strictHumanSolve(P){
-  const remaining=new Set(people.filter(p=>p!==victim));
-  const usedR=new Set(),usedC=new Set(),placed={},trace=[];
-  while(remaining.size){
-    let forced=[];
-    for(const p of remaining){
-      const opts=[];
-      for(let r=0;r<N;r++)for(let c=0;c<N;c++){
-        if(usedR.has(r)||usedC.has(c))continue;
-        const x={r,c};
-        if((P.clues[p]||[]).every(cl=>clueSatisfied(x,cl,placed,true)))opts.push(x);
-      }
-      if(opts.length===1)forced.push({p,x:opts[0],reason:'direct'});
-    }
-    if(!forced.length){
-      for(const p of remaining){
-        const supported=[];
-        for(let r=0;r<N;r++)for(let c=0;c<N;c++){
-          if(usedR.has(r)||usedC.has(c))continue;
-          const x={r,c};
-          if(!(P.clues[p]||[]).every(cl=>clueSatisfied(x,cl,placed,true)))continue;
-          if(countSolutions(P,1,{...placed,[p]:x})>0)supported.push(x);
-        }
-        if(supported.length===1)forced.push({p,x:supported[0],reason:'relational/global'});
-      }
-    }
-    if(!forced.length)return {ok:false,reason:'guessing required',trace};
-    const z=forced[0],s=solution[z.p];
-    if(z.x.r!==s.r||z.x.c!==s.c)return {ok:false,reason:'wrong forced move',trace};
-    placed[z.p]=z.x;usedR.add(z.x.r);usedC.add(z.x.c);remaining.delete(z.p);trace.push(z);
-  }
-  const rr=[0,1,2,3,4,5].filter(r=>!usedR.has(r));
-  const cc=[0,1,2,3,4,5].filter(c=>!usedC.has(c));
-  placed[victim]={r:rr[0],c:cc[0]};
-  trace.push({p:victim,x:placed[victim],reason:'final remaining cell'});
-  return {ok:fullValid(P,placed),trace};
-}
-
-for(const P of profiles){
-  for(const p of people){
-    if(p!==victim&&(P.clues[p]||[]).length>2)throw Error(`${P.id}: >2 clues for ${p}`);
-  }
-  const solutions=countSolutions(P,2);
-  const human=strictHumanSolve(P);
-  const relational=human.trace.filter(x=>x.reason==='relational/global').length;
-  if(solutions!==1||!human.ok||relational<P.minRelational)
-    throw Error(`${P.id} failed: solutions=${solutions}, human=${human.ok}, relational=${relational}`);
-  console.log(`${P.id}: PASS | 6x6 | solutions=${solutions} | forced=${human.trace.length} | relational/global=${relational}`);
-  console.log(human.trace.map((x,i)=>`${i+1}.${x.p}=R${x.x.r+1}C${x.x.c+1}[${x.reason}]`).join(' -> '));
-}
+test('onObject valid/invalid',()=>{let P=base();P.objects=[{name:'O',r:0,c:0}];assert(ok(P,'A',{type:'onObject',object:'O'},A));assert(!ok(P,'B',{type:'onObject',object:'O'},A))});
+test('onlyOnObject exact v7.1 semantics',()=>{let P=base();P.objects=[{name:'O',r:0,c:0},{name:'O',r:2,c:2}];assert(ok(P,'A',{type:'onlyOnObject',object:'O'},assignment([{r:0,c:0},{r:1,c:1},{r:2,c:3},{r:3,c:2},{r:4,c:4},{r:5,c:5}])));assert(!ok(P,'A',{type:'onlyOnObject',object:'O'},A));assert(!ok(P,'B',{type:'onlyOnObject',object:'O'},A))});
+test('besideObject requires orthogonal AND same room',()=>{let P=base();P.objects=[{name:'O',r:0,c:0}];let a={...A,A:{r:0,c:1}};assert(ok(P,'A',{type:'besideObject',object:'O'},a));P.objects=[{name:'O',r:0,c:2}];a={...A,A:{r:0,c:3}};assert(!ok(P,'A',{type:'besideObject',object:'O'},a));a={...A,A:{r:1,c:1}};P.objects=[{name:'O',r:0,c:0}];assert(!ok(P,'A',{type:'besideObject',object:'O'},a))});
+test('notBesideObject',()=>{let P=base();P.objects=[{name:'O',r:0,c:0}];assert(!ok(P,'A',{type:'notBesideObject',object:'O'},{...A,A:{r:0,c:1}}));assert(ok(P,'A',{type:'notBesideObject',object:'O'},{...A,A:{r:1,c:1}}))});
+test('room and roomNotBesideObject',()=>{let P=base();P.objects=[{name:'O',r:0,c:0}];assert(ok(P,'A',{type:'room',room:R[0][1]},{...A,A:{r:0,c:1}}));assert(ok(P,'A',{type:'roomNotBesideObject',room:R[1][1],object:'O'},{...A,A:{r:1,c:1}}));assert(!ok(P,'A',{type:'roomNotBesideObject',room:R[0][1],object:'O'},{...A,A:{r:0,c:1}}))});
+test('corner boundary',()=>{let P=base();assert(ok(P,'A',{type:'corner',room:R[0][0]},{...A,A:{r:0,c:0}}));assert(!ok(P,'A',{type:'corner',room:R[0][0]},{...A,A:{r:0,c:1}}))});
+test('diagonal object',()=>{let P=base();P.objects=[{name:'O',r:2,c:2}];assert(ok(P,'A',{type:'diagonal',object:'O'},{...A,A:{r:0,c:0}}));assert(!ok(P,'A',{type:'diagonal',object:'O'},{...A,A:{r:0,c:1}}))});
+test('row and column',()=>{let P=base();assert(ok(P,'A',{type:'row',row:0},A));assert(!ok(P,'A',{type:'row',row:1},A));assert(ok(P,'A',{type:'column',column:0},A));assert(!ok(P,'A',{type:'column',column:1},A))});
+test('object directions',()=>{let P=base();P.objects=[{name:'O',r:3,c:3}];for(const [t,x,v] of [['westOfObject',{r:3,c:1},true],['eastOfObject',{r:3,c:4},true],['northOfObject',{r:1,c:3},true],['southOfObject',{r:4,c:3},true]])assert.equal(ok(P,'A',{type:t,object:'O'},{...A,A:x}),v);assert(!ok(P,'A',{type:'westOfObject',object:'O'},{...A,A:{r:3,c:4}}))});
+test('person directions and besidePerson',()=>{let P=base(),a={...A,A:{r:0,c:0},B:{r:0,c:1}};assert(ok(P,'A',{type:'westOfPerson',person:'B'},a));assert(!ok(P,'A',{type:'eastOfPerson',person:'B'},a));assert(ok(P,'A',{type:'besidePerson',person:'B'},a));a={...a,B:{r:0,c:3}};assert(!ok(P,'A',{type:'besidePerson',person:'B'},a));assert(E.binaryHolds(P,'northOfPerson',{r:1,c:1},{r:2,c:1}));assert(E.binaryHolds(P,'southOfPerson',{r:2,c:1},{r:1,c:1}))});
+test('notWithPerson',()=>{let P=base(),a={...A,A:{r:0,c:0},B:{r:0,c:3}};assert(ok(P,'A',{type:'notWithPerson',person:'B'},a));a.B={r:1,c:1};assert(!ok(P,'A',{type:'notWithPerson',person:'B'},a))});
+test('alone',()=>{let P=base(),a=assignment([{r:0,c:0},{r:0,c:3},{r:2,c:2},{r:3,c:3},{r:4,c:4},{r:5,c:5}]);assert(ok(P,'A',{type:'alone'},a));a.B={r:1,c:1};assert(!ok(P,'A',{type:'alone'},a))});
+test('aloneInRooms',()=>{let P=base(),a=assignment([{r:0,c:0},{r:0,c:3},{r:2,c:2},{r:3,c:3},{r:4,c:4},{r:5,c:5}]);assert(ok(P,'A',{type:'aloneInRooms',rooms:[R[0][0],5]},a));assert(!ok(P,'A',{type:'aloneInRooms',rooms:[2,3]},a));a.B={r:1,c:1};assert(!ok(P,'A',{type:'aloneInRooms',rooms:[R[0][0],5]},a))});
+test('aloneWithPerson exact cardinality',()=>{let P=base(),a=assignment([{r:0,c:0},{r:1,c:1},{r:0,c:3},{r:2,c:3},{r:4,c:4},{r:5,c:5}]);assert(ok(P,'A',{type:'aloneWithPerson',person:'B'},a));a.C={r:1,c:2};assert(!ok(P,'A',{type:'aloneWithPerson',person:'B'},a));a.B={r:0,c:3};assert(!ok(P,'A',{type:'aloneWithPerson',person:'B'},a))});
+test('westOfPerson arc propagation',()=>{let P=base();P.clues.A=[{type:'westOfPerson',person:'B'}];let D=Object.fromEntries(people.map(p=>[p,new Set([0,7,14,21,28,35])]));D.A=new Set([0,4]);D.B=new Set([1,3]);let r=E.propagateDomains(P,D);assert.deepEqual([...r.domains.A].map(i=>i%6),[0]);assert.deepEqual([...r.domains.B].map(i=>i%6).sort(),[1,3]);assert(r.events.some(e=>e.reason==='relational'&&e.clueType==='westOfPerson'&&e.subject==='A'))});
+test('onlyOnObject domain propagation excludes other people',()=>{let P=base();P.objects=[{name:'O',r:0,c:0},{name:'O',r:2,c:2}];P.clues.A=[{type:'onlyOnObject',object:'O'}];let D=Object.fromEntries(people.map(p=>[p,new Set([0,7,14,21,28,35])]));D.A=new Set([0,14]);let r=E.propagateDomains(P,D);assert(!r.domains.B.has(0)&&!r.domains.B.has(14));assert(r.events.some(e=>e.clueType==='onlyOnObject'&&e.subject==='B'))});
+test('alone domain propagation excludes subject room after singleton room',()=>{let P=base();P.clues.A=[{type:'alone'}];let D=Object.fromEntries(people.map(p=>[p,new Set([0,3,14,21,28,35])]));D.A=new Set([0]);let r=E.propagateDomains(P,D);for(const q of people.filter(x=>x!=='A'))assert(![...r.domains[q]].some(i=>R[Math.floor(i/6)][i%6]===R[0][0]))});
+test('aloneWithPerson support and third-party exclusion',()=>{let P=base();P.clues.A=[{type:'aloneWithPerson',person:'B'}];let D=Object.fromEntries(people.map(p=>[p,new Set([0,3,14,21,28,35])]));D.A=new Set([0]);D.B=new Set([7,3]);let r=E.propagateDomains(P,D);assert.deepEqual([...r.domains.B],[7]);for(const q of ['C','D','E','F'])assert(![...r.domains[q]].some(i=>R[Math.floor(i/6)][i%6]===R[0][0]))});
+test('human propagation never calls countSolutions',()=>{let P=base();P.solution=A;P.clues={A:[{type:'row',row:0},{type:'column',column:0}],B:[{type:'row',row:1},{type:'column',column:1}],C:[{type:'row',row:2},{type:'column',column:2}],D:[{type:'row',row:3},{type:'column',column:3}],E:[{type:'row',row:4},{type:'column',column:4}],F:[{type:'victim'}]};E.resetSearchCallCount();E.strictSolve(P);assert.equal(E.getSearchCallCount(),0)});
+console.log(`SEMANTIC TESTS PASSED: ${passed}`);
