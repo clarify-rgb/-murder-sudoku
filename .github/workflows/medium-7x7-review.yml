@@ -6,6 +6,8 @@ on:
       - 'tests/medium-first-10.js'
       - '.github/workflows/medium-7x7-review.yml'
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   verify:
     runs-on: ubuntu-latest
