@@ -1,0 +1,2103 @@
+{
+  "generatedAt": "2026-09-10",
+  "acceptance": {
+    "directSingles": 0,
+    "allPeopleInitiallyUnresolved": true,
+    "minStructuralAdvancedDeductions": 2,
+    "minMaterialAdvancedDeductions": 1,
+    "minAdvancedDependentPlacements": 1,
+    "minMultiPersonChainPeople": 2,
+    "minDependencyDepth": 2
+  },
+  "classificationCounts": {
+    "CLEAR MEDIUM": 11,
+    "BORDERLINE": 9,
+    "TOO EASY": 0
+  },
+  "puzzles": [
+    {
+      "puzzleId": "MEDIUM-TIGHT-001",
+      "generationAttempts": 1,
+      "selectionAttempts": 5,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 5,
+        "C": 3,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 3
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 6,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "advancedDependentPlacements": 5,
+      "advancedDependentPlacementPeople": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "totalTraceLength": 32,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "aloneInRooms",
+        "besideObject",
+        "column",
+        "corner",
+        "northOfPerson",
+        "notWithPerson",
+        "row",
+        "southOfObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-002",
+      "generationAttempts": 1,
+      "selectionAttempts": 5,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 3,
+        "C": 4,
+        "D": 6,
+        "E": 5,
+        "F": 5,
+        "G": 4
+      },
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 1,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 5,
+      "chainParticipants": [
+        "A",
+        "B",
+        "D",
+        "F",
+        "G"
+      ],
+      "advancedDependentPlacements": 5,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "D",
+        "F",
+        "G"
+      ],
+      "totalTraceLength": 29,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "column",
+        "corner",
+        "eastOfPerson",
+        "notBesideObject",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "row"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-003",
+      "generationAttempts": 1,
+      "selectionAttempts": 165,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 4,
+        "C": 4,
+        "D": 4,
+        "E": 4,
+        "F": 4,
+        "G": 5
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 4,
+      "chainParticipants": [
+        "A",
+        "B",
+        "F",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "F",
+        "G"
+      ],
+      "totalTraceLength": 28,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "aloneWithPerson",
+        "besideObject",
+        "corner",
+        "northOfObject",
+        "northOfPerson",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson",
+        "westOfObject",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-004",
+      "generationAttempts": 1,
+      "selectionAttempts": 10,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 4,
+        "C": 4,
+        "D": 4,
+        "E": 4,
+        "F": 3,
+        "G": 4
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 0,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 5,
+      "chainParticipants": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "G"
+      ],
+      "advancedDependentPlacements": 5,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "G"
+      ],
+      "totalTraceLength": 32,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "column",
+        "corner",
+        "diagonal",
+        "northOfPerson",
+        "notWithPerson",
+        "room",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-005",
+      "generationAttempts": 1,
+      "selectionAttempts": 7,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 4,
+        "C": 5,
+        "D": 5,
+        "E": 6,
+        "F": 4,
+        "G": 3
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 1,
+      "intersectionCount": 1,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 6,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "advancedDependentPlacements": 5,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "F"
+      ],
+      "totalTraceLength": 31,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "aloneInRooms",
+        "corner",
+        "diagonal",
+        "eastOfObject",
+        "eastOfPerson",
+        "northOfPerson",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-006",
+      "generationAttempts": 1,
+      "selectionAttempts": 26,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 7,
+        "C": 6,
+        "D": 6,
+        "E": 4,
+        "F": 4,
+        "G": 4
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 7,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 6,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "F",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "C",
+        "F"
+      ],
+      "totalTraceLength": 35,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "column",
+        "eastOfPerson",
+        "northOfPerson",
+        "notBesideObject",
+        "onObject",
+        "onlyOnObject",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-007",
+      "generationAttempts": 1,
+      "selectionAttempts": 47,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 5,
+        "C": 4,
+        "D": 2,
+        "E": 6,
+        "F": 4,
+        "G": 5
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 5,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 3,
+      "chainParticipants": [
+        "A",
+        "E",
+        "G"
+      ],
+      "advancedDependentPlacements": 2,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "G"
+      ],
+      "totalTraceLength": 30,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "corner",
+        "eastOfPerson",
+        "northOfPerson",
+        "notWithPerson",
+        "onObject",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-008",
+      "generationAttempts": 1,
+      "selectionAttempts": 4,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 4,
+        "C": 5,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 4
+      },
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 0,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 5,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "C",
+        "D",
+        "G"
+      ],
+      "totalTraceLength": 33,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "besideObject",
+        "column",
+        "diagonal",
+        "eastOfPerson",
+        "northOfObject",
+        "notWithPerson",
+        "room",
+        "roomNotBesideObject",
+        "row",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-009",
+      "generationAttempts": 1,
+      "selectionAttempts": 54,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 5,
+        "C": 4,
+        "D": 4,
+        "E": 3,
+        "F": 4,
+        "G": 5
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 7,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "advancedDependentPlacements": 7,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "totalTraceLength": 30,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "aloneWithPerson",
+        "corner",
+        "eastOfPerson",
+        "northOfPerson",
+        "notWithPerson",
+        "room",
+        "roomNotBesideObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-010",
+      "generationAttempts": 1,
+      "selectionAttempts": 2,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 3,
+        "C": 4,
+        "D": 4,
+        "E": 4,
+        "F": 3,
+        "G": 3
+      },
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 1,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 1,
+      "dependencyDepth": 4,
+      "multiPersonChainPeople": 7,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "advancedDependentPlacements": 7,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "totalTraceLength": 31,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "besideObject",
+        "corner",
+        "diagonal",
+        "eastOfObject",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-011",
+      "generationAttempts": 1,
+      "selectionAttempts": 4,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 3,
+        "C": 4,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 5
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 2,
+      "chainParticipants": [
+        "D",
+        "F"
+      ],
+      "advancedDependentPlacements": 2,
+      "advancedDependentPlacementPeople": [
+        "D",
+        "F"
+      ],
+      "totalTraceLength": 29,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "column",
+        "corner",
+        "diagonal",
+        "eastOfPerson",
+        "notBesideObject",
+        "notWithPerson",
+        "room",
+        "roomNotBesideObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-012",
+      "generationAttempts": 1,
+      "selectionAttempts": 63,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 4,
+        "C": 4,
+        "D": 5,
+        "E": 5,
+        "F": 5,
+        "G": 5
+      },
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 1,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 6,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 6,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "C",
+        "D",
+        "E",
+        "G"
+      ],
+      "totalTraceLength": 33,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "corner",
+        "eastOfPerson",
+        "onlyOnObject",
+        "room",
+        "roomNotBesideObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-013",
+      "generationAttempts": 1,
+      "selectionAttempts": 24,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 4,
+        "C": 4,
+        "D": 3,
+        "E": 5,
+        "F": 4,
+        "G": 5
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 3,
+      "chainParticipants": [
+        "C",
+        "D",
+        "F"
+      ],
+      "advancedDependentPlacements": 2,
+      "advancedDependentPlacementPeople": [
+        "C",
+        "F"
+      ],
+      "totalTraceLength": 28,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "column",
+        "diagonal",
+        "northOfObject",
+        "northOfPerson",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "row",
+        "southOfObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-014",
+      "generationAttempts": 1,
+      "selectionAttempts": 46,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 4,
+        "C": 4,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 4
+      },
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 0,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 4,
+      "multiPersonChainPeople": 6,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "G"
+      ],
+      "advancedDependentPlacements": 6,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "G"
+      ],
+      "totalTraceLength": 32,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "corner",
+        "diagonal",
+        "eastOfPerson",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson",
+        "westOfObject",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-015",
+      "generationAttempts": 1,
+      "selectionAttempts": 276,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 6,
+        "B": 5,
+        "C": 3,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 3
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 1,
+      "intersectionCount": 1,
+      "relationalDeductionCount": 7,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 6,
+      "chainParticipants": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "F",
+        "G"
+      ],
+      "advancedDependentPlacements": 5,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "F"
+      ],
+      "totalTraceLength": 30,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "besideObject",
+        "column",
+        "corner",
+        "diagonal",
+        "eastOfObject",
+        "eastOfPerson",
+        "northOfPerson",
+        "notWithPerson",
+        "onlyOnObject",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-016",
+      "generationAttempts": 1,
+      "selectionAttempts": 16,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 2,
+        "B": 4,
+        "C": 2,
+        "D": 5,
+        "E": 4,
+        "F": 3,
+        "G": 5
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 1,
+      "intersectionCount": 1,
+      "relationalDeductionCount": 1,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 5,
+      "chainParticipants": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "advancedDependentPlacements": 5,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "totalTraceLength": 26,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "alone",
+        "column",
+        "corner",
+        "eastOfPerson",
+        "northOfPerson",
+        "onObject",
+        "onlyOnObject",
+        "roomNotBesideObject",
+        "southOfObject",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-017",
+      "generationAttempts": 1,
+      "selectionAttempts": 10,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 3,
+        "C": 4,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 4
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 5,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 4,
+      "chainParticipants": [
+        "A",
+        "C",
+        "D",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "C",
+        "D",
+        "G"
+      ],
+      "totalTraceLength": 33,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "alone",
+        "column",
+        "corner",
+        "diagonal",
+        "eastOfPerson",
+        "notBesideObject",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson",
+        "westOfObject"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-018",
+      "generationAttempts": 1,
+      "selectionAttempts": 39,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 4,
+        "C": 6,
+        "D": 4,
+        "E": 5,
+        "F": 4,
+        "G": 4
+      },
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 1,
+      "intersectionCount": 3,
+      "relationalDeductionCount": 5,
+      "dependencyDepth": 3,
+      "multiPersonChainPeople": 4,
+      "chainParticipants": [
+        "A",
+        "C",
+        "D",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "C",
+        "D",
+        "G"
+      ],
+      "totalTraceLength": 30,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "alone",
+        "aloneWithPerson",
+        "column",
+        "corner",
+        "eastOfPerson",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-019",
+      "generationAttempts": 1,
+      "selectionAttempts": 38,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 2,
+        "C": 3,
+        "D": 4,
+        "E": 4,
+        "F": 7,
+        "G": 3
+      },
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 3,
+      "chainParticipants": [
+        "C",
+        "D",
+        "E"
+      ],
+      "advancedDependentPlacements": 2,
+      "advancedDependentPlacementPeople": [
+        "D",
+        "E"
+      ],
+      "totalTraceLength": 28,
+      "forcedPlacements": 7,
+      "classification": "BORDERLINE",
+      "clueFamilies": [
+        "besideObject",
+        "column",
+        "corner",
+        "eastOfPerson",
+        "northOfPerson",
+        "notWithPerson",
+        "onObject",
+        "room",
+        "row",
+        "southOfPerson",
+        "westOfPerson"
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-TIGHT-020",
+      "generationAttempts": 1,
+      "selectionAttempts": 13,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 5,
+        "C": 6,
+        "D": 4,
+        "E": 4,
+        "F": 3,
+        "G": 5
+      },
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 1,
+      "intersectionCount": 3,
+      "relationalDeductionCount": 6,
+      "dependencyDepth": 2,
+      "multiPersonChainPeople": 4,
+      "chainParticipants": [
+        "A",
+        "B",
+        "E",
+        "G"
+      ],
+      "advancedDependentPlacements": 4,
+      "advancedDependentPlacementPeople": [
+        "A",
+        "B",
+        "E",
+        "G"
+      ],
+      "totalTraceLength": 32,
+      "forcedPlacements": 7,
+      "classification": "CLEAR MEDIUM",
+      "clueFamilies": [
+        "aloneInRooms",
+        "column",
+        "diagonal",
+        "notWithPerson",
+        "roomNotBesideObject",
+        "row",
+        "southOfPerson"
+      ]
+    }
+  ],
+  "humanReview": [
+    {
+      "tier": "WEAKEST",
+      "puzzleId": "MEDIUM-TIGHT-011",
+      "strengthScore": 56,
+      "classification": "BORDERLINE",
+      "stats": {
+        "puzzleId": "MEDIUM-TIGHT-011",
+        "generationAttempts": 1,
+        "selectionAttempts": 4,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 3,
+          "C": 4,
+          "D": 4,
+          "E": 5,
+          "F": 4,
+          "G": 5
+        },
+        "advancedDeductionCount": 2,
+        "materialAdvancedDeductions": 2,
+        "ownershipCount": 0,
+        "intersectionCount": 2,
+        "relationalDeductionCount": 2,
+        "dependencyDepth": 3,
+        "multiPersonChainPeople": 2,
+        "chainParticipants": [
+          "D",
+          "F"
+        ],
+        "advancedDependentPlacements": 2,
+        "advancedDependentPlacementPeople": [
+          "D",
+          "F"
+        ],
+        "totalTraceLength": 29,
+        "forcedPlacements": 7,
+        "classification": "BORDERLINE",
+        "clueFamilies": [
+          "column",
+          "corner",
+          "diagonal",
+          "eastOfPerson",
+          "notBesideObject",
+          "notWithPerson",
+          "room",
+          "roomNotBesideObject",
+          "southOfPerson",
+          "westOfPerson"
+        ]
+      },
+      "clues": {
+        "D": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 2,
+            "object": "Locked 2",
+            "text": "D was in R3, but not beside Locked 2."
+          },
+          {
+            "type": "eastOfPerson",
+            "person": "B",
+            "text": "D was east of B."
+          }
+        ],
+        "E": [
+          {
+            "type": "diagonal",
+            "object": "Locked 1",
+            "text": "E was diagonal to Locked 1."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "F",
+            "text": "E was not in the same room as F."
+          }
+        ],
+        "B": [
+          {
+            "type": "corner",
+            "room": 0,
+            "text": "B was in a corner of R1."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "E",
+            "text": "B was not in the same room as E."
+          }
+        ],
+        "C": [
+          {
+            "type": "column",
+            "column": 4,
+            "text": "C was in column 5."
+          },
+          {
+            "type": "notBesideObject",
+            "object": "Object 4",
+            "text": "C was not beside Object 4."
+          }
+        ],
+        "G": [
+          {
+            "type": "room",
+            "room": 0,
+            "text": "G was in R1."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "C",
+            "text": "G was west of C."
+          }
+        ],
+        "A": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 4,
+            "object": "Object 2",
+            "text": "A was in R5, but not beside Object 2."
+          },
+          {
+            "type": "roomNotBesideObject",
+            "room": 4,
+            "object": "Object 3",
+            "text": "A was in R5, but not beside Object 3."
+          }
+        ],
+        "F": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 2,
+            "object": "Locked 2",
+            "text": "F was in R3, but not beside Locked 2."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "D",
+            "text": "F was south of D."
+          }
+        ]
+      },
+      "solution": {
+        "A": "R7C3",
+        "B": "R4C2",
+        "C": "R1C5",
+        "D": "R5C6",
+        "E": "R3C4",
+        "F": "R6C7",
+        "G": "R2C1"
+      },
+      "initialDomains": {
+        "A": [
+          "R5C2",
+          "R6C2",
+          "R7C2",
+          "R7C3"
+        ],
+        "B": [
+          "R1C1",
+          "R4C1",
+          "R4C2"
+        ],
+        "C": [
+          "R1C5",
+          "R3C5",
+          "R6C5",
+          "R7C5"
+        ],
+        "D": [
+          "R4C7",
+          "R5C6",
+          "R5C7",
+          "R6C7"
+        ],
+        "E": [
+          "R1C6",
+          "R3C4",
+          "R4C3",
+          "R5C2",
+          "R7C2"
+        ],
+        "F": [
+          "R4C7",
+          "R5C6",
+          "R5C7",
+          "R6C7"
+        ],
+        "G": [
+          "R1C1",
+          "R2C1",
+          "R3C1",
+          "R4C1",
+          "R4C2"
+        ]
+      },
+      "solveOrder": [
+        "No immediate placements: initial domains are A:4, B:3, C:4, D:4, E:5, F:4, G:5.",
+        "F is narrowed by southOfPerson involving D.",
+        "D is narrowed by southOfPerson involving F.",
+        "Only G can still own row 2.",
+        "G becomes fixed at R2C1 after row-occupancy.",
+        "Only E can still own column 4.",
+        "E becomes fixed at R3C4 after column-occupancy.",
+        "D's remaining squares eliminate F's R5C7 by row/column intersection.",
+        "F's remaining squares eliminate D's R5C7 by row/column intersection.",
+        "The placement of E removes C's candidate(s) in the same row.",
+        "The placement of G removes B's candidate(s) in the same column.",
+        "All seven placements follow deterministically; 2 structural advanced deductions, 2 material, 2 advanced-dependent placements, searchCalls = 0."
+      ]
+    },
+    {
+      "tier": "WEAKEST",
+      "puzzleId": "MEDIUM-TIGHT-013",
+      "strengthScore": 57,
+      "classification": "BORDERLINE",
+      "stats": {
+        "puzzleId": "MEDIUM-TIGHT-013",
+        "generationAttempts": 1,
+        "selectionAttempts": 24,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 4,
+          "C": 4,
+          "D": 3,
+          "E": 5,
+          "F": 4,
+          "G": 5
+        },
+        "advancedDeductionCount": 2,
+        "materialAdvancedDeductions": 2,
+        "ownershipCount": 0,
+        "intersectionCount": 2,
+        "relationalDeductionCount": 2,
+        "dependencyDepth": 2,
+        "multiPersonChainPeople": 3,
+        "chainParticipants": [
+          "C",
+          "D",
+          "F"
+        ],
+        "advancedDependentPlacements": 2,
+        "advancedDependentPlacementPeople": [
+          "C",
+          "F"
+        ],
+        "totalTraceLength": 28,
+        "forcedPlacements": 7,
+        "classification": "BORDERLINE",
+        "clueFamilies": [
+          "column",
+          "diagonal",
+          "northOfObject",
+          "northOfPerson",
+          "notWithPerson",
+          "roomNotBesideObject",
+          "row",
+          "southOfObject",
+          "southOfPerson",
+          "westOfPerson"
+        ]
+      },
+      "clues": {
+        "A": [
+          {
+            "type": "diagonal",
+            "object": "Object 1",
+            "text": "A was diagonal to Object 1."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "G",
+            "text": "A was south of G."
+          }
+        ],
+        "D": [
+          {
+            "type": "southOfObject",
+            "object": "Object 5",
+            "text": "D was south of Object 5."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "B",
+            "text": "D was not in the same room as B."
+          }
+        ],
+        "C": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 4,
+            "object": "Locked 1",
+            "text": "C was in R5, but not beside Locked 1."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "D",
+            "text": "C was west of D."
+          }
+        ],
+        "E": [
+          {
+            "type": "column",
+            "column": 5,
+            "text": "E was in column 6."
+          },
+          {
+            "type": "northOfObject",
+            "object": "Object 5",
+            "text": "E was north of Object 5."
+          }
+        ],
+        "F": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 4,
+            "object": "Object 5",
+            "text": "F was in R5, but not beside Object 5."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "G",
+            "text": "F was south of G."
+          }
+        ],
+        "G": [
+          {
+            "type": "row",
+            "row": 1,
+            "text": "G was in row 2."
+          },
+          {
+            "type": "northOfPerson",
+            "person": "C",
+            "text": "G was north of C."
+          }
+        ],
+        "B": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 5,
+            "object": "Object 2",
+            "text": "B was in R6, but not beside Object 2."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "E",
+            "text": "B was south of E."
+          }
+        ]
+      },
+      "solution": {
+        "A": "R3C4",
+        "B": "R4C3",
+        "C": "R5C1",
+        "D": "R7C5",
+        "E": "R1C6",
+        "F": "R6C2",
+        "G": "R2C7"
+      },
+      "initialDomains": {
+        "A": [
+          "R2C1",
+          "R3C4",
+          "R4C5",
+          "R5C6"
+        ],
+        "B": [
+          "R4C3",
+          "R4C4",
+          "R4C6",
+          "R6C6"
+        ],
+        "C": [
+          "R4C1",
+          "R5C1",
+          "R5C2",
+          "R6C1"
+        ],
+        "D": [
+          "R7C1",
+          "R7C4",
+          "R7C5"
+        ],
+        "E": [
+          "R1C6",
+          "R2C6",
+          "R3C6",
+          "R4C6",
+          "R5C6"
+        ],
+        "F": [
+          "R4C1",
+          "R5C1",
+          "R6C2",
+          "R7C1"
+        ],
+        "G": [
+          "R2C1",
+          "R2C4",
+          "R2C5",
+          "R2C6",
+          "R2C7"
+        ]
+      },
+      "solveOrder": [
+        "No immediate placements: initial domains are A:4, B:4, C:4, D:3, E:5, F:4, G:5.",
+        "A is narrowed by southOfPerson involving G.",
+        "D is narrowed by westOfPerson involving C.",
+        "Only E can still own row 1.",
+        "E becomes fixed at R1C6 after row-occupancy.",
+        "Only A can still own row 3.",
+        "A becomes fixed at R3C4 after row-occupancy.",
+        "Only B can still own column 3.",
+        "B becomes fixed at R4C3 after column-occupancy.",
+        "Only G can still own column 7.",
+        "G becomes fixed at R2C7 after column-occupancy.",
+        "All seven placements follow deterministically; 2 structural advanced deductions, 2 material, 2 advanced-dependent placements, searchCalls = 0."
+      ]
+    },
+    {
+      "tier": "WEAKEST",
+      "puzzleId": "MEDIUM-TIGHT-019",
+      "strengthScore": 58,
+      "classification": "BORDERLINE",
+      "stats": {
+        "puzzleId": "MEDIUM-TIGHT-019",
+        "generationAttempts": 1,
+        "selectionAttempts": 38,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 3,
+          "B": 2,
+          "C": 3,
+          "D": 4,
+          "E": 4,
+          "F": 7,
+          "G": 3
+        },
+        "advancedDeductionCount": 2,
+        "materialAdvancedDeductions": 2,
+        "ownershipCount": 0,
+        "intersectionCount": 2,
+        "relationalDeductionCount": 3,
+        "dependencyDepth": 2,
+        "multiPersonChainPeople": 3,
+        "chainParticipants": [
+          "C",
+          "D",
+          "E"
+        ],
+        "advancedDependentPlacements": 2,
+        "advancedDependentPlacementPeople": [
+          "D",
+          "E"
+        ],
+        "totalTraceLength": 28,
+        "forcedPlacements": 7,
+        "classification": "BORDERLINE",
+        "clueFamilies": [
+          "besideObject",
+          "column",
+          "corner",
+          "eastOfPerson",
+          "northOfPerson",
+          "notWithPerson",
+          "onObject",
+          "room",
+          "row",
+          "southOfPerson",
+          "westOfPerson"
+        ]
+      },
+      "clues": {
+        "G": [
+          {
+            "type": "row",
+            "row": 1,
+            "text": "G was in row 2."
+          },
+          {
+            "type": "room",
+            "room": 1,
+            "text": "G was in R2."
+          }
+        ],
+        "D": [
+          {
+            "type": "corner",
+            "room": 0,
+            "text": "D was in a corner of R1."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "C",
+            "text": "D was west of C."
+          }
+        ],
+        "E": [
+          {
+            "type": "corner",
+            "room": 5,
+            "text": "E was in a corner of R6."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "B",
+            "text": "E was west of B."
+          }
+        ],
+        "C": [
+          {
+            "type": "besideObject",
+            "object": "Object 2",
+            "text": "C was beside Object 2."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "G",
+            "text": "C was south of G."
+          }
+        ],
+        "A": [
+          {
+            "type": "onObject",
+            "object": "Object 1",
+            "text": "A was on Object 1."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "C",
+            "text": "A was not in the same room as C."
+          }
+        ],
+        "F": [
+          {
+            "type": "column",
+            "column": 3,
+            "text": "F was in column 4."
+          },
+          {
+            "type": "eastOfPerson",
+            "person": "D",
+            "text": "F was east of D."
+          }
+        ],
+        "B": [
+          {
+            "type": "onObject",
+            "object": "Object 3",
+            "text": "B was on Object 3."
+          },
+          {
+            "type": "northOfPerson",
+            "person": "A",
+            "text": "B was north of A."
+          }
+        ]
+      },
+      "solution": {
+        "A": "R7C3",
+        "B": "R5C7",
+        "C": "R3C5",
+        "D": "R1C1",
+        "E": "R4C2",
+        "F": "R6C4",
+        "G": "R2C6"
+      },
+      "initialDomains": {
+        "A": [
+          "R1C1",
+          "R3C3",
+          "R7C3"
+        ],
+        "B": [
+          "R1C4",
+          "R5C7"
+        ],
+        "C": [
+          "R2C6",
+          "R3C4",
+          "R3C5"
+        ],
+        "D": [
+          "R1C1",
+          "R1C5",
+          "R2C2",
+          "R3C3"
+        ],
+        "E": [
+          "R2C1",
+          "R3C2",
+          "R4C1",
+          "R4C2"
+        ],
+        "F": [
+          "R1C4",
+          "R2C4",
+          "R3C4",
+          "R4C4",
+          "R5C4",
+          "R6C4",
+          "R7C4"
+        ],
+        "G": [
+          "R2C4",
+          "R2C5",
+          "R2C6"
+        ]
+      },
+      "solveOrder": [
+        "No immediate placements: initial domains are A:3, B:2, C:3, D:4, E:4, F:7, G:3.",
+        "A is narrowed by northOfPerson involving B.",
+        "C is narrowed by southOfPerson involving G.",
+        "D is narrowed by westOfPerson involving C.",
+        "Only F can still own row 6.",
+        "F becomes fixed at R6C4 after row-occupancy.",
+        "Only A can still own row 7.",
+        "A becomes fixed at R7C3 after row-occupancy.",
+        "Only G can still own column 6.",
+        "G becomes fixed at R2C6 after column-occupancy.",
+        "Only B can still own column 7.",
+        "All seven placements follow deterministically; 2 structural advanced deductions, 2 material, 2 advanced-dependent placements, searchCalls = 0."
+      ]
+    },
+    {
+      "tier": "STRONGEST",
+      "puzzleId": "MEDIUM-TIGHT-014",
+      "strengthScore": 127,
+      "classification": "CLEAR MEDIUM",
+      "stats": {
+        "puzzleId": "MEDIUM-TIGHT-014",
+        "generationAttempts": 1,
+        "selectionAttempts": 46,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 5,
+          "B": 4,
+          "C": 4,
+          "D": 4,
+          "E": 5,
+          "F": 4,
+          "G": 4
+        },
+        "advancedDeductionCount": 4,
+        "materialAdvancedDeductions": 4,
+        "ownershipCount": 0,
+        "intersectionCount": 4,
+        "relationalDeductionCount": 3,
+        "dependencyDepth": 4,
+        "multiPersonChainPeople": 6,
+        "chainParticipants": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "G"
+        ],
+        "advancedDependentPlacements": 6,
+        "advancedDependentPlacementPeople": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "G"
+        ],
+        "totalTraceLength": 32,
+        "forcedPlacements": 7,
+        "classification": "CLEAR MEDIUM",
+        "clueFamilies": [
+          "corner",
+          "diagonal",
+          "eastOfPerson",
+          "notWithPerson",
+          "roomNotBesideObject",
+          "row",
+          "southOfPerson",
+          "westOfObject",
+          "westOfPerson"
+        ]
+      },
+      "clues": {
+        "C": [
+          {
+            "type": "row",
+            "row": 4,
+            "text": "C was in row 5."
+          },
+          {
+            "type": "eastOfPerson",
+            "person": "D",
+            "text": "C was east of D."
+          }
+        ],
+        "D": [
+          {
+            "type": "westOfObject",
+            "object": "Locked 1",
+            "text": "D was west of Locked 1."
+          },
+          {
+            "type": "diagonal",
+            "object": "Object 2",
+            "text": "D was diagonal to Object 2."
+          }
+        ],
+        "E": [
+          {
+            "type": "diagonal",
+            "object": "Object 3",
+            "text": "E was diagonal to Object 3."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "F",
+            "text": "E was south of F."
+          }
+        ],
+        "A": [
+          {
+            "type": "corner",
+            "room": 5,
+            "text": "A was in a corner of R6."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "C",
+            "text": "A was west of C."
+          }
+        ],
+        "B": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 4,
+            "object": "Object 3",
+            "text": "B was in R5, but not beside Object 3."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "A",
+            "text": "B was south of A."
+          }
+        ],
+        "F": [
+          {
+            "type": "corner",
+            "room": 0,
+            "text": "F was in a corner of R1."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "C",
+            "text": "F was not in the same room as C."
+          }
+        ],
+        "G": [
+          {
+            "type": "row",
+            "row": 6,
+            "text": "G was in row 7."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "F",
+            "text": "G was west of F."
+          }
+        ]
+      },
+      "solution": {
+        "A": "R1C1",
+        "B": "R6C7",
+        "C": "R5C6",
+        "D": "R2C4",
+        "E": "R4C5",
+        "F": "R3C3",
+        "G": "R7C2"
+      },
+      "initialDomains": {
+        "A": [
+          "R1C1",
+          "R1C5",
+          "R2C1",
+          "R2C5",
+          "R3C4"
+        ],
+        "B": [
+          "R6C4",
+          "R6C5",
+          "R6C7",
+          "R7C4"
+        ],
+        "C": [
+          "R5C4",
+          "R5C5",
+          "R5C6",
+          "R5C7"
+        ],
+        "D": [
+          "R1C1",
+          "R2C2",
+          "R2C4",
+          "R4C2"
+        ],
+        "E": [
+          "R1C2",
+          "R2C3",
+          "R3C4",
+          "R4C5",
+          "R5C6"
+        ],
+        "F": [
+          "R3C2",
+          "R3C3",
+          "R4C2",
+          "R7C3"
+        ],
+        "G": [
+          "R7C1",
+          "R7C2",
+          "R7C3",
+          "R7C4"
+        ]
+      },
+      "solveOrder": [
+        "No immediate placements: initial domains are A:5, B:4, C:4, D:4, E:5, F:4, G:4.",
+        "E is narrowed by southOfPerson involving F.",
+        "F is narrowed by southOfPerson involving E.",
+        "G is narrowed by westOfPerson involving F.",
+        "Only B can still own row 6.",
+        "Only F can still own column 3.",
+        "F becomes fixed at R3C3 after column-occupancy.",
+        "E's remaining squares eliminate C's R5C5 by row/column intersection.",
+        "The placement of F removes A's candidate(s) in the same row.",
+        "C's remaining squares eliminate E's R5C6 by row/column intersection.",
+        "E becomes fixed at R4C5 after intersecting-square-elimination.",
+        "All seven placements follow deterministically; 4 structural advanced deductions, 4 material, 6 advanced-dependent placements, searchCalls = 0."
+      ]
+    },
+    {
+      "tier": "STRONGEST",
+      "puzzleId": "MEDIUM-TIGHT-010",
+      "strengthScore": 121,
+      "classification": "CLEAR MEDIUM",
+      "stats": {
+        "puzzleId": "MEDIUM-TIGHT-010",
+        "generationAttempts": 1,
+        "selectionAttempts": 2,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 3,
+          "C": 4,
+          "D": 4,
+          "E": 4,
+          "F": 3,
+          "G": 3
+        },
+        "advancedDeductionCount": 3,
+        "materialAdvancedDeductions": 3,
+        "ownershipCount": 1,
+        "intersectionCount": 2,
+        "relationalDeductionCount": 1,
+        "dependencyDepth": 4,
+        "multiPersonChainPeople": 7,
+        "chainParticipants": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "advancedDependentPlacements": 7,
+        "advancedDependentPlacementPeople": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "totalTraceLength": 31,
+        "forcedPlacements": 7,
+        "classification": "CLEAR MEDIUM",
+        "clueFamilies": [
+          "besideObject",
+          "corner",
+          "diagonal",
+          "eastOfObject",
+          "notWithPerson",
+          "roomNotBesideObject",
+          "southOfPerson",
+          "westOfPerson"
+        ]
+      },
+      "clues": {
+        "E": [
+          {
+            "type": "corner",
+            "room": 1,
+            "text": "E was in a corner of R2."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "D",
+            "text": "E was south of D."
+          }
+        ],
+        "B": [
+          {
+            "type": "diagonal",
+            "object": "Object 4",
+            "text": "B was diagonal to Object 4."
+          },
+          {
+            "type": "eastOfObject",
+            "object": "Object 5",
+            "text": "B was east of Object 5."
+          }
+        ],
+        "A": [
+          {
+            "type": "corner",
+            "room": 6,
+            "text": "A was in a corner of R7."
+          },
+          {
+            "type": "southOfPerson",
+            "person": "C",
+            "text": "A was south of C."
+          }
+        ],
+        "F": [
+          {
+            "type": "roomNotBesideObject",
+            "room": 4,
+            "object": "Object 5",
+            "text": "F was in R5, but not beside Object 5."
+          },
+          {
+            "type": "westOfPerson",
+            "person": "B",
+            "text": "F was west of B."
+          }
+        ],
+        "C": [
+          {
+            "type": "corner",
+            "room": 4,
+            "text": "C was in a corner of R5."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "A",
+            "text": "C was not in the same room as A."
+          }
+        ],
+        "D": [
+          {
+            "type": "corner",
+            "room": 3,
+            "text": "D was in a corner of R4."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "C",
+            "text": "D was not in the same room as C."
+          }
+        ],
+        "G": [
+          {
+            "type": "besideObject",
+            "object": "Locked 1",
+            "text": "G was beside Locked 1."
+          },
+          {
+            "type": "notWithPerson",
+            "person": "B",
+            "text": "G was not in the same room as B."
+          }
+        ]
+      },
+      "solution": {
+        "A": "R4C2",
+        "B": "R5C6",
+        "C": "R2C4",
+        "D": "R6C7",
+        "E": "R7C1",
+        "F": "R1C3",
+        "G": "R3C5"
+      },
+      "initialDomains": {
+        "A": [
+          "R4C2",
+          "R4C5",
+          "R5C2",
+          "R6C4"
+        ],
+        "B": [
+          "R4C7",
+          "R5C6",
+          "R7C6"
+        ],
+        "C": [
+          "R1C2",
+          "R1C4",
+          "R2C3",
+          "R2C4"
+        ],
+        "D": [
+          "R3C7",
+          "R4C6",
+          "R5C5",
+          "R6C7"
+        ],
+        "E": [
+          "R6C1",
+          "R6C3",
+          "R7C1",
+          "R7C4"
+        ],
+        "F": [
+          "R1C2",
+          "R1C3",
+          "R2C4"
+        ],
+        "G": [
+          "R1C6",
+          "R2C6",
+          "R3C5"
+        ]
+      },
+      "solveOrder": [
+        "No immediate placements: initial domains are A:4, B:3, C:4, D:4, E:4, F:3, G:3.",
+        "Only E can still own column 1.",
+        "B's remaining squares eliminate D's R4C6 by row/column intersection.",
+        "F's remaining squares eliminate C's R1C4 by row/column intersection.",
+        "C/F collectively own rows 1, 2, removing G's candidate(s) there.",
+        "G becomes fixed at R3C5 after row-ownership.",
+        "The placement of G removes A's candidate(s) in the same column.",
+        "The placement of G removes D's candidate(s) in the same row.",
+        "The placement of G removes D's candidate(s) in the same column.",
+        "D becomes fixed at R6C7 after column-elimination.",
+        "E is narrowed by southOfPerson involving D.",
+        "All seven placements follow deterministically; 3 structural advanced deductions, 3 material, 7 advanced-dependent placements, searchCalls = 0."
+      ]
+    }
+  ]
+}
