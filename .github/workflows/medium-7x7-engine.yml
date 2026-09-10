@@ -1,0 +1,69 @@
+name: Medium 7x7 engine checkpoint
+on:
+  push:
+    branches: [medium-7x7]
+    paths:
+      - 'scripts/build-medium-7x7.py'
+      - 'tests/medium-7x7-core.test.js'
+      - 'tests/medium-advanced-deductions.test.js'
+      - '.github/workflows/medium-7x7-engine.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard frozen Easy baseline
+        run: |
+          set -euo pipefail
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Build Medium engine
+        run: |
+          set -euo pipefail
+          python3 scripts/build-medium-7x7.py
+          node --check engine/medium-7x7.js
+      - name: Commit Medium engine if needed
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- engine/medium-7x7.js; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add engine/medium-7x7.js
+            git commit -m "Add Medium 7x7 deterministic engine"
+            git push origin HEAD:medium-7x7
+          fi
+      - name: Verify builder idempotent and Easy untouched
+        run: |
+          set -euo pipefail
+          python3 scripts/build-medium-7x7.py
+          git diff --exit-code -- engine/medium-7x7.js engine/easy-6x6-profiles.js index.html
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Frozen Easy regression suite
+        run: |
+          set -euo pipefail
+          node tests/easy-6x6-profiles.test.js
+          node tests/easy-reproducibility.test.js
+          node tests/repeated-objects.test.js
+          node tests/fixed-object-footprint-size.test.js
+          node tests/clue-pair-coherence.test.js
+          node tests/solution-clue-consistency.test.js
+      - name: Medium architecture and solver tests
+        run: |
+          set -euo pipefail
+          node tests/medium-advanced-deductions.test.js
+          node tests/medium-7x7-core.test.js
+      - name: Exact engine checkpoint
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          echo "EASY_ENGINE=$(git hash-object engine/easy-6x6-profiles.js)"
+          echo "EASY_UI=$(git hash-object index.html)"
+          echo "MEDIUM_ENGINE=$(git hash-object engine/medium-7x7.js)"
+          test -z "$(git status --porcelain --untracked-files=no)"
