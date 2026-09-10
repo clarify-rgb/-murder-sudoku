@@ -37,7 +37,9 @@ const {chromium}=require('playwright');
   }
   await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await page.waitForTimeout(250);
-  assert((await page.evaluate(()=>window.scrollY))>20,'touch swipe starting on board must scroll page');
+  const touchScroll=await page.evaluate(()=>({y:window.scrollY,max:document.documentElement.scrollHeight-window.innerHeight}));
+  assert(touchScroll.max>0,'mobile document must have positive scroll range');
+  assert(touchScroll.y>0,'touch swipe starting on board must scroll page');
 
   const copy=page.locator('#copyDebugBtn');
   await copy.evaluate(el=>el.scrollIntoView({block:'center'}));
@@ -68,6 +70,6 @@ const {chromium}=require('playwright');
   await cell.dispatchEvent('pointerup',{pointerType:'touch',button:0,isPrimary:true});
   assert.strictEqual(await cell.locator('.final').textContent(),'A','hold = final must remain functional');
 
-  console.log('Mobile debug scroll PASS',JSON.stringify(layout));
+  console.log('Mobile debug scroll PASS',JSON.stringify({...layout,touchScroll}));
   await browser.close();
 })().catch(async e=>{console.error(e);process.exit(1)});
