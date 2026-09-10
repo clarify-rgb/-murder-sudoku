@@ -1,0 +1,22 @@
+name: Mobile scroll diagnostic
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths: ['.github/workflows/mobile-scroll-diagnostic.yml']
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - run: |
+          python3 -m http.server 4173 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          sleep 1
+          node tests/mobile-scroll-diagnostic.js
