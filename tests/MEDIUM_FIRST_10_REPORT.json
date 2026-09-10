@@ -1,0 +1,6034 @@
+{
+  "generatedAt": "2026-09-10",
+  "engine": {
+    "N": 7,
+    "people": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G"
+    ],
+    "victim": "G"
+  },
+  "puzzles": [
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-001",
+        "generationAttempts": 1,
+        "selectionAttempts": 49,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 4,
+          "C": 4,
+          "D": 6,
+          "E": 6,
+          "F": 2,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 4,
+        "rowColumnOccupancy": 4,
+        "rowOwnership": 1,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 4,
+        "intersectingSquare": 5,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 32,
+        "dependencyDepth": 3,
+        "clueFamilies": [
+          "besideObject",
+          "corner",
+          "diagonal",
+          "eastOfPerson",
+          "northOfPerson",
+          "onlyOnObject",
+          "roomNotBesideObject",
+          "row",
+          "southOfPerson",
+          "westOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-001",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            0
+          ],
+          [
+            1,
+            4,
+            4,
+            4,
+            4,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            3,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            6,
+            2,
+            2
+          ],
+          [
+            5,
+            5,
+            5,
+            6,
+            6,
+            6,
+            2
+          ],
+          [
+            5,
+            5,
+            5,
+            6,
+            6,
+            2,
+            2
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 1
+                  },
+                  {
+                    "r": 6,
+                    "c": 1
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 3
+                  },
+                  {
+                    "r": 2,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 3
+                  },
+                  {
+                    "r": 5,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 6
+                  },
+                  {
+                    "r": 2,
+                    "c": 6
+                  },
+                  {
+                    "r": 0,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 3
+                  },
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  },
+                  {
+                    "r": 4,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-6",
+            "name": "Object 6",
+            "icon": "6",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-7",
+            "name": "Object 7",
+            "icon": "7",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "E": [
+            {
+              "type": "row",
+              "row": 0,
+              "text": "E was in row 1."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "G",
+              "text": "E was north of G."
+            }
+          ],
+          "A": [
+            {
+              "type": "corner",
+              "room": 2,
+              "text": "A was in a corner of R3."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "A was south of G."
+            }
+          ],
+          "G": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 3,
+              "object": "Object 4",
+              "text": "G was in R4, but not beside Object 4."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "E",
+              "text": "G was south of E."
+            }
+          ],
+          "C": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 1",
+              "text": "C was the only person on Object 1."
+            }
+          ],
+          "B": [
+            {
+              "type": "corner",
+              "room": 1,
+              "text": "B was in a corner of R2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "G",
+              "text": "B was north of G."
+            }
+          ],
+          "F": [
+            {
+              "type": "besideObject",
+              "object": "Locked 1",
+              "text": "F was beside Locked 1."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "D",
+              "text": "F was east of D."
+            }
+          ],
+          "D": [
+            {
+              "type": "diagonal",
+              "object": "Object 3",
+              "text": "D was diagonal to Object 3."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "G",
+              "text": "D was west of G."
+            }
+          ]
+        },
+        "solution": {
+          "E": {
+            "r": 0,
+            "c": 4
+          },
+          "B": {
+            "r": 1,
+            "c": 0
+          },
+          "F": {
+            "r": 2,
+            "c": 5
+          },
+          "G": {
+            "r": 3,
+            "c": 3
+          },
+          "D": {
+            "r": 4,
+            "c": 2
+          },
+          "C": {
+            "r": 5,
+            "c": 1
+          },
+          "A": {
+            "r": 6,
+            "c": 6
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R5C6",
+          "R5C7",
+          "R7C6",
+          "R7C7"
+        ],
+        "B": [
+          "R2C1",
+          "R3C2",
+          "R5C1",
+          "R5C4"
+        ],
+        "C": [
+          "R3C3",
+          "R3C4",
+          "R6C2",
+          "R7C2"
+        ],
+        "D": [
+          "R1C5",
+          "R3C5",
+          "R4C4",
+          "R5C3",
+          "R6C2",
+          "R7C1"
+        ],
+        "E": [
+          "R1C1",
+          "R1C2",
+          "R1C3",
+          "R1C4",
+          "R1C5",
+          "R1C6"
+        ],
+        "F": [
+          "R2C6",
+          "R3C6"
+        ],
+        "G": [
+          "R4C3",
+          "R4C4",
+          "R4C6",
+          "R4C7"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-002",
+        "generationAttempts": 1,
+        "selectionAttempts": 4,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 5,
+          "B": 5,
+          "C": 6,
+          "D": 3,
+          "E": 4,
+          "F": 7,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 6,
+        "rowColumnOccupancy": 5,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 5,
+        "intersectingSquare": 2,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 32,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "column",
+          "corner",
+          "diagonal",
+          "eastOfObject",
+          "northOfPerson",
+          "notWithPerson",
+          "onlyOnObject",
+          "room",
+          "row",
+          "southOfPerson",
+          "westOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-002",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3,
+            4,
+            4
+          ],
+          [
+            3,
+            0,
+            0,
+            0,
+            0,
+            4,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            4
+          ],
+          [
+            1,
+            0,
+            2,
+            0,
+            2,
+            4,
+            4
+          ],
+          [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            4
+          ],
+          [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            4
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            2,
+            4
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5"
+        ],
+        "objects": [
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 0
+                  },
+                  {
+                    "r": 6,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-2",
+            "name": "Locked 2",
+            "icon": "L2",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 6
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-3",
+            "name": "Locked 3",
+            "icon": "L3",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-4",
+            "name": "Locked 4",
+            "icon": "L4",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 0
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 0
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "A": [
+            {
+              "type": "eastOfObject",
+              "object": "Locked 4",
+              "text": "A was east of Locked 4."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "C",
+              "text": "A was not in the same room as C."
+            }
+          ],
+          "F": [
+            {
+              "type": "diagonal",
+              "object": "Locked 4",
+              "text": "F was diagonal to Locked 4."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "D",
+              "text": "F was not in the same room as D."
+            }
+          ],
+          "C": [
+            {
+              "type": "column",
+              "column": 1,
+              "text": "C was in column 2."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "C was south of G."
+            }
+          ],
+          "D": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 2",
+              "text": "D was the only person on Object 2."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "D was south of G."
+            }
+          ],
+          "G": [
+            {
+              "type": "corner",
+              "room": 1,
+              "text": "G was in a corner of R2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "A",
+              "text": "G was west of A."
+            }
+          ],
+          "B": [
+            {
+              "type": "row",
+              "row": 5,
+              "text": "B was in row 6."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "D",
+              "text": "B was west of D."
+            }
+          ],
+          "E": [
+            {
+              "type": "room",
+              "room": 3,
+              "text": "E was in R4."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "G",
+              "text": "E was north of G."
+            }
+          ]
+        },
+        "solution": {
+          "E": {
+            "r": 0,
+            "c": 4
+          },
+          "A": {
+            "r": 1,
+            "c": 6
+          },
+          "F": {
+            "r": 2,
+            "c": 2
+          },
+          "G": {
+            "r": 3,
+            "c": 0
+          },
+          "D": {
+            "r": 4,
+            "c": 5
+          },
+          "B": {
+            "r": 5,
+            "c": 3
+          },
+          "C": {
+            "r": 6,
+            "c": 1
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R1C7",
+          "R2C7",
+          "R3C7",
+          "R4C7",
+          "R7C7"
+        ],
+        "B": [
+          "R6C1",
+          "R6C2",
+          "R6C3",
+          "R6C4",
+          "R6C5"
+        ],
+        "C": [
+          "R2C2",
+          "R3C2",
+          "R4C2",
+          "R5C2",
+          "R6C2",
+          "R7C2"
+        ],
+        "D": [
+          "R3C1",
+          "R5C1",
+          "R5C6"
+        ],
+        "E": [
+          "R1C1",
+          "R1C3",
+          "R1C5",
+          "R2C1"
+        ],
+        "F": [
+          "R1C1",
+          "R2C2",
+          "R3C3",
+          "R4C4",
+          "R5C5",
+          "R7C5",
+          "R7C7"
+        ],
+        "G": [
+          "R4C1",
+          "R5C2",
+          "R7C1",
+          "R7C5"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-003",
+        "generationAttempts": 1,
+        "selectionAttempts": 91,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 5,
+          "C": 6,
+          "D": 3,
+          "E": 2,
+          "F": 7,
+          "G": 3
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 4,
+        "rowColumnOccupancy": 5,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 4,
+        "intersectingSquare": 1,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 28,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "besideObject",
+          "corner",
+          "eastOfPerson",
+          "northOfPerson",
+          "notBesideObject",
+          "onlyOnObject",
+          "row",
+          "southOfPerson",
+          "westOfObject",
+          "westOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-003",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5,
+            3,
+            3
+          ],
+          [
+            5,
+            5,
+            5,
+            5,
+            1,
+            3,
+            3
+          ],
+          [
+            5,
+            4,
+            1,
+            1,
+            1,
+            3,
+            3
+          ],
+          [
+            2,
+            4,
+            1,
+            1,
+            1,
+            3,
+            3
+          ],
+          [
+            2,
+            4,
+            4,
+            1,
+            0,
+            3,
+            0
+          ],
+          [
+            2,
+            2,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            2,
+            4,
+            4,
+            0,
+            0,
+            0
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 5
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 0
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 6
+                  },
+                  {
+                    "r": 5,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 3
+                  },
+                  {
+                    "r": 1,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 0
+                  },
+                  {
+                    "r": 0,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 5
+                  },
+                  {
+                    "r": 3,
+                    "c": 5
+                  },
+                  {
+                    "r": 3,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "B": [
+            {
+              "type": "corner",
+              "room": 1,
+              "text": "B was in a corner of R2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "E",
+              "text": "B was west of E."
+            }
+          ],
+          "A": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "A was in a corner of R1."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "D",
+              "text": "A was south of D."
+            }
+          ],
+          "E": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 2",
+              "text": "E was the only person on Object 2."
+            },
+            {
+              "type": "notBesideObject",
+              "object": "Object 3",
+              "text": "E was not beside Object 3."
+            }
+          ],
+          "D": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 1",
+              "text": "D was the only person on Object 1."
+            },
+            {
+              "type": "westOfObject",
+              "object": "Object 2",
+              "text": "D was west of Object 2."
+            }
+          ],
+          "C": [
+            {
+              "type": "besideObject",
+              "object": "Object 1",
+              "text": "C was beside Object 1."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "G",
+              "text": "C was east of G."
+            }
+          ],
+          "G": [
+            {
+              "type": "besideObject",
+              "object": "Object 3",
+              "text": "G was beside Object 3."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "F",
+              "text": "G was north of F."
+            }
+          ],
+          "F": [
+            {
+              "type": "row",
+              "row": 3,
+              "text": "F was in row 4."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "C",
+              "text": "F was south of C."
+            }
+          ]
+        },
+        "solution": {
+          "G": {
+            "r": 0,
+            "c": 3
+          },
+          "C": {
+            "r": 1,
+            "c": 5
+          },
+          "B": {
+            "r": 2,
+            "c": 2
+          },
+          "F": {
+            "r": 3,
+            "c": 1
+          },
+          "D": {
+            "r": 4,
+            "c": 0
+          },
+          "E": {
+            "r": 5,
+            "c": 6
+          },
+          "A": {
+            "r": 6,
+            "c": 4
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R5C5",
+          "R5C7",
+          "R7C5",
+          "R7C7"
+        ],
+        "B": [
+          "R2C5",
+          "R3C3",
+          "R4C3",
+          "R4C5",
+          "R5C4"
+        ],
+        "C": [
+          "R2C6",
+          "R3C7",
+          "R4C1",
+          "R4C6",
+          "R6C1",
+          "R7C2"
+        ],
+        "D": [
+          "R3C6",
+          "R5C1",
+          "R7C1"
+        ],
+        "E": [
+          "R6C7",
+          "R7C7"
+        ],
+        "F": [
+          "R4C1",
+          "R4C2",
+          "R4C3",
+          "R4C4",
+          "R4C5",
+          "R4C6",
+          "R4C7"
+        ],
+        "G": [
+          "R1C3",
+          "R1C4",
+          "R2C2"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-004",
+        "generationAttempts": 1,
+        "selectionAttempts": 22,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 5,
+          "B": 4,
+          "C": 6,
+          "D": 5,
+          "E": 4,
+          "F": 4,
+          "G": 6
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 4,
+        "rowColumnOccupancy": 6,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 6,
+        "intersectingSquare": 1,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 31,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "corner",
+          "diagonal",
+          "eastOfPerson",
+          "northOfPerson",
+          "notWithPerson",
+          "room",
+          "roomNotBesideObject",
+          "row",
+          "southOfPerson",
+          "westOfObject"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-004",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            1,
+            1,
+            1,
+            1,
+            3,
+            3,
+            3
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3
+          ],
+          [
+            4,
+            2,
+            5,
+            5,
+            2,
+            6,
+            3
+          ],
+          [
+            4,
+            4,
+            5,
+            6,
+            6,
+            6,
+            6
+          ],
+          [
+            4,
+            4,
+            5,
+            6,
+            0,
+            0,
+            6
+          ],
+          [
+            4,
+            4,
+            5,
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            4,
+            4,
+            5,
+            0,
+            0,
+            0
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 5
+                  },
+                  {
+                    "r": 4,
+                    "c": 4
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 2
+                  },
+                  {
+                    "r": 4,
+                    "c": 2
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 5
+                  },
+                  {
+                    "r": 5,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 1
+                  },
+                  {
+                    "r": 1,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-2",
+            "name": "Locked 2",
+            "icon": "L2",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-3",
+            "name": "Locked 3",
+            "icon": "L3",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-4",
+            "name": "Locked 4",
+            "icon": "L4",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "G": [
+            {
+              "type": "room",
+              "room": 6,
+              "text": "G was in R7."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "C",
+              "text": "G was not in the same room as C."
+            }
+          ],
+          "F": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 2,
+              "object": "Object 2",
+              "text": "F was in R3, but not beside Object 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "E",
+              "text": "F was north of E."
+            }
+          ],
+          "C": [
+            {
+              "type": "westOfObject",
+              "object": "Object 2",
+              "text": "C was west of Object 2."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "D",
+              "text": "C was not in the same room as D."
+            }
+          ],
+          "D": [
+            {
+              "type": "diagonal",
+              "object": "Locked 2",
+              "text": "D was diagonal to Locked 2."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "C",
+              "text": "D was south of C."
+            }
+          ],
+          "E": [
+            {
+              "type": "corner",
+              "room": 6,
+              "text": "E was in a corner of R7."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "E was south of G."
+            }
+          ],
+          "B": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 3,
+              "object": "Locked 3",
+              "text": "B was in R4, but not beside Locked 3."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "A",
+              "text": "B was east of A."
+            }
+          ],
+          "A": [
+            {
+              "type": "row",
+              "row": 1,
+              "text": "A was in row 2."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "C",
+              "text": "A was not in the same room as C."
+            }
+          ]
+        },
+        "solution": {
+          "B": {
+            "r": 0,
+            "c": 4
+          },
+          "A": {
+            "r": 1,
+            "c": 2
+          },
+          "F": {
+            "r": 2,
+            "c": 1
+          },
+          "G": {
+            "r": 3,
+            "c": 3
+          },
+          "E": {
+            "r": 4,
+            "c": 6
+          },
+          "C": {
+            "r": 5,
+            "c": 0
+          },
+          "D": {
+            "r": 6,
+            "c": 5
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R2C2",
+          "R2C3",
+          "R2C4",
+          "R2C6",
+          "R2C7"
+        ],
+        "B": [
+          "R1C5",
+          "R1C6",
+          "R1C7",
+          "R2C6"
+        ],
+        "C": [
+          "R1C1",
+          "R3C1",
+          "R4C1",
+          "R5C1",
+          "R6C1",
+          "R7C1"
+        ],
+        "D": [
+          "R1C2",
+          "R3C2",
+          "R4C3",
+          "R6C5",
+          "R7C6"
+        ],
+        "E": [
+          "R3C6",
+          "R4C4",
+          "R4C7",
+          "R5C7"
+        ],
+        "F": [
+          "R2C2",
+          "R2C4",
+          "R3C2",
+          "R3C5"
+        ],
+        "G": [
+          "R3C6",
+          "R4C4",
+          "R4C5",
+          "R4C6",
+          "R4C7",
+          "R5C7"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-005",
+        "generationAttempts": 1,
+        "selectionAttempts": 66,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 5,
+          "C": 3,
+          "D": 4,
+          "E": 5,
+          "F": 4,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 4,
+        "rowColumnOccupancy": 6,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 6,
+        "intersectingSquare": 1,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 32,
+        "dependencyDepth": 3,
+        "clueFamilies": [
+          "column",
+          "corner",
+          "diagonal",
+          "eastOfPerson",
+          "northOfPerson",
+          "roomNotBesideObject",
+          "row",
+          "westOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-005",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            4,
+            4,
+            4,
+            5,
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            4,
+            4,
+            5,
+            1,
+            1,
+            1
+          ],
+          [
+            3,
+            4,
+            5,
+            5,
+            5,
+            1,
+            1
+          ],
+          [
+            3,
+            3,
+            2,
+            5,
+            5,
+            5,
+            0
+          ],
+          [
+            3,
+            3,
+            2,
+            2,
+            5,
+            0,
+            0
+          ],
+          [
+            3,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            2,
+            2,
+            2,
+            0,
+            0
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "objects": [
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 5
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-2",
+            "name": "Locked 2",
+            "icon": "L2",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-3",
+            "name": "Locked 3",
+            "icon": "L3",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-4",
+            "name": "Locked 4",
+            "icon": "L4",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 6
+                  },
+                  {
+                    "r": 6,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 6
+                  },
+                  {
+                    "r": 0,
+                    "c": 5
+                  },
+                  {
+                    "r": 1,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 4
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-5",
+            "name": "Locked 5",
+            "icon": "L5",
+            "blocking": true,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 2
+                  },
+                  {
+                    "r": 5,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "G": [
+            {
+              "type": "diagonal",
+              "object": "Locked 2",
+              "text": "G was diagonal to Locked 2."
+            },
+            {
+              "type": "diagonal",
+              "object": "Locked 3",
+              "text": "G was diagonal to Locked 3."
+            }
+          ],
+          "B": [
+            {
+              "type": "corner",
+              "room": 1,
+              "text": "B was in a corner of R2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "C",
+              "text": "B was west of C."
+            }
+          ],
+          "E": [
+            {
+              "type": "column",
+              "column": 1,
+              "text": "E was in column 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "C",
+              "text": "E was north of C."
+            }
+          ],
+          "F": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 2,
+              "object": "Object 1",
+              "text": "F was in R3, but not beside Object 1."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "G",
+              "text": "F was west of G."
+            }
+          ],
+          "C": [
+            {
+              "type": "row",
+              "row": 5,
+              "text": "C was in row 6."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "E",
+              "text": "C was east of E."
+            }
+          ],
+          "A": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 2,
+              "object": "Object 1",
+              "text": "A was in R3, but not beside Object 1."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "F",
+              "text": "A was east of F."
+            }
+          ],
+          "D": [
+            {
+              "type": "corner",
+              "room": 3,
+              "text": "D was in a corner of R4."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "G",
+              "text": "D was west of G."
+            }
+          ]
+        },
+        "solution": {
+          "G": {
+            "r": 0,
+            "c": 5
+          },
+          "B": {
+            "r": 1,
+            "c": 4
+          },
+          "D": {
+            "r": 2,
+            "c": 0
+          },
+          "E": {
+            "r": 3,
+            "c": 1
+          },
+          "F": {
+            "r": 4,
+            "c": 2
+          },
+          "C": {
+            "r": 5,
+            "c": 6
+          },
+          "A": {
+            "r": 6,
+            "c": 3
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R5C3",
+          "R7C3",
+          "R7C4",
+          "R7C5"
+        ],
+        "B": [
+          "R1C5",
+          "R1C7",
+          "R2C5",
+          "R3C6",
+          "R3C7"
+        ],
+        "C": [
+          "R6C1",
+          "R6C6",
+          "R6C7"
+        ],
+        "D": [
+          "R3C1",
+          "R4C2",
+          "R7C1",
+          "R7C2"
+        ],
+        "E": [
+          "R1C2",
+          "R2C2",
+          "R3C2",
+          "R4C2",
+          "R7C2"
+        ],
+        "F": [
+          "R5C3",
+          "R7C3",
+          "R7C4",
+          "R7C5"
+        ],
+        "G": [
+          "R1C6",
+          "R2C5",
+          "R3C4",
+          "R6C1"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-006",
+        "generationAttempts": 1,
+        "selectionAttempts": 11,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 5,
+          "B": 5,
+          "C": 5,
+          "D": 4,
+          "E": 4,
+          "F": 4,
+          "G": 5
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 3,
+        "rowColumnOccupancy": 3,
+        "rowOwnership": 2,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 1,
+        "relational": 7,
+        "intersectingSquare": 0,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 30,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "besideObject",
+          "column",
+          "corner",
+          "eastOfPerson",
+          "northOfObject",
+          "northOfPerson",
+          "notWithPerson",
+          "onlyOnObject",
+          "roomNotBesideObject",
+          "westOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-006",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1
+          ],
+          [
+            2,
+            2,
+            3,
+            2,
+            1,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            3,
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            3,
+            3,
+            5,
+            4,
+            4,
+            5,
+            5
+          ],
+          [
+            3,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 3
+                  },
+                  {
+                    "r": 6,
+                    "c": 2
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 3
+                  },
+                  {
+                    "r": 0,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-2",
+            "name": "Locked 2",
+            "icon": "L2",
+            "blocking": true,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  },
+                  {
+                    "r": 5,
+                    "c": 3
+                  },
+                  {
+                    "r": 4,
+                    "c": 4
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 1
+                  },
+                  {
+                    "r": 2,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-3",
+            "name": "Locked 3",
+            "icon": "L3",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 3
+                  },
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "D": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 2",
+              "text": "D was the only person on Object 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "A",
+              "text": "D was north of A."
+            }
+          ],
+          "C": [
+            {
+              "type": "column",
+              "column": 1,
+              "text": "C was in column 2."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "A",
+              "text": "C was not in the same room as A."
+            }
+          ],
+          "G": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 4,
+              "object": "Object 3",
+              "text": "G was in R5, but not beside Object 3."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "C",
+              "text": "G was north of C."
+            }
+          ],
+          "B": [
+            {
+              "type": "besideObject",
+              "object": "Locked 2",
+              "text": "B was beside Locked 2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "F",
+              "text": "B was west of F."
+            }
+          ],
+          "A": [
+            {
+              "type": "besideObject",
+              "object": "Locked 2",
+              "text": "A was beside Locked 2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "B",
+              "text": "A was west of B."
+            }
+          ],
+          "E": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "E was in a corner of R1."
+            },
+            {
+              "type": "northOfObject",
+              "object": "Locked 2",
+              "text": "E was north of Locked 2."
+            }
+          ],
+          "F": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "F was in a corner of R1."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "E",
+              "text": "F was east of E."
+            }
+          ]
+        },
+        "solution": {
+          "D": {
+            "r": 0,
+            "c": 3
+          },
+          "E": {
+            "r": 1,
+            "c": 5
+          },
+          "A": {
+            "r": 2,
+            "c": 0
+          },
+          "F": {
+            "r": 3,
+            "c": 6
+          },
+          "B": {
+            "r": 4,
+            "c": 2
+          },
+          "G": {
+            "r": 5,
+            "c": 4
+          },
+          "C": {
+            "r": 6,
+            "c": 1
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R3C1",
+          "R4C4",
+          "R5C3",
+          "R5C6",
+          "R6C5"
+        ],
+        "B": [
+          "R3C1",
+          "R4C4",
+          "R5C3",
+          "R5C6",
+          "R6C5"
+        ],
+        "C": [
+          "R1C2",
+          "R2C2",
+          "R5C2",
+          "R6C2",
+          "R7C2"
+        ],
+        "D": [
+          "R1C3",
+          "R1C4",
+          "R7C3",
+          "R7C4"
+        ],
+        "E": [
+          "R2C6",
+          "R2C7",
+          "R4C5",
+          "R4C7"
+        ],
+        "F": [
+          "R2C6",
+          "R2C7",
+          "R4C5",
+          "R4C7"
+        ],
+        "G": [
+          "R4C3",
+          "R4C4",
+          "R5C6",
+          "R5C7",
+          "R6C5"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-007",
+        "generationAttempts": 1,
+        "selectionAttempts": 2,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 5,
+          "C": 4,
+          "D": 6,
+          "E": 4,
+          "F": 4,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 10,
+        "rowColumnOccupancy": 2,
+        "rowOwnership": 0,
+        "columnOwnership": 2,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 3,
+        "intersectingSquare": 4,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 36,
+        "dependencyDepth": 5,
+        "clueFamilies": [
+          "besideObject",
+          "corner",
+          "diagonal",
+          "northOfPerson",
+          "notBesideObject",
+          "notWithPerson",
+          "onlyOnObject",
+          "roomNotBesideObject",
+          "southOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-007",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            4,
+            4,
+            4,
+            3,
+            3,
+            3,
+            2
+          ],
+          [
+            4,
+            0,
+            0,
+            0,
+            3,
+            3,
+            2
+          ],
+          [
+            4,
+            0,
+            0,
+            5,
+            3,
+            5,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            5,
+            5,
+            5,
+            1
+          ],
+          [
+            6,
+            6,
+            0,
+            5,
+            5,
+            1,
+            1
+          ],
+          [
+            6,
+            6,
+            6,
+            6,
+            1,
+            1,
+            1
+          ],
+          [
+            6,
+            6,
+            6,
+            6,
+            6,
+            1,
+            1
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 4
+                  },
+                  {
+                    "r": 6,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 0
+                  },
+                  {
+                    "r": 1,
+                    "c": 0
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 6
+                  },
+                  {
+                    "r": 4,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 0
+                  },
+                  {
+                    "r": 5,
+                    "c": 0
+                  },
+                  {
+                    "r": 4,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 4
+                  },
+                  {
+                    "r": 0,
+                    "c": 3
+                  },
+                  {
+                    "r": 1,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-6",
+            "name": "Object 6",
+            "icon": "6",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-7",
+            "name": "Object 7",
+            "icon": "7",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-8",
+            "name": "Object 8",
+            "icon": "8",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-9",
+            "name": "Object 9",
+            "icon": "9",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "D": [
+            {
+              "type": "diagonal",
+              "object": "Object 3",
+              "text": "D was diagonal to Object 3."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "D was south of G."
+            }
+          ],
+          "C": [
+            {
+              "type": "notBesideObject",
+              "object": "Object 2",
+              "text": "C was not beside Object 2."
+            },
+            {
+              "type": "roomNotBesideObject",
+              "room": 1,
+              "object": "Object 3",
+              "text": "C was in R2, but not beside Object 3."
+            }
+          ],
+          "G": [
+            {
+              "type": "corner",
+              "room": 3,
+              "text": "G was in a corner of R4."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "A",
+              "text": "G was not in the same room as A."
+            }
+          ],
+          "E": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 2",
+              "text": "E was the only person on Object 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "B",
+              "text": "E was north of B."
+            }
+          ],
+          "F": [
+            {
+              "type": "besideObject",
+              "object": "Object 2",
+              "text": "F was beside Object 2."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "D",
+              "text": "F was not in the same room as D."
+            }
+          ],
+          "A": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "A was in a corner of R1."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "E",
+              "text": "A was not in the same room as E."
+            }
+          ],
+          "B": [
+            {
+              "type": "corner",
+              "room": 5,
+              "text": "B was in a corner of R6."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "E",
+              "text": "B was not in the same room as E."
+            }
+          ]
+        },
+        "solution": {
+          "E": {
+            "r": 0,
+            "c": 0
+          },
+          "A": {
+            "r": 1,
+            "c": 1
+          },
+          "G": {
+            "r": 2,
+            "c": 4
+          },
+          "D": {
+            "r": 3,
+            "c": 2
+          },
+          "B": {
+            "r": 4,
+            "c": 3
+          },
+          "F": {
+            "r": 5,
+            "c": 6
+          },
+          "C": {
+            "r": 6,
+            "c": 5
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R2C2",
+          "R2C4",
+          "R4C1",
+          "R5C3"
+        ],
+        "B": [
+          "R3C4",
+          "R3C6",
+          "R4C6",
+          "R5C4",
+          "R5C5"
+        ],
+        "C": [
+          "R4C7",
+          "R5C7",
+          "R6C5",
+          "R7C6"
+        ],
+        "D": [
+          "R2C1",
+          "R3C2",
+          "R4C3",
+          "R5C4",
+          "R6C5",
+          "R6C7"
+        ],
+        "E": [
+          "R1C1",
+          "R2C1",
+          "R4C7",
+          "R5C7"
+        ],
+        "F": [
+          "R1C2",
+          "R3C1",
+          "R5C6",
+          "R6C7"
+        ],
+        "G": [
+          "R1C4",
+          "R1C6",
+          "R2C6",
+          "R3C5"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-008",
+        "generationAttempts": 1,
+        "selectionAttempts": 112,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 3,
+          "C": 3,
+          "D": 4,
+          "E": 4,
+          "F": 4,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 2,
+        "rowColumnOccupancy": 3,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 4,
+        "intersectingSquare": 3,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 29,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "aloneWithPerson",
+          "besideObject",
+          "column",
+          "corner",
+          "diagonal",
+          "eastOfObject",
+          "notWithPerson",
+          "roomNotBesideObject",
+          "row",
+          "southOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-008",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            5,
+            5,
+            5,
+            0,
+            4,
+            4,
+            4
+          ],
+          [
+            5,
+            5,
+            5,
+            0,
+            0,
+            4,
+            4
+          ],
+          [
+            2,
+            5,
+            5,
+            5,
+            0,
+            0,
+            4
+          ],
+          [
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            3,
+            3,
+            3
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            3,
+            3
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 1
+                  },
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 1
+                  },
+                  {
+                    "r": 0,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 2
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 1
+                  },
+                  {
+                    "r": 4,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 5
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "C": [
+            {
+              "type": "column",
+              "column": 4,
+              "text": "C was in column 5."
+            },
+            {
+              "type": "diagonal",
+              "object": "Object 4",
+              "text": "C was diagonal to Object 4."
+            }
+          ],
+          "B": [
+            {
+              "type": "row",
+              "row": 5,
+              "text": "B was in row 6."
+            },
+            {
+              "type": "roomNotBesideObject",
+              "room": 1,
+              "object": "Object 4",
+              "text": "B was in R2, but not beside Object 4."
+            }
+          ],
+          "A": [
+            {
+              "type": "besideObject",
+              "object": "Object 4",
+              "text": "A was beside Object 4."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "D",
+              "text": "A was not in the same room as D."
+            }
+          ],
+          "F": [
+            {
+              "type": "corner",
+              "room": 4,
+              "text": "F was in a corner of R5."
+            },
+            {
+              "type": "aloneWithPerson",
+              "person": "A",
+              "text": "F was alone with A in R5."
+            }
+          ],
+          "E": [
+            {
+              "type": "corner",
+              "room": 2,
+              "text": "E was in a corner of R3."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "D",
+              "text": "E was south of D."
+            }
+          ],
+          "D": [
+            {
+              "type": "besideObject",
+              "object": "Object 3",
+              "text": "D was beside Object 3."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "F",
+              "text": "D was south of F."
+            }
+          ],
+          "G": [
+            {
+              "type": "row",
+              "row": 6,
+              "text": "G was in row 7."
+            },
+            {
+              "type": "eastOfObject",
+              "object": "Object 3",
+              "text": "G was east of Object 3."
+            }
+          ]
+        },
+        "solution": {
+          "A": {
+            "r": 0,
+            "c": 5
+          },
+          "C": {
+            "r": 1,
+            "c": 4
+          },
+          "F": {
+            "r": 2,
+            "c": 6
+          },
+          "D": {
+            "r": 3,
+            "c": 1
+          },
+          "E": {
+            "r": 4,
+            "c": 0
+          },
+          "B": {
+            "r": 5,
+            "c": 2
+          },
+          "G": {
+            "r": 6,
+            "c": 3
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R1C6",
+          "R2C7",
+          "R6C2",
+          "R7C1"
+        ],
+        "B": [
+          "R6C1",
+          "R6C3",
+          "R6C4"
+        ],
+        "C": [
+          "R1C5",
+          "R2C5",
+          "R3C5"
+        ],
+        "D": [
+          "R4C2",
+          "R4C3",
+          "R5C1",
+          "R5C4"
+        ],
+        "E": [
+          "R3C1",
+          "R4C3",
+          "R5C1",
+          "R5C5"
+        ],
+        "F": [
+          "R1C5",
+          "R1C7",
+          "R2C6",
+          "R3C7"
+        ],
+        "G": [
+          "R7C4",
+          "R7C5",
+          "R7C6",
+          "R7C7"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-009",
+        "generationAttempts": 1,
+        "selectionAttempts": 9,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 4,
+          "B": 3,
+          "C": 3,
+          "D": 4,
+          "E": 5,
+          "F": 5,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 4,
+        "rowColumnOccupancy": 3,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 4,
+        "intersectingSquare": 1,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 27,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "alone",
+          "besideObject",
+          "corner",
+          "eastOfObject",
+          "eastOfPerson",
+          "northOfPerson",
+          "onlyOnObject",
+          "room",
+          "roomNotBesideObject",
+          "southOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-009",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            4,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            4,
+            0,
+            0,
+            1,
+            1,
+            6
+          ],
+          [
+            3,
+            4,
+            5,
+            5,
+            6,
+            6,
+            6
+          ],
+          [
+            3,
+            3,
+            5,
+            5,
+            5,
+            6,
+            6
+          ],
+          [
+            3,
+            3,
+            5,
+            5,
+            6,
+            6,
+            6
+          ],
+          [
+            3,
+            3,
+            5,
+            5,
+            5,
+            6,
+            6
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 5
+                  },
+                  {
+                    "r": 6,
+                    "c": 6
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 0
+                  },
+                  {
+                    "r": 6,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 3
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 0
+                  },
+                  {
+                    "r": 3,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 1
+                  },
+                  {
+                    "r": 2,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-6",
+            "name": "Object 6",
+            "icon": "6",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "E": [
+            {
+              "type": "corner",
+              "room": 5,
+              "text": "E was in a corner of R6."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "D",
+              "text": "E was south of D."
+            }
+          ],
+          "B": [
+            {
+              "type": "room",
+              "room": 2,
+              "text": "B was in R3."
+            },
+            {
+              "type": "alone",
+              "text": "B was alone in R3."
+            }
+          ],
+          "A": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 6,
+              "object": "Object 6",
+              "text": "A was in R7, but not beside Object 6."
+            },
+            {
+              "type": "eastOfObject",
+              "object": "Object 6",
+              "text": "A was east of Object 6."
+            }
+          ],
+          "F": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 1,
+              "object": "Object 2",
+              "text": "F was in R2, but not beside Object 2."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "G",
+              "text": "F was east of G."
+            }
+          ],
+          "D": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 1",
+              "text": "D was the only person on Object 1."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "C",
+              "text": "D was south of C."
+            }
+          ],
+          "C": [
+            {
+              "type": "besideObject",
+              "object": "Object 5",
+              "text": "C was beside Object 5."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "E",
+              "text": "C was east of E."
+            }
+          ],
+          "G": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 3,
+              "object": "Object 1",
+              "text": "G was in R4, but not beside Object 1."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "D",
+              "text": "G was north of D."
+            }
+          ]
+        },
+        "solution": {
+          "B": {
+            "r": 0,
+            "c": 3
+          },
+          "F": {
+            "r": 1,
+            "c": 4
+          },
+          "A": {
+            "r": 2,
+            "c": 6
+          },
+          "C": {
+            "r": 3,
+            "c": 5
+          },
+          "G": {
+            "r": 4,
+            "c": 1
+          },
+          "D": {
+            "r": 5,
+            "c": 0
+          },
+          "E": {
+            "r": 6,
+            "c": 2
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R3C7",
+          "R5C7",
+          "R6C7",
+          "R7C7"
+        ],
+        "B": [
+          "R1C2",
+          "R1C3",
+          "R1C4"
+        ],
+        "C": [
+          "R3C7",
+          "R4C6",
+          "R5C7"
+        ],
+        "D": [
+          "R6C1",
+          "R7C1",
+          "R7C6",
+          "R7C7"
+        ],
+        "E": [
+          "R4C3",
+          "R4C4",
+          "R5C5",
+          "R7C3",
+          "R7C5"
+        ],
+        "F": [
+          "R1C6",
+          "R1C7",
+          "R2C5",
+          "R2C7",
+          "R3C6"
+        ],
+        "G": [
+          "R4C1",
+          "R5C2",
+          "R6C1",
+          "R7C1"
+        ]
+      }
+    },
+    {
+      "stats": {
+        "puzzleId": "MEDIUM-010",
+        "generationAttempts": 1,
+        "selectionAttempts": 55,
+        "solutionCount": 1,
+        "searchCalls": 0,
+        "initialCandidateCount": {
+          "A": 6,
+          "B": 7,
+          "C": 4,
+          "D": 4,
+          "E": 5,
+          "F": 5,
+          "G": 4
+        },
+        "immediateDirectSingles": 0,
+        "rowColumnEliminations": 4,
+        "rowColumnOccupancy": 6,
+        "rowOwnership": 0,
+        "columnOwnership": 0,
+        "multiRowOwnership": 0,
+        "multiColumnOwnership": 0,
+        "relational": 5,
+        "intersectingSquare": 1,
+        "forcedPlacements": 7,
+        "totalDeterministicTraceLength": 30,
+        "dependencyDepth": 2,
+        "clueFamilies": [
+          "besideObject",
+          "column",
+          "corner",
+          "eastOfObject",
+          "eastOfPerson",
+          "northOfPerson",
+          "notBesideObject",
+          "roomNotBesideObject",
+          "southOfPerson"
+        ]
+      },
+      "configuration": {
+        "puzzleId": "MEDIUM-010",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            5,
+            5,
+            5,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            5,
+            5,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            5,
+            5,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            4,
+            1,
+            1,
+            1,
+            3,
+            3
+          ],
+          [
+            4,
+            4,
+            4,
+            2,
+            3,
+            3,
+            3
+          ],
+          [
+            4,
+            4,
+            2,
+            2,
+            2,
+            3,
+            3
+          ],
+          [
+            4,
+            4,
+            2,
+            2,
+            2,
+            2,
+            3
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 3
+                  },
+                  {
+                    "r": 0,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 1
+                  },
+                  {
+                    "r": 1,
+                    "c": 2
+                  },
+                  {
+                    "r": 2,
+                    "c": 2
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 4
+                  },
+                  {
+                    "r": 3,
+                    "c": 3
+                  },
+                  {
+                    "r": 2,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 6
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 6
+                  },
+                  {
+                    "r": 3,
+                    "c": 6
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 6
+                  },
+                  {
+                    "r": 2,
+                    "c": 5
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 5
+                  },
+                  {
+                    "r": 4,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 5
+                  },
+                  {
+                    "r": 0,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "C": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 3,
+              "object": "Object 5",
+              "text": "C was in R4, but not beside Object 5."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "E",
+              "text": "C was east of E."
+            }
+          ],
+          "D": [
+            {
+              "type": "corner",
+              "room": 5,
+              "text": "D was in a corner of R6."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "C",
+              "text": "D was north of C."
+            }
+          ],
+          "F": [
+            {
+              "type": "corner",
+              "room": 4,
+              "text": "F was in a corner of R5."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "F was south of G."
+            }
+          ],
+          "E": [
+            {
+              "type": "corner",
+              "room": 2,
+              "text": "E was in a corner of R3."
+            },
+            {
+              "type": "notBesideObject",
+              "object": "Object 1",
+              "text": "E was not beside Object 1."
+            }
+          ],
+          "G": [
+            {
+              "type": "eastOfObject",
+              "object": "Object 5",
+              "text": "G was east of Object 5."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "A",
+              "text": "G was east of A."
+            }
+          ],
+          "A": [
+            {
+              "type": "besideObject",
+              "object": "Object 2",
+              "text": "A was beside Object 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "G",
+              "text": "A was north of G."
+            }
+          ],
+          "B": [
+            {
+              "type": "column",
+              "column": 3,
+              "text": "B was in column 4."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "E",
+              "text": "B was south of E."
+            }
+          ]
+        },
+        "solution": {
+          "A": {
+            "r": 0,
+            "c": 1
+          },
+          "G": {
+            "r": 1,
+            "c": 6
+          },
+          "D": {
+            "r": 2,
+            "c": 0
+          },
+          "C": {
+            "r": 3,
+            "c": 5
+          },
+          "F": {
+            "r": 4,
+            "c": 2
+          },
+          "E": {
+            "r": 5,
+            "c": 4
+          },
+          "B": {
+            "r": 6,
+            "c": 3
+          }
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R1C2",
+          "R1C3",
+          "R2C1",
+          "R3C2",
+          "R3C4",
+          "R4C3"
+        ],
+        "B": [
+          "R1C4",
+          "R2C4",
+          "R3C4",
+          "R4C4",
+          "R5C4",
+          "R6C4",
+          "R7C4"
+        ],
+        "C": [
+          "R4C6",
+          "R6C6",
+          "R6C7",
+          "R7C7"
+        ],
+        "D": [
+          "R1C1",
+          "R1C3",
+          "R3C1",
+          "R3C3"
+        ],
+        "E": [
+          "R5C4",
+          "R6C3",
+          "R6C5",
+          "R7C3",
+          "R7C6"
+        ],
+        "F": [
+          "R4C1",
+          "R4C2",
+          "R5C3",
+          "R7C1",
+          "R7C2"
+        ],
+        "G": [
+          "R1C7",
+          "R2C7",
+          "R6C7",
+          "R7C7"
+        ]
+      }
+    }
+  ],
+  "humanReview": [
+    {
+      "puzzleId": "MEDIUM-001",
+      "configuration": {
+        "puzzleId": "MEDIUM-001",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            0
+          ],
+          [
+            1,
+            4,
+            4,
+            4,
+            4,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            3,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            6,
+            2,
+            2
+          ],
+          [
+            5,
+            5,
+            5,
+            6,
+            6,
+            6,
+            2
+          ],
+          [
+            5,
+            5,
+            5,
+            6,
+            6,
+            2,
+            2
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 1
+                  },
+                  {
+                    "r": 6,
+                    "c": 1
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 3
+                  },
+                  {
+                    "r": 2,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 3
+                  },
+                  {
+                    "r": 5,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 6
+                  },
+                  {
+                    "r": 2,
+                    "c": 6
+                  },
+                  {
+                    "r": 0,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 3
+                  },
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  },
+                  {
+                    "r": 4,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-6",
+            "name": "Object 6",
+            "icon": "6",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-7",
+            "name": "Object 7",
+            "icon": "7",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 1,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "E": [
+            {
+              "type": "row",
+              "row": 0,
+              "text": "E was in row 1."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "G",
+              "text": "E was north of G."
+            }
+          ],
+          "A": [
+            {
+              "type": "corner",
+              "room": 2,
+              "text": "A was in a corner of R3."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "A was south of G."
+            }
+          ],
+          "G": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 3,
+              "object": "Object 4",
+              "text": "G was in R4, but not beside Object 4."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "E",
+              "text": "G was south of E."
+            }
+          ],
+          "C": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 1",
+              "text": "C was the only person on Object 1."
+            }
+          ],
+          "B": [
+            {
+              "type": "corner",
+              "room": 1,
+              "text": "B was in a corner of R2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "G",
+              "text": "B was north of G."
+            }
+          ],
+          "F": [
+            {
+              "type": "besideObject",
+              "object": "Locked 1",
+              "text": "F was beside Locked 1."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "D",
+              "text": "F was east of D."
+            }
+          ],
+          "D": [
+            {
+              "type": "diagonal",
+              "object": "Object 3",
+              "text": "D was diagonal to Object 3."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "G",
+              "text": "D was west of G."
+            }
+          ]
+        },
+        "solution": {
+          "E": {
+            "r": 0,
+            "c": 4
+          },
+          "B": {
+            "r": 1,
+            "c": 0
+          },
+          "F": {
+            "r": 2,
+            "c": 5
+          },
+          "G": {
+            "r": 3,
+            "c": 3
+          },
+          "D": {
+            "r": 4,
+            "c": 2
+          },
+          "C": {
+            "r": 5,
+            "c": 1
+          },
+          "A": {
+            "r": 6,
+            "c": 6
+          }
+        }
+      },
+      "solution": {
+        "E": {
+          "r": 0,
+          "c": 4
+        },
+        "B": {
+          "r": 1,
+          "c": 0
+        },
+        "F": {
+          "r": 2,
+          "c": 5
+        },
+        "G": {
+          "r": 3,
+          "c": 3
+        },
+        "D": {
+          "r": 4,
+          "c": 2
+        },
+        "C": {
+          "r": 5,
+          "c": 1
+        },
+        "A": {
+          "r": 6,
+          "c": 6
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R5C6",
+          "R5C7",
+          "R7C6",
+          "R7C7"
+        ],
+        "B": [
+          "R2C1",
+          "R3C2",
+          "R5C1",
+          "R5C4"
+        ],
+        "C": [
+          "R3C3",
+          "R3C4",
+          "R6C2",
+          "R7C2"
+        ],
+        "D": [
+          "R1C5",
+          "R3C5",
+          "R4C4",
+          "R5C3",
+          "R6C2",
+          "R7C1"
+        ],
+        "E": [
+          "R1C1",
+          "R1C2",
+          "R1C3",
+          "R1C4",
+          "R1C5",
+          "R1C6"
+        ],
+        "F": [
+          "R2C6",
+          "R3C6"
+        ],
+        "G": [
+          "R4C3",
+          "R4C4",
+          "R4C6",
+          "R4C7"
+        ]
+      },
+      "solveOrder": [
+        "Own clues leave multiple candidates (A:4, B:4, C:4, D:6, E:6, F:2, G:4); there are 0 immediate singles.",
+        "B's northOfPerson constraint removes 2 candidate(s) using G.",
+        "D's onlyOnObject constraint removes 1 candidate(s) using C.",
+        "Only C can occupy row 6, restricting C to that row.",
+        "C is forced to R6C2.",
+        "F's remaining candidate pattern makes A's R5C6, R7C6 impossible by row/column intersection.",
+        "F's remaining candidate pattern makes E's R1C6 impossible by row/column intersection.",
+        "F's remaining candidate pattern makes G's R4C6 impossible by row/column intersection.",
+        "G's remaining candidate pattern makes D's R4C4 impossible by row/column intersection.",
+        "B/F collectively own rows 2, 3, so D loses candidate(s) in those rows.",
+        "The deterministic chain finishes with all seven people fixed; searchCalls = 0."
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-007",
+      "configuration": {
+        "puzzleId": "MEDIUM-007",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            4,
+            4,
+            4,
+            3,
+            3,
+            3,
+            2
+          ],
+          [
+            4,
+            0,
+            0,
+            0,
+            3,
+            3,
+            2
+          ],
+          [
+            4,
+            0,
+            0,
+            5,
+            3,
+            5,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            5,
+            5,
+            5,
+            1
+          ],
+          [
+            6,
+            6,
+            0,
+            5,
+            5,
+            1,
+            1
+          ],
+          [
+            6,
+            6,
+            6,
+            6,
+            1,
+            1,
+            1
+          ],
+          [
+            6,
+            6,
+            6,
+            6,
+            6,
+            1,
+            1
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 4
+                  },
+                  {
+                    "r": 6,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 0
+                  },
+                  {
+                    "r": 1,
+                    "c": 0
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 6
+                  },
+                  {
+                    "r": 4,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 0
+                  },
+                  {
+                    "r": 5,
+                    "c": 0
+                  },
+                  {
+                    "r": 4,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-5",
+            "name": "Object 5",
+            "icon": "5",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 4
+                  },
+                  {
+                    "r": 0,
+                    "c": 3
+                  },
+                  {
+                    "r": 1,
+                    "c": 4
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-6",
+            "name": "Object 6",
+            "icon": "6",
+            "blocking": false,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-7",
+            "name": "Object 7",
+            "icon": "7",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-8",
+            "name": "Object 8",
+            "icon": "8",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-9",
+            "name": "Object 9",
+            "icon": "9",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 5,
+                    "c": 6
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "D": [
+            {
+              "type": "diagonal",
+              "object": "Object 3",
+              "text": "D was diagonal to Object 3."
+            },
+            {
+              "type": "southOfPerson",
+              "person": "G",
+              "text": "D was south of G."
+            }
+          ],
+          "C": [
+            {
+              "type": "notBesideObject",
+              "object": "Object 2",
+              "text": "C was not beside Object 2."
+            },
+            {
+              "type": "roomNotBesideObject",
+              "room": 1,
+              "object": "Object 3",
+              "text": "C was in R2, but not beside Object 3."
+            }
+          ],
+          "G": [
+            {
+              "type": "corner",
+              "room": 3,
+              "text": "G was in a corner of R4."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "A",
+              "text": "G was not in the same room as A."
+            }
+          ],
+          "E": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 2",
+              "text": "E was the only person on Object 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "B",
+              "text": "E was north of B."
+            }
+          ],
+          "F": [
+            {
+              "type": "besideObject",
+              "object": "Object 2",
+              "text": "F was beside Object 2."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "D",
+              "text": "F was not in the same room as D."
+            }
+          ],
+          "A": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "A was in a corner of R1."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "E",
+              "text": "A was not in the same room as E."
+            }
+          ],
+          "B": [
+            {
+              "type": "corner",
+              "room": 5,
+              "text": "B was in a corner of R6."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "E",
+              "text": "B was not in the same room as E."
+            }
+          ]
+        },
+        "solution": {
+          "E": {
+            "r": 0,
+            "c": 0
+          },
+          "A": {
+            "r": 1,
+            "c": 1
+          },
+          "G": {
+            "r": 2,
+            "c": 4
+          },
+          "D": {
+            "r": 3,
+            "c": 2
+          },
+          "B": {
+            "r": 4,
+            "c": 3
+          },
+          "F": {
+            "r": 5,
+            "c": 6
+          },
+          "C": {
+            "r": 6,
+            "c": 5
+          }
+        }
+      },
+      "solution": {
+        "E": {
+          "r": 0,
+          "c": 0
+        },
+        "A": {
+          "r": 1,
+          "c": 1
+        },
+        "G": {
+          "r": 2,
+          "c": 4
+        },
+        "D": {
+          "r": 3,
+          "c": 2
+        },
+        "B": {
+          "r": 4,
+          "c": 3
+        },
+        "F": {
+          "r": 5,
+          "c": 6
+        },
+        "C": {
+          "r": 6,
+          "c": 5
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R2C2",
+          "R2C4",
+          "R4C1",
+          "R5C3"
+        ],
+        "B": [
+          "R3C4",
+          "R3C6",
+          "R4C6",
+          "R5C4",
+          "R5C5"
+        ],
+        "C": [
+          "R4C7",
+          "R5C7",
+          "R6C5",
+          "R7C6"
+        ],
+        "D": [
+          "R2C1",
+          "R3C2",
+          "R4C3",
+          "R5C4",
+          "R6C5",
+          "R6C7"
+        ],
+        "E": [
+          "R1C1",
+          "R2C1",
+          "R4C7",
+          "R5C7"
+        ],
+        "F": [
+          "R1C2",
+          "R3C1",
+          "R5C6",
+          "R6C7"
+        ],
+        "G": [
+          "R1C4",
+          "R1C6",
+          "R2C6",
+          "R3C5"
+        ]
+      },
+      "solveOrder": [
+        "Own clues leave multiple candidates (A:4, B:5, C:4, D:6, E:4, F:4, G:4); there are 0 immediate singles.",
+        "C's onlyOnObject constraint removes 2 candidate(s) using E.",
+        "D's onlyOnObject constraint removes 1 candidate(s) using E.",
+        "E's northOfPerson constraint removes 1 candidate(s) using B.",
+        "Only C can occupy row 7, restricting C to that row.",
+        "C is forced to R7C6.",
+        "E's remaining candidate pattern makes A's R4C1 impossible by row/column intersection.",
+        "With C fixed in column 6, B loses candidate(s) from that column.",
+        "With C fixed in column 6, F loses candidate(s) from that column.",
+        "With C fixed in column 6, G loses candidate(s) from that column.",
+        "The deterministic chain finishes with all seven people fixed; searchCalls = 0."
+      ]
+    },
+    {
+      "puzzleId": "MEDIUM-006",
+      "configuration": {
+        "puzzleId": "MEDIUM-006",
+        "profile": "medium",
+        "victim": "G",
+        "objective": {
+          "type": "locatePerson",
+          "person": "G"
+        },
+        "people": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "regionOf": [
+          [
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1
+          ],
+          [
+            2,
+            2,
+            3,
+            2,
+            1,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            3,
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            3,
+            3,
+            5,
+            4,
+            4,
+            5,
+            5
+          ],
+          [
+            3,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        ],
+        "roomNames": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "objects": [
+          {
+            "id": "object-1",
+            "name": "Object 1",
+            "icon": "1",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-2",
+            "name": "Object 2",
+            "icon": "2",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 6,
+                    "c": 3
+                  },
+                  {
+                    "r": 6,
+                    "c": 2
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 0,
+                    "c": 3
+                  },
+                  {
+                    "r": 0,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-1",
+            "name": "Locked 1",
+            "icon": "L1",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-2",
+            "name": "Locked 2",
+            "icon": "L2",
+            "blocking": true,
+            "footprintSize": 3,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 4,
+                    "c": 3
+                  },
+                  {
+                    "r": 5,
+                    "c": 3
+                  },
+                  {
+                    "r": 4,
+                    "c": 4
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 1
+                  },
+                  {
+                    "r": 2,
+                    "c": 2
+                  },
+                  {
+                    "r": 1,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "locked-3",
+            "name": "Locked 3",
+            "icon": "L3",
+            "blocking": true,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-3",
+            "name": "Object 3",
+            "icon": "3",
+            "blocking": false,
+            "footprintSize": 2,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 3,
+                    "c": 3
+                  },
+                  {
+                    "r": 3,
+                    "c": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "object-4",
+            "name": "Object 4",
+            "icon": "4",
+            "blocking": false,
+            "footprintSize": 1,
+            "occurrences": [
+              {
+                "cells": [
+                  {
+                    "r": 2,
+                    "c": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "clues": {
+          "D": [
+            {
+              "type": "onlyOnObject",
+              "object": "Object 2",
+              "text": "D was the only person on Object 2."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "A",
+              "text": "D was north of A."
+            }
+          ],
+          "C": [
+            {
+              "type": "column",
+              "column": 1,
+              "text": "C was in column 2."
+            },
+            {
+              "type": "notWithPerson",
+              "person": "A",
+              "text": "C was not in the same room as A."
+            }
+          ],
+          "G": [
+            {
+              "type": "roomNotBesideObject",
+              "room": 4,
+              "object": "Object 3",
+              "text": "G was in R5, but not beside Object 3."
+            },
+            {
+              "type": "northOfPerson",
+              "person": "C",
+              "text": "G was north of C."
+            }
+          ],
+          "B": [
+            {
+              "type": "besideObject",
+              "object": "Locked 2",
+              "text": "B was beside Locked 2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "F",
+              "text": "B was west of F."
+            }
+          ],
+          "A": [
+            {
+              "type": "besideObject",
+              "object": "Locked 2",
+              "text": "A was beside Locked 2."
+            },
+            {
+              "type": "westOfPerson",
+              "person": "B",
+              "text": "A was west of B."
+            }
+          ],
+          "E": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "E was in a corner of R1."
+            },
+            {
+              "type": "northOfObject",
+              "object": "Locked 2",
+              "text": "E was north of Locked 2."
+            }
+          ],
+          "F": [
+            {
+              "type": "corner",
+              "room": 0,
+              "text": "F was in a corner of R1."
+            },
+            {
+              "type": "eastOfPerson",
+              "person": "E",
+              "text": "F was east of E."
+            }
+          ]
+        },
+        "solution": {
+          "D": {
+            "r": 0,
+            "c": 3
+          },
+          "E": {
+            "r": 1,
+            "c": 5
+          },
+          "A": {
+            "r": 2,
+            "c": 0
+          },
+          "F": {
+            "r": 3,
+            "c": 6
+          },
+          "B": {
+            "r": 4,
+            "c": 2
+          },
+          "G": {
+            "r": 5,
+            "c": 4
+          },
+          "C": {
+            "r": 6,
+            "c": 1
+          }
+        }
+      },
+      "solution": {
+        "D": {
+          "r": 0,
+          "c": 3
+        },
+        "E": {
+          "r": 1,
+          "c": 5
+        },
+        "A": {
+          "r": 2,
+          "c": 0
+        },
+        "F": {
+          "r": 3,
+          "c": 6
+        },
+        "B": {
+          "r": 4,
+          "c": 2
+        },
+        "G": {
+          "r": 5,
+          "c": 4
+        },
+        "C": {
+          "r": 6,
+          "c": 1
+        }
+      },
+      "initialDomains": {
+        "A": [
+          "R3C1",
+          "R4C4",
+          "R5C3",
+          "R5C6",
+          "R6C5"
+        ],
+        "B": [
+          "R3C1",
+          "R4C4",
+          "R5C3",
+          "R5C6",
+          "R6C5"
+        ],
+        "C": [
+          "R1C2",
+          "R2C2",
+          "R5C2",
+          "R6C2",
+          "R7C2"
+        ],
+        "D": [
+          "R1C3",
+          "R1C4",
+          "R7C3",
+          "R7C4"
+        ],
+        "E": [
+          "R2C6",
+          "R2C7",
+          "R4C5",
+          "R4C7"
+        ],
+        "F": [
+          "R2C6",
+          "R2C7",
+          "R4C5",
+          "R4C7"
+        ],
+        "G": [
+          "R4C3",
+          "R4C4",
+          "R5C6",
+          "R5C7",
+          "R6C5"
+        ]
+      },
+      "solveOrder": [
+        "Own clues leave multiple candidates (A:5, B:5, C:5, D:4, E:4, F:4, G:5); there are 0 immediate singles.",
+        "A's westOfPerson constraint removes 1 candidate(s) using B.",
+        "B's westOfPerson constraint removes 1 candidate(s) using A.",
+        "D's northOfPerson constraint removes 2 candidate(s) using A.",
+        "F's eastOfPerson constraint removes 1 candidate(s) using E.",
+        "E's eastOfPerson constraint removes 2 candidate(s) using F.",
+        "C's northOfPerson constraint removes 2 candidate(s) using G.",
+        "Only A can occupy row 3, restricting A to that row.",
+        "A is forced to R3C1.",
+        "Only C can occupy row 7, restricting C to that row.",
+        "The deterministic chain finishes with all seven people fixed; searchCalls = 0."
+      ]
+    }
+  ]
+}
