@@ -120,6 +120,7 @@ const {chromium}=require('playwright');
   assert(!(await eraser.evaluate(el=>el.classList.contains('active'))),'Eraser must remain one-shot');
 
   // Tap = note still works after all operations.
+  await people.nth(0).click(); // explicitly select A; erasing preserved the previously selected B
   const open=await usableIndices();
   await cells.nth(open[0]).tap();
   assert.strictEqual(await cells.nth(open[0]).locator('.note').textContent(),'A','tap must still create selected-person note');
