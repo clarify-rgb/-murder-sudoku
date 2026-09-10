@@ -1,0 +1,70 @@
+name: Same-object clue and mobile checkpoint
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths: ['.github/workflows/same-object-mobile-checkpoint.yml']
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply targeted production patch
+        run: |
+          set -euo pipefail
+          python3 scripts/apply-same-object-mobile.py
+          node --check engine/easy-6x6-profiles.js
+          node tests/same-object-clue-pairs.test.js
+          CHANGED=$(git diff --name-only | sort)
+          test "$CHANGED" = $'engine/easy-6x6-profiles.js\nindex.html'
+      - name: Commit exact production checkpoint
+        run: |
+          set -euo pipefail
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add engine/easy-6x6-profiles.js index.html
+          git commit -m "Reject misleading same-object clue pairs and restore mobile debug scroll"
+          TESTED_SHA=$(git rev-parse HEAD)
+          git push origin HEAD:easy-6x6-profiles
+          echo "TESTED_SHA=$TESTED_SHA" >> "$GITHUB_ENV"
+          echo "Exact production checkpoint: $TESTED_SHA"
+      - name: Regression tests
+        run: |
+          set -euo pipefail
+          node tests/same-object-clue-pairs.test.js
+          node tests/clue-pair-coherence.test.js
+          node tests/easy-6x6-profiles.test.js
+          node tests/map-layer.test.js
+          node tests/repeated-objects.test.js
+          node tests/easy-victim-objective-separation.test.js
+          node tests/easy-reproducibility.test.js
+      - name: Practical 20x3 same-object audit
+        run: |
+          set -euo pipefail
+          node tests/same-object-practical-20x3.js | tee /tmp/same-object-report.json
+      - name: Install mobile browser test dependency
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: iPhone-like mobile debug scroll test
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 >/tmp/easy-mobile-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          node tests/mobile-debug-scroll.test.js
+      - name: Verify tested tree stayed unchanged
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          git diff --exit-code "$TESTED_SHA^" "$TESTED_SHA" -- engine/easy-6x6-profiles.js index.html
+          echo "TESTED_SHA=$TESTED_SHA"
