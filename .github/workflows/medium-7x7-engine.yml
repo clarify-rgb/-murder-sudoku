@@ -31,7 +31,7 @@ jobs:
       - name: Commit Medium engine if needed
         run: |
           set -euo pipefail
-          if ! git diff --quiet -- engine/medium-7x7.js; then
+          if [ -n "$(git status --porcelain -- engine/medium-7x7.js)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add engine/medium-7x7.js
@@ -66,4 +66,4 @@ jobs:
           echo "EASY_ENGINE=$(git hash-object engine/easy-6x6-profiles.js)"
           echo "EASY_UI=$(git hash-object index.html)"
           echo "MEDIUM_ENGINE=$(git hash-object engine/medium-7x7.js)"
-          test -z "$(git status --porcelain --untracked-files=no)"
+          test -z "$(git status --porcelain)"
