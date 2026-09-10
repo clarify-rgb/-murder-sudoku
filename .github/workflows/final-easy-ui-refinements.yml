@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'tests/final-easy-ui-refinements.test.js'
+      - 'tests/final-easy-note-clear-grey.test.js'
       - '.github/workflows/final-easy-ui-refinements.yml'
 jobs:
   verify:
@@ -16,13 +17,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Guard puzzle engine and intended UI-only scope
+      - name: Guard puzzle engine and exact UI-only scope
         run: |
           set -euo pipefail
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "8ecfea2dd0c35c3cf6d48e761691caea97597d08"
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          assert s.count('rgba(92,92,92,.46)') == 1
+          normalized=s.replace('rgba(92,92,92,.46)','rgba(92,92,92,.30)')
+          Path('/tmp/index-normalized.html').write_text(normalized)
+          PY
+          test "$(git hash-object /tmp/index-normalized.html)" = "bb0cf22a0e2a7e2a870141389ea1351854c70701"
+          grep -q "Object.values(notes).forEach(s=>s.delete(selected))" index.html
           grep -q "touch-action:pan-y" index.html
           grep -q "padding-bottom:calc(104px + env(safe-area-inset-bottom))" index.html
-          grep -q "cell.unavailable" index.html
           grep -q "font-size:11px" index.html
           ! grep -q "className='xmark'" index.html
           ! grep -q "textContent='✕'" index.html
@@ -32,7 +41,7 @@ jobs:
           set -euo pipefail
           npm install --no-save --no-package-lock playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Run final Easy mobile UI interaction test
+      - name: Run final Easy mobile UI interaction tests
         run: |
           set -euo pipefail
           python3 -m http.server 4173 >/tmp/final-easy-ui-server.log 2>&1 &
@@ -40,6 +49,7 @@ jobs:
           trap 'kill $SERVER_PID || true' EXIT
           sleep 1
           node tests/final-easy-ui-refinements.test.js
+          node tests/final-easy-note-clear-grey.test.js
       - name: Exact tested SHA
         run: |
           set -euo pipefail
