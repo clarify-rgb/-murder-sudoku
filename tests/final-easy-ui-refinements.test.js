@@ -13,15 +13,19 @@ const {chromium}=require('playwright');
   const cells=page.locator('.cell');
   const eraser=page.locator('#eraserMode');
   const undo=page.locator('#undoBtn');
+  const client=await context.newCDPSession(page);
 
   async function usable(exclude=[]){
     return cells.evaluateAll((els,ex)=>els.findIndex((el,i)=>!ex.includes(i)&&!el.querySelector('.locked-footprint')&&!el.classList.contains('unavailable')),exclude);
   }
   async function hold(index){
-    const c=cells.nth(index);
-    await c.dispatchEvent('pointerdown',{pointerType:'touch',button:0,isPrimary:true});
+    const box=await cells.nth(index).boundingBox();
+    assert(box,'hold target missing');
+    const x=Math.round(box.x+box.width/2),y=Math.round(box.y+box.height/2);
+    await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
     await page.waitForTimeout(850);
-    await c.dispatchEvent('pointerup',{pointerType:'touch',button:0,isPrimary:true});
+    await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await page.waitForTimeout(80);
   }
   async function selectedName(){return page.locator('.person.selected .name').textContent()}
 
@@ -139,7 +143,6 @@ const {chromium}=require('playwright');
   assert(layout.paddingBottom>=90,'safe bottom clearance must remain');
   await page.evaluate(()=>window.scrollTo(0,0));
   const board=await page.locator('#board').boundingBox();
-  const client=await context.newCDPSession(page);
   const x=Math.round(board.x+board.width/2),startY=Math.round(Math.min(board.y+board.height*.70,760));
   await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y:startY}]});
   for(const y of [startY-50,startY-110,startY-180,startY-250]){await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y}]});await page.waitForTimeout(35)}
