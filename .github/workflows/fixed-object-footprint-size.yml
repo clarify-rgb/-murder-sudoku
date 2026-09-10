@@ -1,0 +1,68 @@
+name: Fixed logical-object footprint size
+
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths:
+      - 'engine/easy-6x6-profiles.js'
+      - 'scripts/apply-fixed-object-footprint-size.py'
+      - 'tests/fixed-object-footprint-size.test.js'
+      - 'tests/repeated-objects.test.js'
+      - 'tests/easy-reproducibility.test.js'
+      - '.github/workflows/fixed-object-footprint-size.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard unchanged Easy UI
+        run: |
+          set -euo pipefail
+          test "$(git hash-object index.html)" = "31b8fc8eecb16744d8d0a28f4daec3df14443ef7"
+      - name: Apply fixed-size generation rule
+        run: |
+          set -euo pipefail
+          python3 scripts/apply-fixed-object-footprint-size.py
+          node --check engine/easy-6x6-profiles.js
+      - name: Commit engine checkpoint if needed
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- engine/easy-6x6-profiles.js; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add engine/easy-6x6-profiles.js
+            git commit -m "Keep repeated object occurrences at one identity size"
+            git push origin HEAD:easy-6x6-profiles
+          fi
+      - name: Verify patch is idempotent
+        run: |
+          set -euo pipefail
+          python3 scripts/apply-fixed-object-footprint-size.py
+          git diff --exit-code -- engine/easy-6x6-profiles.js
+      - name: Run focused fixed-size tests
+        run: |
+          set -euo pipefail
+          node tests/fixed-object-footprint-size.test.js
+          node tests/repeated-objects.test.js
+          node tests/easy-reproducibility.test.js
+      - name: Run retained clue and solution safeguards
+        run: |
+          set -euo pipefail
+          node tests/clue-pair-coherence.test.js
+          node tests/solution-clue-consistency.test.js
+      - name: Exact tested checkpoint
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          echo "ENGINE_BLOB=$(git hash-object engine/easy-6x6-profiles.js)"
+          echo "INDEX_BLOB=$(git hash-object index.html)"
+          test -z "$(git status --porcelain --untracked-files=no)"
