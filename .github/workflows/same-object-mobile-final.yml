@@ -1,0 +1,59 @@
+name: Final same-object clue and mobile verification
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths: ['.github/workflows/same-object-mobile-final.yml']
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify production files are the targeted checkpoint behavior
+        run: |
+          set -euo pipefail
+          node --check engine/easy-6x6-profiles.js
+          grep -q "function sameObjectPairCoherence(P,p" engine/easy-6x6-profiles.js
+          grep -q "kind:'occupancy-relation'" engine/easy-6x6-profiles.js
+          grep -q "kind:'cross-occurrence-only'" engine/easy-6x6-profiles.js
+          grep -q "touch-action:pan-y" index.html
+          ! grep -q "d.onpointerdown=e=>{e.preventDefault()" index.html
+          ! grep -q "d.onpointerup=e=>{e.preventDefault()" index.html
+          grep -q "COPY PUZZLE DEBUG" index.html
+          grep -q "LOAD PUZZLE ID" index.html
+      - name: Same-object and existing regressions
+        run: |
+          set -euo pipefail
+          node tests/same-object-clue-pairs.test.js
+          node tests/clue-pair-coherence.test.js
+          node tests/easy-6x6-profiles.test.js
+          node tests/map-layer.test.js
+          node tests/repeated-objects.test.js
+          node tests/easy-victim-objective-separation.test.js
+          node tests/easy-reproducibility.test.js
+      - name: Practical 20x3 same-object audit
+        run: |
+          set -euo pipefail
+          node tests/same-object-practical-20x3.js
+      - name: Install Chromium for iPhone-like mobile test
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Mobile debug reachability and interaction
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 >/tmp/easy-mobile-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          node tests/mobile-debug-scroll.test.js
+      - name: Exact tested SHA
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          test -z "$(git status --porcelain --untracked-files=no)"
