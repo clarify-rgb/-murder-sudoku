@@ -1,0 +1,49 @@
+name: Final Easy UI refinements
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths:
+      - 'index.html'
+      - 'tests/final-easy-ui-refinements.test.js'
+      - '.github/workflows/final-easy-ui-refinements.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard puzzle engine and intended UI-only scope
+        run: |
+          set -euo pipefail
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "8ecfea2dd0c35c3cf6d48e761691caea97597d08"
+          grep -q "touch-action:pan-y" index.html
+          grep -q "padding-bottom:calc(104px + env(safe-area-inset-bottom))" index.html
+          grep -q "cell.unavailable" index.html
+          grep -q "font-size:11px" index.html
+          ! grep -q "className='xmark'" index.html
+          ! grep -q "textContent='✕'" index.html
+          ! grep -q "e.preventDefault()" index.html
+      - name: Install Chromium
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run final Easy mobile UI interaction test
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 >/tmp/final-easy-ui-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          node tests/final-easy-ui-refinements.test.js
+      - name: Exact tested SHA
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          echo "ENGINE_BLOB=$(git hash-object engine/easy-6x6-profiles.js)"
+          echo "INDEX_BLOB=$(git hash-object index.html)"
+          test -z "$(git status --porcelain --untracked-files=no)"
