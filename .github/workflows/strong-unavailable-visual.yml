@@ -1,0 +1,72 @@
+name: Strong unavailable cell visual
+on:
+  push:
+    branches: [easy-6x6-profiles]
+    paths:
+      - 'index.html'
+      - 'scripts/apply-strong-unavailable-filter.py'
+      - 'tests/strong-unavailable-visual.test.js'
+      - '.github/workflows/strong-unavailable-visual.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard approved engine and prior UI source
+        run: |
+          set -euo pipefail
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          if ! grep -q "filter:grayscale(100%) brightness(.78) contrast(1.18)" index.html; then
+            test "$(git hash-object index.html)" = "31b8fc8eecb16744d8d0a28f4daec3df14443ef7"
+          fi
+      - name: Apply UI-only unavailable filter
+        run: |
+          set -euo pipefail
+          python3 scripts/apply-strong-unavailable-filter.py
+          grep -q "\.cell\.unavailable{filter:grayscale(100%) brightness(.78) contrast(1.18)}" index.html
+          ! grep -q "\.cell\.unavailable{box-shadow:" index.html
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+      - name: Commit exact UI checkpoint if needed
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- index.html; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html
+            git commit -m "Make unavailable cells strongly desaturated"
+            git push origin HEAD:easy-6x6-profiles
+          fi
+      - name: Verify UI patch idempotent and engine untouched
+        run: |
+          set -euo pipefail
+          python3 scripts/apply-strong-unavailable-filter.py
+          git diff --exit-code -- index.html engine/easy-6x6-profiles.js
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+      - name: Install mobile browser test dependencies
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock playwright@1.55.0 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Run 390x844 mobile interaction and visual tests
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 >/tmp/strong-unavailable-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          node tests/strong-unavailable-visual.test.js
+          node tests/final-easy-ui-refinements.test.js
+      - name: Exact tested checkpoint
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          echo "ENGINE_BLOB=$(git hash-object engine/easy-6x6-profiles.js)"
+          echo "INDEX_BLOB=$(git hash-object index.html)"
+          test -z "$(git status --porcelain --untracked-files=no)"
