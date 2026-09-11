@@ -1,0 +1,86 @@
+name: Medium Rules v2 checkpoint
+on:
+  push:
+    branches: [medium-7x7]
+    paths:
+      - 'scripts/install-medium-rules-v2.py'
+      - '.github/workflows/medium-rules-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard frozen Easy
+        run: |
+          set -euo pipefail
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Install Rules v2 engine and tests
+        run: |
+          set -euo pipefail
+          python3 scripts/install-medium-rules-v2.py
+          node --check engine/medium-7x7.js
+          git add engine/medium-7x7.js tests/rules-v2-semantics.test.js tests/rules-v2-medium-20.js
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Migrate Medium engine to Rules v2"
+            git push origin HEAD:medium-7x7
+          fi
+      - name: Frozen Easy regressions
+        run: |
+          set -euo pipefail
+          node tests/easy-6x6-profiles.test.js
+          node tests/easy-reproducibility.test.js
+          node tests/repeated-objects.test.js
+          node tests/fixed-object-footprint-size.test.js
+          node tests/map-layer.test.js
+          node tests/clue-pair-coherence.test.js
+          node tests/solution-clue-consistency.test.js
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Rules v2 semantic suite
+        run: |
+          set -euo pipefail
+          node tests/rules-v2-semantics.test.js
+      - name: Generate fresh 20 Medium puzzles
+        run: |
+          set -euo pipefail
+          node tests/rules-v2-medium-20.js
+      - name: Store Rules v2 report
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/RULESV2_MEDIUM_20_REPORT.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Store Rules v2 Medium validation set"
+            git push origin HEAD:medium-7x7
+          fi
+      - name: Reverify exact committed checkpoint
+        run: |
+          set -euo pipefail
+          python3 scripts/install-medium-rules-v2.py
+          node --check engine/medium-7x7.js
+          node tests/rules-v2-semantics.test.js
+          node tests/rules-v2-medium-20.js
+          git diff --exit-code -- engine/medium-7x7.js tests/rules-v2-semantics.test.js tests/rules-v2-medium-20.js tests/RULESV2_MEDIUM_20_REPORT.json engine/easy-6x6-profiles.js index.html
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Exact Rules v2 checkpoint
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          echo "RULESV2_ENGINE=$(git hash-object engine/medium-7x7.js)"
+          echo "FROZEN_EASY_ENGINE=$(git hash-object engine/easy-6x6-profiles.js)"
+          echo "FROZEN_EASY_UI=$(git hash-object index.html)"
+          echo "REPORT=$(git hash-object tests/RULESV2_MEDIUM_20_REPORT.json)"
+          test -z "$(git status --porcelain)"
