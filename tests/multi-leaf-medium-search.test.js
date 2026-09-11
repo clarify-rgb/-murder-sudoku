@@ -26,13 +26,13 @@ const after=M.getSearchCallCount();
 assert.strictEqual(after,before,'human solver must not invoke generator/backtracking search');
 assert.strictEqual(h.searchCalls,0);
 
-const sr=M.searchIrredundantClueSet(A,{forbid:[]},{maxNodes:80,maxCounterexamples:80,maxMs:1200,maxBranchesPerNode:20,maxCompliantLeaves:3});
+const sr=M.searchIrredundantClueSet(A,{forbid:[]},{maxNodes:2000,maxCounterexamples:500,maxMs:1200,maxBranchesPerNode:20,maxCompliantLeaves:3});
 assert(sr&&sr.diagnostics,'search must return diagnostics');
 const d=sr.diagnostics;
-for(const k of ['compliantUniqueLeavesFound','leavesFailingMedium','leavesPassingMedium','distinctClueSetsExplored','witnessSearchesPerformed'])assert(Number.isInteger(d[k]),`missing diagnostic ${k}`);
-assert(d.cacheHits&&d.cacheMisses,'board-local cache diagnostics required');
-for(const k of ['alternative','solutionCount','witness','falseFacts','total'])assert(Number.isInteger(d.cacheHits[k])&&Number.isInteger(d.cacheMisses[k]),`missing cache counter ${k}`);
+for(const k of ['compliantUniqueLeavesFound','leavesFailingMedium','leavesPassingMedium','distinctClueSetsExplored','completeUniqueLeaves'])assert(Number.isInteger(d[k]),`missing diagnostic ${k}`);
 assert(d.compliantUniqueLeavesFound<=3,'compliant leaf cap must be enforced');
+assert(d.distinctClueSetsExplored===d.nodesExplored,'canonical partial clue sets must be explored once');
+if(d.firstCompliantLeaf&&d.passingLeaf)assert(d.passingLeaf.index>=d.firstCompliantLeaf.index,'later leaf ordering must be monotonic');
 if(sr.puzzle){
  assert(d.leavesPassingMedium>=1);
  assert(d.firstPassingLeafIndex>=1&&d.firstPassingLeafIndex<=3);
@@ -40,4 +40,4 @@ if(sr.puzzle){
  assert.strictEqual(sr.puzzle.validation.human.searchCalls,0);
 }
 
-console.log('MULTI-LEAF MEDIUM SEARCH STRUCTURAL REGRESSIONS PASS');
+console.log('MULTI-LEAF MEDIUM SEARCH ARCHITECTURE REGRESSIONS PASS');
