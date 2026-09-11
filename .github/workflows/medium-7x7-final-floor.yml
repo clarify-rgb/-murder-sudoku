@@ -1,0 +1,96 @@
+name: Medium 7x7 final breadth floor
+on:
+  push:
+    branches: [medium-7x7]
+    paths:
+      - 'scripts/finalize-medium-floor.py'
+      - 'tests/medium-final-floor.test.js'
+      - 'tests/medium-final-floor-20.js'
+      - '.github/workflows/medium-7x7-final-floor.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard frozen Easy baseline
+        run: |
+          set -euo pipefail
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Build final Medium floor engine
+        run: |
+          set -euo pipefail
+          python3 scripts/build-medium-7x7.py
+          python3 scripts/tighten-medium-acceptance.py
+          python3 scripts/finalize-medium-floor.py
+          node --check engine/medium-7x7.js
+          git add engine/medium-7x7.js
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Raise Medium 7x7 breadth floor"
+            git push origin HEAD:medium-7x7
+          fi
+      - name: Frozen Easy regression suite
+        run: |
+          set -euo pipefail
+          node tests/easy-6x6-profiles.test.js
+          node tests/easy-reproducibility.test.js
+          node tests/repeated-objects.test.js
+          node tests/fixed-object-footprint-size.test.js
+          node tests/clue-pair-coherence.test.js
+          node tests/solution-clue-consistency.test.js
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Medium solver and final floor tests
+        run: |
+          set -euo pipefail
+          node tests/medium-advanced-deductions.test.js
+          node tests/medium-7x7-core.test.js
+          node tests/medium-final-floor.test.js
+      - name: Generate 20 accepted Medium puzzles
+        run: |
+          set -euo pipefail
+          node tests/medium-final-floor-20.js
+      - name: Store final floor review reports
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/MEDIUM_FINAL_FLOOR_20_REPORT.json tests/MEDIUM_FINAL_FLOOR_HUMAN_REVIEW.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Store final Medium 7x7 floor review set"
+            git push origin HEAD:medium-7x7
+          fi
+      - name: Reverify exact committed checkpoint
+        run: |
+          set -euo pipefail
+          python3 scripts/build-medium-7x7.py
+          python3 scripts/tighten-medium-acceptance.py
+          python3 scripts/finalize-medium-floor.py
+          node --check engine/medium-7x7.js
+          node tests/medium-advanced-deductions.test.js
+          node tests/medium-7x7-core.test.js
+          node tests/medium-final-floor.test.js
+          node tests/medium-final-floor-20.js
+          git diff --exit-code -- engine/medium-7x7.js tests/MEDIUM_FINAL_FLOOR_20_REPORT.json tests/MEDIUM_FINAL_FLOOR_HUMAN_REVIEW.md engine/easy-6x6-profiles.js index.html
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Exact final Medium checkpoint
+        run: |
+          set -euo pipefail
+          echo "TESTED_SHA=$(git rev-parse HEAD)"
+          echo "MEDIUM_ENGINE=$(git hash-object engine/medium-7x7.js)"
+          echo "FROZEN_EASY_ENGINE=$(git hash-object engine/easy-6x6-profiles.js)"
+          echo "FROZEN_EASY_UI=$(git hash-object index.html)"
+          echo "REPORT_JSON=$(git hash-object tests/MEDIUM_FINAL_FLOOR_20_REPORT.json)"
+          echo "REPORT_MD=$(git hash-object tests/MEDIUM_FINAL_FLOOR_HUMAN_REVIEW.md)"
+          test -z "$(git status --porcelain)"
