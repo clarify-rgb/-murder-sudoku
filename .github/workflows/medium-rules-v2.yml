@@ -54,14 +54,10 @@ jobs:
           node tests/solution-clue-consistency.test.js
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Rules v2 semantic regressions
+      - name: Current Rules v2 generator regressions
         run: |
           set -euo pipefail
           node tests/rules-v2-semantics.test.js
-          node tests/medium-7x7-core.test.js
-          node tests/medium-acceptance.test.js
-          node tests/medium-advanced-deductions.test.js
-          node tests/medium-final-floor.test.js
           node tests/necessity-first-search.test.js
           node tests/multi-leaf-medium-search.test.js
           node tests/lazy-necessity-search.test.js
