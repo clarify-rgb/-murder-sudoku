@@ -32,7 +32,8 @@ for script in [
     "scripts/fix-final-compliance-regression-fixture.py",
     "scripts/fix-final-compliance-repro-test.py",
     "scripts/apply-necessity-first-search.py",
+    "scripts/apply-multi-leaf-medium-search.py",
 ]:
     code = Path(script).read_text()
     exec(compile(code, script, "exec"), {"__name__": "__main__"})
-print("installed Rules v2 engine/tests with necessity-first generator search")
+print("installed Rules v2 engine/tests with multi-leaf Medium generator search")
