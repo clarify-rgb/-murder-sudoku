@@ -1,0 +1,47 @@
+name: Medium generator profile summary
+on:
+  push:
+    branches: [medium-7x7]
+    paths:
+      - 'tests/summarize-generator-profile.js'
+      - '.github/workflows/medium-generator-profile-summary.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard production engine unchanged
+        run: |
+          set -euo pipefail
+          test "$(git hash-object engine/medium-7x7.js)" = "59ef95e500ddb39fd43c905fc0f5c60b7bf52e96"
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Create compact profiling summary
+        run: node tests/summarize-generator-profile.js
+      - name: Store compact summary
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/GENERATOR_PROFILING_SUMMARY.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Store compact generator profiling summary"
+            git push origin HEAD:medium-7x7
+          fi
+      - name: Exact summary checkpoint
+        run: |
+          set -euo pipefail
+          echo "DIAGNOSTIC_SHA=$(git rev-parse HEAD)"
+          echo "PRODUCTION_ENGINE=$(git hash-object engine/medium-7x7.js)"
+          echo "PROFILE_REPORT=$(git hash-object tests/GENERATOR_PROFILING_10_BOARD_REPORT.json)"
+          echo "PROFILE_SUMMARY=$(git hash-object tests/GENERATOR_PROFILING_SUMMARY.json)"
+          test "$(git hash-object engine/medium-7x7.js)" = "59ef95e500ddb39fd43c905fc0f5c60b7bf52e96"
+          test -z "$(git status --porcelain)"
