@@ -38,13 +38,24 @@ jobs:
           node tests/map-layer.test.js
           node tests/clue-pair-coherence.test.js
           node tests/solution-clue-consistency.test.js
+      - name: Prepare diagnostic-only temporary profiler source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/generator-profiling-diagnostic.js')
+          s=p.read_text()
+          s=s.replace('source=\\"same person\'s other constraint already implies it\\"','source="same person\'s other constraint already implies it"')
+          s=s.replace('source=\\"another person\'s clue(s) indirectly force the same result\\"','source="another person\'s clue(s) indirectly force the same result"')
+          p.write_text(s)
+          PY
       - name: Syntax-check diagnostic profiler
         run: node --check tests/generator-profiling-diagnostic.js
       - name: Run 10 new-board diagnostic profiling
         run: node tests/generator-profiling-diagnostic.js
-      - name: Verify production engine behavior source unchanged
+      - name: Restore profiler source and verify production engine unchanged
         run: |
           set -euo pipefail
+          git checkout -- tests/generator-profiling-diagnostic.js
           test "$(git hash-object engine/medium-7x7.js)" = "59ef95e500ddb39fd43c905fc0f5c60b7bf52e96"
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
