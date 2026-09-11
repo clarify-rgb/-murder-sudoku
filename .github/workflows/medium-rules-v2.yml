@@ -1,4 +1,4 @@
-name: Medium Rules v2 multi-leaf generator checkpoint
+name: Medium Rules v2 lazy necessity checkpoint
 on:
   push:
     branches: [medium-7x7]
@@ -6,8 +6,11 @@ on:
       - 'scripts/install-medium-rules-v2.py'
       - 'scripts/apply-necessity-first-search.py'
       - 'scripts/apply-multi-leaf-medium-search.py'
+      - 'scripts/apply-lazy-necessity-search.py'
+      - 'tests/necessity-first-search.test.js'
       - 'tests/multi-leaf-medium-search.test.js'
-      - 'tests/multi-leaf-medium-diagnostic.js'
+      - 'tests/lazy-necessity-search.test.js'
+      - 'tests/lazy-necessity-diagnostic.js'
       - '.github/workflows/medium-rules-v2.yml'
   workflow_dispatch:
 permissions:
@@ -27,7 +30,7 @@ jobs:
           set -euo pipefail
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Install Rules v2 multi-leaf generator
+      - name: Install Rules v2 lazy necessity generator
         run: |
           set -euo pipefail
           python3 scripts/install-medium-rules-v2.py
@@ -36,7 +39,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Implement multi-leaf Medium clue search"
+            git commit -m "Implement lazy necessity shared-counterexample search"
             git push origin HEAD:medium-7x7
           fi
       - name: Frozen Easy regressions
@@ -51,24 +54,29 @@ jobs:
           node tests/solution-clue-consistency.test.js
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Rules v2 and multi-leaf regressions
+      - name: Rules v2 semantic regressions
         run: |
           set -euo pipefail
           node tests/rules-v2-semantics.test.js
+          node tests/medium-7x7-core.test.js
+          node tests/medium-acceptance.test.js
+          node tests/medium-advanced-deductions.test.js
+          node tests/medium-final-floor.test.js
           node tests/necessity-first-search.test.js
           node tests/multi-leaf-medium-search.test.js
-      - name: Ten-board multi-leaf diagnostic
+          node tests/lazy-necessity-search.test.js
+      - name: Ten new-board lazy necessity diagnostic
         run: |
           set -euo pipefail
-          node tests/multi-leaf-medium-diagnostic.js
-      - name: Store multi-leaf diagnostic report
+          node tests/lazy-necessity-diagnostic.js
+      - name: Store lazy necessity diagnostic report
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tests/MULTI_LEAF_MEDIUM_10_BOARD_REPORT.json
+          git add tests/LAZY_NECESSITY_10_BOARD_REPORT.json
           if ! git diff --cached --quiet; then
-            git commit -m "Store multi-leaf Medium diagnostic"
+            git commit -m "Store lazy necessity 10-board diagnostic"
             git push origin HEAD:medium-7x7
           fi
       - name: Reverify exact committed engine
@@ -79,15 +87,16 @@ jobs:
           node tests/rules-v2-semantics.test.js
           node tests/necessity-first-search.test.js
           node tests/multi-leaf-medium-search.test.js
+          node tests/lazy-necessity-search.test.js
           git diff --exit-code -- engine/medium-7x7.js tests/rules-v2-semantics.test.js tests/rules-v2-medium-20.js engine/easy-6x6-profiles.js index.html
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Exact multi-leaf generator checkpoint
+      - name: Exact lazy necessity checkpoint
         run: |
           set -euo pipefail
           echo "TESTED_SHA=$(git rev-parse HEAD)"
           echo "RULESV2_ENGINE=$(git hash-object engine/medium-7x7.js)"
           echo "FROZEN_EASY_ENGINE=$(git hash-object engine/easy-6x6-profiles.js)"
           echo "FROZEN_EASY_UI=$(git hash-object index.html)"
-          echo "DIAGNOSTIC_REPORT=$(git hash-object tests/MULTI_LEAF_MEDIUM_10_BOARD_REPORT.json)"
+          echo "DIAGNOSTIC_REPORT=$(git hash-object tests/LAZY_NECESSITY_10_BOARD_REPORT.json)"
           test -z "$(git status --porcelain)"
