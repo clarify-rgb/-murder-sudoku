@@ -140,36 +140,143 @@ function createEngine(N=7){
   function finalPersonalClueQuality(P){for(const p of PEOPLE){const cs=constraintList(P,p);if(cs.length<1||cs.length>2||!sameObjectPairValid(P,p,cs))return false;const n=ownCandidates(P,p).length;if(n<2||n>Math.max(9,N+1))return false}return true}
   function extensionLegal(P,selected,item){const own=selected.filter(x=>x.subject===item.subject);if(own.length>=2)return false;const cs=[...own.map(x=>x.constraint),item.constraint];if(!sameObjectPairValid(P,item.subject,cs))return false;const Q=applySelectedFacts(P,[...selected,item]);const n=ownCandidates(Q,item.subject).length;if(n<2)return false;if(cs.length===2&&n>Math.max(9,N+1))return false;return true}
   function searchIrredundantClueSet(P,request={forbid:[]},budget={}){
-    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,...budget},start=Date.now(),base=clone(P);base.constraints=Object.fromEntries(PEOPLE.map(p=>[p,[]]));base.globalConstraints=[];
-    const pool=buildAtomicFactPool(base,request),poolById=new Map(pool.map(x=>[x.id,x])),visited=new Set,knownCounterexamples=new Map;
-    const diag={factPoolSize:pool.length,nodesExplored:0,counterexamplesEncountered:0,distinctCounterexamples:0,completeUniqueLeaves:0,uniqueLeavesRejectedForRedundancy:0,witnessRepairSearches:0,irredundantFound:false,elapsedMs:0,budget:{...cfg},budgetExceeded:false,failureReason:null};
+    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,...budget};
+    const start=Date.now(),base=clone(P);base.constraints=Object.fromEntries(PEOPLE.map(p=>[p,[]]));base.globalConstraints=[];
+    const pool=buildAtomicFactPool(base,request);
+    const visited=new Set,knownCounterexamples=new Map,completeLeafSignatures=new Set;
+    const partialAltCache=new Map,solutionCountCache=new Map,witnessCache=new Map,falseFactsCache=new Map;
+    const diag={
+      factPoolSize:pool.length,nodesExplored:0,counterexamplesEncountered:0,distinctCounterexamples:0,
+      completeUniqueLeaves:0,distinctCompleteLeafSets:0,compliantUniqueLeavesFound:0,
+      leavesFailingMedium:0,leavesPassingMedium:0,firstPassingLeafIndex:null,
+      uniqueLeavesRejectedForRedundancy:0,redundantLeavesRejected:0,
+      witnessRepairSearches:0,witnessSearchesPerformed:0,existingWitnessRetained:0,
+      distinctClueSetsExplored:0,irredundantFound:false,mediumFound:false,elapsedMs:0,
+      budget:{...cfg},budgetExceeded:false,failureReason:null,
+      cacheHits:{alternative:0,solutionCount:0,witness:0,falseFacts:0,total:0},
+      cacheMisses:{alternative:0,solutionCount:0,witness:0,falseFacts:0,total:0},
+      firstCompliantLeaf:null,passingLeaf:null
+    };
     generatorStats.clueSearchBoards++;
-    if(PEOPLE.some(p=>!pool.some(x=>x.subject===p))){diag.failureReason='fact pool lacks coverage for at least one person';diag.elapsedMs=Date.now()-start;return{puzzle:null,diagnostics:diag}}
+    if(PEOPLE.some(p=>!pool.some(x=>x.subject===p))){
+      diag.failureReason='fact pool lacks coverage for at least one person';diag.elapsedMs=Date.now()-start;
+      return{puzzle:null,diagnostics:diag}
+    }
     let stop=false;
-    function overBudget(){if(stop)return true;if(diag.nodesExplored>=cfg.maxNodes){diag.budgetExceeded=true;diag.failureReason='node budget';stop=true;return true}if(diag.counterexamplesEncountered>=cfg.maxCounterexamples){diag.budgetExceeded=true;diag.failureReason='counterexample budget';stop=true;return true}if(Date.now()-start>=cfg.maxMs){diag.budgetExceeded=true;diag.failureReason='wall-clock budget';stop=true;return true}return false}
+    const keyFor=selected=>selected.map(x=>x.id).sort().join(';');
+    const hit=k=>{diag.cacheHits[k]++;diag.cacheHits.total++};
+    const miss=k=>{diag.cacheMisses[k]++;diag.cacheMisses.total++};
+    function overBudget(){
+      if(stop)return true;
+      if(diag.nodesExplored>=cfg.maxNodes){diag.budgetExceeded=true;diag.failureReason='node budget';stop=true;return true}
+      if(diag.counterexamplesEncountered>=cfg.maxCounterexamples){diag.budgetExceeded=true;diag.failureReason='counterexample budget';stop=true;return true}
+      if(diag.compliantUniqueLeavesFound>=cfg.maxCompliantLeaves){diag.budgetExceeded=true;diag.failureReason='compliant leaf budget';stop=true;return true}
+      if(Date.now()-start>=cfg.maxMs){diag.budgetExceeded=true;diag.failureReason='wall-clock budget';stop=true;return true}
+      return false
+    }
+    function cachedCounterexample(Q,key){
+      if(partialAltCache.has(key)){hit('alternative');const v=partialAltCache.get(key);return v?clone(v):null}
+      miss('alternative');const alt=findCounterexample(Q);partialAltCache.set(key,alt?clone(alt):null);return alt
+    }
+    function cachedSolutionCount(Q,key){
+      if(solutionCountCache.has(key)){hit('solutionCount');return solutionCountCache.get(key)}
+      miss('solutionCount');const n=countSolutions(Q,2);solutionCountCache.set(key,n);return n
+    }
+    function falseFactIds(alt){
+      const sig=arrangementSignature(alt);
+      if(falseFactsCache.has(sig)){hit('falseFacts');return falseFactsCache.get(sig)}
+      miss('falseFacts');const ids=new Set;
+      for(const item of pool)if(!constraintSatisfied(base,item.subject,item.constraint,alt))ids.add(item.id);
+      falseFactsCache.set(sig,ids);return ids
+    }
+    function cachedWitness(selectedWithoutOld,old){
+      const k=`${keyFor(selectedWithoutOld)}||${old.id}`;
+      if(witnessCache.has(k)){hit('witness');const v=witnessCache.get(k);return v?clone(v):null}
+      miss('witness');diag.witnessRepairSearches++;diag.witnessSearchesPerformed++;
+      const Q=applySelectedFacts(base,selectedWithoutOld),w=findViolationWitness(Q,old);
+      witnessCache.set(k,w?clone(w):null);return w
+    }
+    function leafSummary(Q,signature,h,m,accept,index){
+      return{
+        index,signature,
+        constraints:Object.fromEntries(PEOPLE.map(p=>[p,constraintList(Q,p).map(clone)])),
+        atomicConstraintsPerPerson:Object.fromEntries(PEOPLE.map(p=>[p,constraintList(Q,p).length])),
+        totalAtomicConstraints:atomicConstraintCount(Q),
+        humanSearchCalls:h?.searchCalls??null,
+        deterministicHumanSolved:!!h?.ok,
+        mediumPass:!!accept?.ok,
+        mediumReasons:accept?.reasons||[h?.reason||'deterministic human solve failed'],
+        mediumClassification:h?.ok?classifyMedium(m):'TOO EASY',
+        initialCandidates:m?.initialCandidates||null,
+        structuralAdvancedDeductions:m?.advancedDeductionCount??null,
+        materialAdvancedDeductions:m?.materialAdvancedDeductions??null,
+        ownershipCount:m?.ownershipCount??null,
+        intersectionCount:m?.intersectionCount??null,
+        relationalDeductions:m?.relationalDeductions??null,
+        dependencyDepth:m?.dependencyDepth??null,
+        chainPeople:m?.multiPersonChainPeople??null,
+        advancedDependentPlacements:m?.advancedDependentPlacements??null,
+        traceLength:m?.totalDeterministicTraceLength??null
+      }
+    }
+    function mediumHeuristicBonus(item,combinedDomain,counts){
+      let score=0;
+      if(PERSON_RELATIONS.has(item.constraint.type))score+=180;
+      if(['ONLY_PERSON_ON_OBJECT','ALONE_IN_ROOM','ALONE_WITH'].includes(item.constraint.type))score+=130;
+      if(combinedDomain>=2&&combinedDomain<=3)score+=110;
+      else if(combinedDomain>=4&&combinedDomain<=6)score+=60;
+      if(item.constraint.other&&counts[item.constraint.other]>0)score+=70;
+      if(['ROW','COLUMN'].includes(item.constraint.type))score-=45;
+      return score
+    }
     function dfs(selected,witnesses){
       if(overBudget())return null;
-      const key=selected.map(x=>x.id).sort().join(';');if(visited.has(key))return null;visited.add(key);diag.nodesExplored++;
-      const Q=applySelectedFacts(base,selected),alt=findCounterexample(Q);
+      const key=keyFor(selected);if(visited.has(key))return null;visited.add(key);diag.nodesExplored++;diag.distinctClueSetsExplored=visited.size;
+      const Q=applySelectedFacts(base,selected),alt=cachedCounterexample(Q,key);
       if(!alt){
         diag.completeUniqueLeaves++;
-        const counts=selectedCounts(selected);if(PEOPLE.some(p=>counts[p]<1||counts[p]>2))return null;if(!finalPersonalClueQuality(Q))return null;
-        const solutions=countSolutions(Q,2);if(solutions!==1)return null;
-        const necessity=validateNecessity(Q);if(!necessity.ok){diag.uniqueLeavesRejectedForRedundancy++;return null}
-        Q.selectionAttempts=diag.nodesExplored;Q.clueSearchDiagnostics=null;diag.irredundantFound=true;return{puzzle:Q,necessity}
+        if(completeLeafSignatures.has(key))return null;
+        completeLeafSignatures.add(key);diag.distinctCompleteLeafSets=completeLeafSignatures.size;
+        const counts=selectedCounts(selected);if(PEOPLE.some(p=>counts[p]<1||counts[p]>2))return null;
+        if(!finalPersonalClueQuality(Q))return null;
+        const solutions=cachedSolutionCount(Q,key);if(solutions!==1)return null;
+        const necessity=validateNecessity(Q);
+        if(!necessity.ok){
+          diag.uniqueLeavesRejectedForRedundancy++;diag.redundantLeavesRejected++;
+          return null
+        }
+        diag.compliantUniqueLeavesFound++;diag.irredundantFound=true;
+        const human=strictSolve(Q);let m=null,accept;
+        if(human.ok){m=metrics(Q,human);accept=mediumAcceptance(m)}
+        else accept={ok:false,reasons:[human.reason]};
+        const summary=leafSummary(Q,key,human,m,accept,diag.compliantUniqueLeavesFound);
+        if(!diag.firstCompliantLeaf)diag.firstCompliantLeaf=clone(summary);
+        if(accept.ok){
+          diag.leavesPassingMedium++;diag.mediumFound=true;diag.firstPassingLeafIndex=diag.compliantUniqueLeavesFound;diag.passingLeaf=clone(summary);
+          Q.selectionAttempts=diag.nodesExplored;
+          Q.validation={solutions:1,human,metrics:m,necessity,mediumAcceptance:accept,mediumClassification:classifyMedium(m)};
+          return{puzzle:Q,necessity,human,metrics:m,mediumAcceptance:accept}
+        }
+        diag.leavesFailingMedium++;
+        if(diag.compliantUniqueLeavesFound>=cfg.maxCompliantLeaves){
+          diag.budgetExceeded=true;diag.failureReason='compliant leaf budget';stop=true
+        }
+        return null
       }
-      diag.counterexamplesEncountered++;const sig=arrangementSignature(alt);if(!knownCounterexamples.has(sig)){knownCounterexamples.set(sig,alt);diag.distinctCounterexamples=knownCounterexamples.size}
+      diag.counterexamplesEncountered++;
+      const sig=arrangementSignature(alt);if(!knownCounterexamples.has(sig)){knownCounterexamples.set(sig,clone(alt));diag.distinctCounterexamples=knownCounterexamples.size}
       if(overBudget())return null;
-      const counts=selectedCounts(selected),selectedIds=new Set(selected.map(x=>x.id)),candidates=[];
+      const falseIds=falseFactIds(alt),counts=selectedCounts(selected),selectedIds=new Set(selected.map(x=>x.id)),candidates=[];
       for(const item of pool){
-        if(selectedIds.has(item.id)||counts[item.subject]>=2)continue;
-        if(constraintSatisfied(base,item.subject,item.constraint,alt))continue;
+        if(selectedIds.has(item.id)||counts[item.subject]>=2||!falseIds.has(item.id))continue;
         if(!extensionLegal(base,selected,item))continue;
-        const ownCount=counts[item.subject],currentWitnesses=[...witnesses.values()],preserved=currentWitnesses.filter(w=>constraintSatisfied(base,item.subject,item.constraint,w)).length;
+        const ownCount=counts[item.subject],currentWitnesses=[...witnesses.values()];
+        const preserved=currentWitnesses.filter(w=>constraintSatisfied(base,item.subject,item.constraint,w)).length;
         let hits=0;for(const w of knownCounterexamples.values())if(!constraintSatisfied(base,item.subject,item.constraint,w))hits++;
         const temp=applySelectedFacts(base,[...selected,item]),combinedDomain=ownCandidates(temp,item.subject).length;
-        const coverageBonus=ownCount===0?100000:0,directPenalty=combinedDomain===1?1000000:0,domainGain=Math.max(0,baseCandidates(base).length-item.candidateDomainSize);
-        const score=coverageBonus+hits*400+preserved*80+domainGain*4-Math.abs(combinedDomain-5)*3-directPenalty;
+        const coverageBonus=ownCount===0?100000:0,directPenalty=combinedDomain===1?1000000:0;
+        const domainGain=Math.max(0,baseCandidates(base).length-item.candidateDomainSize);
+        const score=coverageBonus+hits*400+preserved*80+domainGain*3-Math.abs(combinedDomain-4)*2-directPenalty+mediumHeuristicBonus(item,combinedDomain,counts);
         candidates.push({item,score})
       }
       candidates.sort((a,b)=>b.score-a.score||a.item.id.localeCompare(b.item.id));
@@ -177,17 +284,28 @@ function createEngine(N=7){
       candidateLoop:for(const {item} of branch){
         if(overBudget())break;
         const next=[...selected,item],nextWitnesses=new Map(witnesses);nextWitnesses.set(item.id,alt);
-        for(const old of selected){const w=nextWitnesses.get(old.id);if(w&&constraintSatisfied(base,item.subject,item.constraint,w))continue;const withoutOld=applySelectedFacts(base,next.filter(x=>x.id!==old.id));diag.witnessRepairSearches++;const replacement=findViolationWitness(withoutOld,old);if(!replacement)continue candidateLoop;nextWitnesses.set(old.id,replacement)}
-        const hit=dfs(next,nextWitnesses);if(hit)return hit
+        for(const old of selected){
+          const w=nextWitnesses.get(old.id);
+          if(w&&constraintSatisfied(base,item.subject,item.constraint,w)){diag.existingWitnessRetained++;continue}
+          const replacement=cachedWitness(next.filter(x=>x.id!==old.id),old);
+          if(!replacement)continue candidateLoop;
+          nextWitnesses.set(old.id,replacement)
+        }
+        const hitResult=dfs(next,nextWitnesses);if(hitResult)return hitResult
       }
       return null
     }
     const result=dfs([],new Map);diag.elapsedMs=Date.now()-start;
     if(diag.budgetExceeded)generatorStats.clueSearchBudgetExceeded++;
-    if(result){generatorStats.clueSearchSucceeded++;result.puzzle.clueSearchDiagnostics=clone(diag);return{puzzle:result.puzzle,necessity:result.necessity,diagnostics:diag}}
-    if(!diag.failureReason)diag.failureReason='search exhausted without compliant irredundant set';return{puzzle:null,diagnostics:diag}
+    if(result){
+      generatorStats.clueSearchSucceeded++;result.puzzle.clueSearchDiagnostics=clone(diag);
+      return{puzzle:result.puzzle,necessity:result.necessity,human:result.human,metrics:result.metrics,mediumAcceptance:result.mediumAcceptance,diagnostics:diag}
+    }
+    if(!diag.failureReason){
+      diag.failureReason=diag.compliantUniqueLeavesFound?'search exhausted; all compliant leaves failed Medium':'search exhausted without compliant irredundant set'
+    }
+    return{puzzle:null,diagnostics:diag}
   }
-
 
   function roomConnected(P,rid){const cells=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(P.regionOf[r][c]===rid)cells.push({r,c});if(!cells.length)return false;const want=new Set(cells.map(cellKey)),seen=new Set([cellKey(cells[0])]),q=[cells[0]];while(q.length){const x=q.shift();for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){const y={r:x.r+dr,c:x.c+dc},k=cellKey(y);if(inBounds(y.r,y.c)&&want.has(k)&&!seen.has(k)){seen.add(k);q.push(y)}}}return seen.size===want.size}
   function occurrenceConnected(occ){if(!occ.cells?.length)return false;const want=new Set(occ.cells.map(cellKey)),seen=new Set([cellKey(occ.cells[0])]),q=[occ.cells[0]];while(q.length){const x=q.shift();for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){const y={r:x.r+dr,c:x.c+dc},k=cellKey(y);if(want.has(k)&&!seen.has(k)){seen.add(k);q.push(y)}}}return seen.size===want.size}
@@ -236,7 +354,17 @@ function createEngine(N=7){
   function buildBoard(){const R=generateRegionGrid();if(!R)return null;const roomCount=Math.max(...R.flat())+1,P={version:2,n:N,difficulty:'medium',people:[...PEOPLE],regionOf:R,roomNames:Array.from({length:roomCount},(_,i)=>`R${i+1}`),objects:[],constraints:Object.fromEntries(PEOPLE.map(p=>[p,[]])),globalConstraints:[]};P.solution=makeSolution(P);makeObjects(P);const s=validateStructural(P,{allowEmptyPersonConstraints:true});return s.ok?P:null}
   function selectConstraints(P,req,searchBudget={}){const result=searchIrredundantClueSet(P,req,searchBudget);return result.puzzle}
   function generateBoardById(id,maxBoardAttempts=40){return withSeed(id,()=>{for(let attempt=1;attempt<=maxBoardAttempts;attempt++){const P=buildBoard();if(P){P.boardGenerationAttempts=attempt;return P}}return null})}
-  function generateDiagnosticBoardById(id,searchBudget={},request={n:N,difficulty:'medium',require:{},forbid:[]}){const vr=validateRequest(request);if(!vr.ok)throw Error(vr.reason);if(vr.request.n!==N)return createEngine(vr.request.n).generateDiagnosticBoardById(id,searchBudget,vr.request);const P=generateBoardById(id,40);if(!P)return{puzzleId:id,board:null,search:{factPoolSize:0,nodesExplored:0,counterexamplesEncountered:0,completeUniqueLeaves:0,uniqueLeavesRejectedForRedundancy:0,irredundantFound:false,elapsedMs:0,failureReason:'board generation failed'},medium:{ok:false,reasons:['board generation failed']}};const sr=searchIrredundantClueSet(P,vr.request,searchBudget);if(!sr.puzzle)return{puzzleId:id,board:P,search:sr.diagnostics,medium:{ok:false,reasons:['no compliant irredundant clue set']}};const Q=sr.puzzle,solutions=countSolutions(Q,2),necessity=validateNecessity(Q),human=strictSolve(Q);let m=null,medium;if(human.ok){m=metrics(Q,human);medium=mediumAcceptance(m)}else medium={ok:false,reasons:[human.reason]};return{puzzleId:id,board:P,puzzle:Q,search:sr.diagnostics,solutions,necessity,human,metrics:m,medium}}
+  function generateDiagnosticBoardById(id,searchBudget={},request={n:N,difficulty:'medium',require:{},forbid:[]}){
+    const vr=validateRequest(request);if(!vr.ok)throw Error(vr.reason);
+    if(vr.request.n!==N)return createEngine(vr.request.n).generateDiagnosticBoardById(id,searchBudget,vr.request);
+    const P=generateBoardById(id,40);
+    if(!P)return{puzzleId:id,board:null,search:{factPoolSize:0,nodesExplored:0,counterexamplesEncountered:0,completeUniqueLeaves:0,compliantUniqueLeavesFound:0,leavesFailingMedium:0,leavesPassingMedium:0,elapsedMs:0,failureReason:'board generation failed'},medium:{ok:false,reasons:['board generation failed']}};
+    const sr=searchIrredundantClueSet(P,vr.request,searchBudget);
+    if(!sr.puzzle)return{puzzleId:id,board:P,search:sr.diagnostics,medium:{ok:false,reasons:[sr.diagnostics.failureReason||'no Medium-compliant clue set']}};
+    const Q=sr.puzzle,solutions=countSolutions(Q,2),necessity=validateNecessity(Q),human=strictSolve(Q);
+    let m=null,medium;if(human.ok){m=metrics(Q,human);medium=mediumAcceptance(m)}else medium={ok:false,reasons:[human.reason]};
+    return{puzzleId:id,board:P,puzzle:Q,search:sr.diagnostics,solutions,necessity,human,metrics:m,medium}
+  }
 
   function finalizePuzzle(P,req,id,generationAttempts){P.metadata=deriveMetadata(P);if(!requestSatisfied(P,req))return null;P.objective=assignObjective(P);if(!P.objective)return null;P.render=deriveRenderData(P);P.puzzleId=id;P.generationAttempts=generationAttempts;return P}
   function generateById(id,maxGenerationAttempts=1800,request={n:N,difficulty:'medium',require:{},forbid:[]}){const vr=validateRequest(request);if(!vr.ok)throw Error(vr.reason);if(vr.request.n!==N)return createEngine(vr.request.n).generateById(id,maxGenerationAttempts,vr.request);return withSeed(id,()=>{for(let attempt=1;attempt<=maxGenerationAttempts;attempt++){const P=buildBoard();if(!P)continue;const selected=selectConstraints(P,vr.request);if(!selected)continue;const policy=validateSampledCandidatePolicy(selected);if(!policy.ok)continue;const h=strictSolve(selected);if(!h.ok){generatorStats.mediumFloorRejected++;continue}const m=metrics(selected,h),accept=mediumAcceptance(m);if(!accept.ok){generatorStats.mediumFloorRejected++;if(accept.reasons.includes('depth-2 floor'))generatorStats.depth2FloorRejected++;if(accept.reasons.includes('chain people < 4'))generatorStats.chainBreadthRejected++;if(accept.reasons.includes('advanced placements < 4'))generatorStats.placementBreadthRejected++;continue}if(countSolutions(selected,2)!==1)continue;selected.validation={solutions:1,human:h,metrics:m,necessity:policy.necessity,mediumAcceptance:accept,mediumClassification:classifyMedium(m)};const final=finalizePuzzle(selected,vr.request,id,attempt);if(final)return final}return null})}
