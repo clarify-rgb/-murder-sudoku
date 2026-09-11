@@ -35,5 +35,7 @@ for script in [
     "scripts/apply-multi-leaf-medium-search.py",
 ]:
     code = Path(script).read_text()
+    if script == "scripts/apply-multi-leaf-medium-search.py":
+        code = code.replace(r"\n  \}\n\n  function roomConnected", r"\n  \}\n\n+  function roomConnected", 1)
     exec(compile(code, script, "exec"), {"__name__": "__main__"})
 print("installed Rules v2 engine/tests with multi-leaf Medium generator search")
