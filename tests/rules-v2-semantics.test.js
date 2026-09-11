@@ -94,4 +94,36 @@ assert(!M.validateRequest({n:10,difficulty:'medium'}).ok);assert.strictEqual(M.c
 {
  const A=M.generateById('RULESV2-REPRO',80,{n:7,difficulty:'medium',require:{},forbid:[]});const B=M.generateById('RULESV2-REPRO',80,{n:7,difficulty:'medium',require:{},forbid:[]});assert(A&&B);const norm=P=>({regionOf:P.regionOf,objects:P.objects,constraints:P.constraints,solution:P.solution,objective:P.objective,metadata:P.metadata,render:P.render,generationAttempts:P.generationAttempts,selectionAttempts:P.selectionAttempts});assert.deepStrictEqual(norm(A),norm(B));assert.strictEqual(A.validation.human.searchCalls,0);assert(A.validation.necessity.ok);
 }
+
+// Final compliance: sampled candidate sets are rejected, never pruned.
+{
+ const P=M.generateById('RULESV2-COMPLIANCE-BASE',800,{n:7,difficulty:'medium',require:{},forbid:[]});
+ assert(P,'need deterministic accepted compliance fixture');
+ assert(P.validation.necessity.ok);
+ // TEST 2 + TEST 5: every atomic constraint is independently necessary; every person has 1-2.
+ const okNec=M.validateNecessity(P);assert(okNec.ok);assert.strictEqual(okNec.redundantCount,0);
+ for(const p of M.PEOPLE)assert(P.constraints[p].length>=1&&P.constraints[p].length<=2);
+ assert(M.validateStructural(P).ok);
+ // TEST 1: duplicate one existing constraint. Whole candidate must be rejected as redundant.
+ const dup=JSON.parse(JSON.stringify(P));const target=M.PEOPLE.find(p=>dup.constraints[p].length===1)||M.PEOPLE[0];
+ if(dup.constraints[target].length===2)dup.constraints[target]=[dup.constraints[target][0]];
+ dup.constraints[target].push(JSON.parse(JSON.stringify(dup.constraints[target][0])));
+ const dupPolicy=M.validateSampledCandidatePolicy(dup);assert(!dupPolicy.ok);assert.strictEqual(dupPolicy.reason,'redundant atomic constraint');assert(dupPolicy.necessity.redundantCount>=1);
+ // TEST 4: zero personal constraints is rejected before shipping.
+ const zero=JSON.parse(JSON.stringify(P));zero.constraints.A=[];const zeroPolicy=M.validateSampledCandidatePolicy(zero);assert(!zeroPolicy.ok);assert.strictEqual(zeroPolicy.reason,'missing atomic constraint');
+}
+// TEST 3: a compound printed IN_ROOM + NOT_BESIDE pair with one appended redundant half rejects the whole candidate.
+{
+ let base=null,person=null,extra=null;
+ for(let n=0;n<40&&!base;n++){
+   const P=M.generateById(`RULESV2-COMPOUND-${n}`,800,{n:7,difficulty:'medium',require:{},forbid:[]});if(!P)continue;
+   for(const p of M.PEOPLE){if(P.constraints[p].length!==1||P.constraints[p][0].type!=='IN_ROOM')continue;for(const o of P.objects){const cl={type:'NOT_BESIDE_OBJECT',object:o.name};if(M.constraintTagValid(P,cl)&&M.constraintSatisfied(P,p,cl,P.solution)){base=P;person=p;extra=cl;break}}if(base)break}
+ }
+ assert(base&&person&&extra,'need deterministic compound fixture');
+ const Q=JSON.parse(JSON.stringify(base));Q.constraints[person].push(extra);assert.strictEqual(M.printPersonConstraints(Q,person).length,1,'pair must render as one compound sentence');
+ const policy=M.validateSampledCandidatePolicy(Q);assert(!policy.ok);assert.strictEqual(policy.reason,'redundant atomic constraint');
+ assert(policy.necessity.redundantConstraints.some(x=>x.subject===person&&x.constraint.type==='NOT_BESIDE_OBJECT'),'redundant compound half must be detected');
+ assert.deepStrictEqual(Q.constraints[person].length,2,'candidate must not be pruned/mutated');
+}
+
 console.log('RULES V2 SEMANTIC TESTS PASS');
