@@ -1,9 +1,12 @@
-name: Medium Rules v2 checkpoint
+name: Medium Rules v2 generator design checkpoint
 on:
   push:
     branches: [medium-7x7]
     paths:
       - 'scripts/install-medium-rules-v2.py'
+      - 'scripts/apply-necessity-first-search.py'
+      - 'tests/necessity-first-search.test.js'
+      - 'tests/necessity-first-diagnostic.js'
       - '.github/workflows/medium-rules-v2.yml'
   workflow_dispatch:
 permissions:
@@ -23,7 +26,7 @@ jobs:
           set -euo pipefail
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Install Rules v2 engine and tests
+      - name: Install Rules v2 plus necessity-first generator search
         run: |
           set -euo pipefail
           python3 scripts/install-medium-rules-v2.py
@@ -32,7 +35,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Migrate Medium engine to Rules v2"
+            git commit -m "Implement necessity-first Medium clue search"
             git push origin HEAD:medium-7x7
           fi
       - name: Frozen Easy regressions
@@ -47,40 +50,41 @@ jobs:
           node tests/solution-clue-consistency.test.js
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Rules v2 semantic suite
+      - name: Rules v2 and generator regressions
         run: |
           set -euo pipefail
           node tests/rules-v2-semantics.test.js
-      - name: Generate fresh 20 Medium puzzles
+          node tests/necessity-first-search.test.js
+      - name: Ten-board generator diagnostic
         run: |
           set -euo pipefail
-          node tests/rules-v2-medium-20.js
-      - name: Store Rules v2 report
+          node tests/necessity-first-diagnostic.js
+      - name: Store generator diagnostic report
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tests/RULESV2_MEDIUM_20_REPORT.json
+          git add tests/NECESSITY_FIRST_10_BOARD_REPORT.json
           if ! git diff --cached --quiet; then
-            git commit -m "Store Rules v2 Medium validation set"
+            git commit -m "Store necessity-first 10-board diagnostic"
             git push origin HEAD:medium-7x7
           fi
-      - name: Reverify exact committed checkpoint
+      - name: Reverify exact committed engine
         run: |
           set -euo pipefail
           python3 scripts/install-medium-rules-v2.py
           node --check engine/medium-7x7.js
           node tests/rules-v2-semantics.test.js
-          node tests/rules-v2-medium-20.js
-          git diff --exit-code -- engine/medium-7x7.js tests/rules-v2-semantics.test.js tests/rules-v2-medium-20.js tests/RULESV2_MEDIUM_20_REPORT.json engine/easy-6x6-profiles.js index.html
+          node tests/necessity-first-search.test.js
+          git diff --exit-code -- engine/medium-7x7.js tests/rules-v2-semantics.test.js tests/rules-v2-medium-20.js engine/easy-6x6-profiles.js index.html
           test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
           test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
-      - name: Exact Rules v2 checkpoint
+      - name: Exact generator-design checkpoint
         run: |
           set -euo pipefail
           echo "TESTED_SHA=$(git rev-parse HEAD)"
           echo "RULESV2_ENGINE=$(git hash-object engine/medium-7x7.js)"
           echo "FROZEN_EASY_ENGINE=$(git hash-object engine/easy-6x6-profiles.js)"
           echo "FROZEN_EASY_UI=$(git hash-object index.html)"
-          echo "REPORT=$(git hash-object tests/RULESV2_MEDIUM_20_REPORT.json)"
+          echo "DIAGNOSTIC_REPORT=$(git hash-object tests/NECESSITY_FIRST_10_BOARD_REPORT.json)"
           test -z "$(git status --porcelain)"
