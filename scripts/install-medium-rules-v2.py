@@ -28,6 +28,7 @@ Path("tests/rules-v2-medium-20.js").write_bytes(members["rules-v2-medium-20.js"]
 
 for script in [
     "scripts/apply-rules-v2-final-compliance.py",
+    "scripts/fix-final-compliance-base-fixture.py",
     "scripts/fix-final-compliance-regression-fixture.py",
 ]:
     code = Path(script).read_text()
