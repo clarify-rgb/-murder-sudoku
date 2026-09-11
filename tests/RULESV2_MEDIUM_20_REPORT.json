@@ -1,0 +1,1537 @@
+{
+  "generatedAt": "2026-09-11",
+  "rulesVersion": 2,
+  "classificationCounts": {
+    "CLEAR MEDIUM": 17,
+    "BORDERLINE": 3,
+    "TOO EASY": 0
+  },
+  "generatorRejections": {
+    "redundantConstraintCandidates": 25,
+    "redundantConstraintsPruned": 156,
+    "tagGatingRejected": 0,
+    "depth2FloorRejected": 295,
+    "chainBreadthRejected": 328,
+    "placementBreadthRejected": 362
+  },
+  "generationCost": {
+    "averageSelectionAttempts": 117.2,
+    "medianSelectionAttempts": 81,
+    "maximumSelectionAttempts": 617
+  },
+  "puzzles": [
+    {
+      "puzzleId": "RULESV2-MEDIUM-001",
+      "generationAttempts": 3,
+      "selectionAttempts": 143,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 6,
+        "C": 6,
+        "D": 40,
+        "E": 40,
+        "F": 4,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_WITH",
+        "COLUMN",
+        "CORNER",
+        "DIAGONAL_TO_OBJECT",
+        "NORTH_OF_OBJECT",
+        "ONLY_PERSON_ON_OBJECT"
+      ],
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 1,
+      "intersectionCount": 1,
+      "relationalDeductionCount": 5,
+      "dependencyDepth": 3,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 6,
+      "traceLength": 36,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-002",
+      "generationAttempts": 3,
+      "selectionAttempts": 10,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 5,
+        "C": 10,
+        "D": 4,
+        "E": 5,
+        "F": 7,
+        "G": 7
+      },
+      "constraintFamilies": [
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "CORNER",
+        "DIAGONAL_TO_OBJECT",
+        "EAST_OF_PERSON",
+        "ROW",
+        "WEST_OF_OBJECT"
+      ],
+      "advancedDeductionCount": 5,
+      "materialAdvancedDeductions": 5,
+      "ownershipCount": 3,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 5,
+      "chainPeople": 7,
+      "advancedDependentPlacements": 7,
+      "traceLength": 39,
+      "totalAtomicConstraints": 9,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-003",
+      "generationAttempts": 3,
+      "selectionAttempts": 126,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 37,
+        "B": 5,
+        "C": 5,
+        "D": 4,
+        "E": 4,
+        "F": 3,
+        "G": 6
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "NORTH_OF_OBJECT",
+        "ONLY_PERSON_ON_OBJECT",
+        "SOUTH_OF_PERSON"
+      ],
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 1,
+      "intersectionCount": 3,
+      "relationalDeductionCount": 7,
+      "dependencyDepth": 3,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 5,
+      "traceLength": 34,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-004",
+      "generationAttempts": 1,
+      "selectionAttempts": 80,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 4,
+        "C": 4,
+        "D": 37,
+        "E": 4,
+        "F": 4,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "COLUMN",
+        "CORNER",
+        "EAST_OF_PERSON",
+        "IN_ROOM"
+      ],
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 3,
+      "chainPeople": 4,
+      "advancedDependentPlacements": 4,
+      "traceLength": 28,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "BORDERLINE"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-005",
+      "generationAttempts": 1,
+      "selectionAttempts": 92,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 6,
+        "B": 3,
+        "C": 4,
+        "D": 4,
+        "E": 39,
+        "F": 6,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "CORNER",
+        "EAST_OF_PERSON",
+        "ROW"
+      ],
+      "advancedDeductionCount": 5,
+      "materialAdvancedDeductions": 5,
+      "ownershipCount": 1,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 4,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 6,
+      "traceLength": 31,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-006",
+      "generationAttempts": 4,
+      "selectionAttempts": 1,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 43,
+        "C": 4,
+        "D": 4,
+        "E": 8,
+        "F": 4,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "CORNER",
+        "DIAGONAL_TO_OBJECT",
+        "EAST_OF_OBJECT",
+        "IN_ROOM"
+      ],
+      "advancedDeductionCount": 5,
+      "materialAdvancedDeductions": 5,
+      "ownershipCount": 1,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 2,
+      "chainPeople": 7,
+      "advancedDependentPlacements": 7,
+      "traceLength": 43,
+      "totalAtomicConstraints": 6,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-007",
+      "generationAttempts": 3,
+      "selectionAttempts": 1,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 43,
+        "C": 3,
+        "D": 4,
+        "E": 3,
+        "F": 4,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "CORNER",
+        "ROW",
+        "WEST_OF_PERSON"
+      ],
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 0,
+      "intersectionCount": 3,
+      "relationalDeductionCount": 4,
+      "dependencyDepth": 2,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 6,
+      "traceLength": 33,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "BORDERLINE"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-008",
+      "generationAttempts": 2,
+      "selectionAttempts": 231,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 8,
+        "B": 4,
+        "C": 3,
+        "D": 5,
+        "E": 46,
+        "F": 3,
+        "G": 6
+      },
+      "constraintFamilies": [
+        "CORNER",
+        "EAST_OF_PERSON",
+        "IN_ROOM",
+        "ONLY_PERSON_ON_OBJECT",
+        "ON_OBJECT",
+        "ROW",
+        "SOUTH_OF_PERSON",
+        "WEST_OF_OBJECT",
+        "WEST_OF_PERSON"
+      ],
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 1,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 7,
+      "dependencyDepth": 3,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 5,
+      "traceLength": 35,
+      "totalAtomicConstraints": 10,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-009",
+      "generationAttempts": 5,
+      "selectionAttempts": 219,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 20,
+        "B": 4,
+        "C": 30,
+        "D": 3,
+        "E": 3,
+        "F": 5,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "ONLY_PERSON_ON_OBJECT",
+        "WEST_OF_OBJECT"
+      ],
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 0,
+      "intersectionCount": 3,
+      "relationalDeductionCount": 4,
+      "dependencyDepth": 3,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 6,
+      "traceLength": 42,
+      "totalAtomicConstraints": 6,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-010",
+      "generationAttempts": 1,
+      "selectionAttempts": 233,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 3,
+        "B": 6,
+        "C": 6,
+        "D": 3,
+        "E": 3,
+        "F": 46,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "BESIDE_OBJECT",
+        "DIAGONAL_TO_OBJECT",
+        "EAST_OF_PERSON",
+        "ONLY_PERSON_ON_OBJECT",
+        "ON_OBJECT",
+        "ROW"
+      ],
+      "advancedDeductionCount": 7,
+      "materialAdvancedDeductions": 7,
+      "ownershipCount": 2,
+      "intersectionCount": 5,
+      "relationalDeductionCount": 6,
+      "dependencyDepth": 3,
+      "chainPeople": 7,
+      "advancedDependentPlacements": 6,
+      "traceLength": 38,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-011",
+      "generationAttempts": 1,
+      "selectionAttempts": 18,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 5,
+        "C": 3,
+        "D": 4,
+        "E": 3,
+        "F": 7,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "COLUMN",
+        "CORNER",
+        "DIAGONAL_TO_OBJECT",
+        "IN_ROOM",
+        "ONLY_PERSON_ON_OBJECT",
+        "ROW"
+      ],
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 1,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 3,
+      "chainPeople": 5,
+      "advancedDependentPlacements": 4,
+      "traceLength": 30,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-012",
+      "generationAttempts": 4,
+      "selectionAttempts": 301,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 6,
+        "C": 4,
+        "D": 4,
+        "E": 4,
+        "F": 4,
+        "G": 43
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "CORNER",
+        "EAST_OF_OBJECT",
+        "ROW",
+        "SOUTH_OF_PERSON"
+      ],
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 5,
+      "dependencyDepth": 3,
+      "chainPeople": 5,
+      "advancedDependentPlacements": 4,
+      "traceLength": 32,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-013",
+      "generationAttempts": 6,
+      "selectionAttempts": 6,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 4,
+        "C": 4,
+        "D": 4,
+        "E": 36,
+        "F": 14,
+        "G": 12
+      },
+      "constraintFamilies": [
+        "BESIDE_OBJECT",
+        "CORNER",
+        "NORTH_OF_OBJECT",
+        "SOUTH_OF_OBJECT",
+        "WEST_OF_OBJECT"
+      ],
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 2,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 0,
+      "dependencyDepth": 4,
+      "chainPeople": 7,
+      "advancedDependentPlacements": 7,
+      "traceLength": 36,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-014",
+      "generationAttempts": 3,
+      "selectionAttempts": 36,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 4,
+        "C": 32,
+        "D": 7,
+        "E": 4,
+        "F": 4,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "COLUMN",
+        "CORNER",
+        "DIAGONAL_TO_OBJECT",
+        "EAST_OF_OBJECT",
+        "ROW",
+        "SOUTH_OF_OBJECT",
+        "WEST_OF_OBJECT"
+      ],
+      "advancedDeductionCount": 3,
+      "materialAdvancedDeductions": 3,
+      "ownershipCount": 1,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 0,
+      "dependencyDepth": 4,
+      "chainPeople": 5,
+      "advancedDependentPlacements": 4,
+      "traceLength": 31,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-015",
+      "generationAttempts": 2,
+      "selectionAttempts": 29,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 42,
+        "C": 4,
+        "D": 4,
+        "E": 5,
+        "F": 5,
+        "G": 3
+      },
+      "constraintFamilies": [
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "EAST_OF_PERSON",
+        "ONLY_PERSON_ON_OBJECT",
+        "ROW",
+        "SOUTH_OF_OBJECT",
+        "WEST_OF_OBJECT"
+      ],
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 7,
+      "dependencyDepth": 4,
+      "chainPeople": 4,
+      "advancedDependentPlacements": 4,
+      "traceLength": 34,
+      "totalAtomicConstraints": 9,
+      "necessity": true,
+      "classification": "BORDERLINE"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-016",
+      "generationAttempts": 2,
+      "selectionAttempts": 6,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 7,
+        "B": 3,
+        "C": 4,
+        "D": 4,
+        "E": 4,
+        "F": 3,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "CORNER",
+        "NORTH_OF_PERSON",
+        "ONLY_PERSON_ON_OBJECT",
+        "ROW"
+      ],
+      "advancedDeductionCount": 2,
+      "materialAdvancedDeductions": 2,
+      "ownershipCount": 0,
+      "intersectionCount": 2,
+      "relationalDeductionCount": 2,
+      "dependencyDepth": 3,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 5,
+      "traceLength": 27,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-017",
+      "generationAttempts": 1,
+      "selectionAttempts": 617,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 3,
+        "C": 4,
+        "D": 3,
+        "E": 4,
+        "F": 5,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "COLUMN",
+        "CORNER",
+        "NORTH_OF_PERSON",
+        "ON_OBJECT",
+        "ROW"
+      ],
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 0,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 1,
+      "dependencyDepth": 3,
+      "chainPeople": 5,
+      "advancedDependentPlacements": 5,
+      "traceLength": 27,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-018",
+      "generationAttempts": 9,
+      "selectionAttempts": 92,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 4,
+        "C": 6,
+        "D": 4,
+        "E": 4,
+        "F": 34,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "IN_ROOM",
+        "NORTH_OF_OBJECT",
+        "ON_OBJECT"
+      ],
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 0,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 0,
+      "dependencyDepth": 5,
+      "chainPeople": 6,
+      "advancedDependentPlacements": 6,
+      "traceLength": 31,
+      "totalAtomicConstraints": 7,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-019",
+      "generationAttempts": 1,
+      "selectionAttempts": 21,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 5,
+        "B": 3,
+        "C": 21,
+        "D": 4,
+        "E": 4,
+        "F": 4,
+        "G": 4
+      },
+      "constraintFamilies": [
+        "ALONE_IN_ROOM",
+        "BESIDE_OBJECT",
+        "COLUMN",
+        "DIAGONAL_TO_OBJECT",
+        "IN_ROOM",
+        "NORTH_OF_OBJECT",
+        "ONLY_PERSON_ON_OBJECT",
+        "SOUTH_OF_OBJECT"
+      ],
+      "advancedDeductionCount": 5,
+      "materialAdvancedDeductions": 5,
+      "ownershipCount": 1,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 4,
+      "dependencyDepth": 3,
+      "chainPeople": 7,
+      "advancedDependentPlacements": 7,
+      "traceLength": 39,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    },
+    {
+      "puzzleId": "RULESV2-MEDIUM-020",
+      "generationAttempts": 2,
+      "selectionAttempts": 82,
+      "solutionCount": 1,
+      "searchCalls": 0,
+      "initialCandidateCount": {
+        "A": 4,
+        "B": 3,
+        "C": 32,
+        "D": 4,
+        "E": 4,
+        "F": 15,
+        "G": 5
+      },
+      "constraintFamilies": [
+        "COLUMN",
+        "DIAGONAL_TO_OBJECT",
+        "ROW",
+        "SOUTH_OF_OBJECT",
+        "SOUTH_OF_PERSON",
+        "WEST_OF_OBJECT",
+        "WEST_OF_PERSON"
+      ],
+      "advancedDeductionCount": 4,
+      "materialAdvancedDeductions": 4,
+      "ownershipCount": 0,
+      "intersectionCount": 4,
+      "relationalDeductionCount": 3,
+      "dependencyDepth": 3,
+      "chainPeople": 7,
+      "advancedDependentPlacements": 7,
+      "traceLength": 37,
+      "totalAtomicConstraints": 8,
+      "necessity": true,
+      "classification": "CLEAR MEDIUM"
+    }
+  ],
+  "humanReview": [
+    {
+      "tier": "WEAKEST",
+      "puzzleId": "RULESV2-MEDIUM-004",
+      "classification": "BORDERLINE",
+      "score": 86,
+      "constraints": {
+        "A": [
+          {
+            "type": "COLUMN",
+            "column": 2
+          }
+        ],
+        "B": [
+          {
+            "type": "IN_ROOM",
+            "room": "R4"
+          }
+        ],
+        "C": [
+          {
+            "type": "IN_ROOM",
+            "room": "R1"
+          }
+        ],
+        "D": [],
+        "E": [
+          {
+            "type": "COLUMN",
+            "column": 6
+          }
+        ],
+        "F": [
+          {
+            "type": "IN_ROOM",
+            "room": "R1"
+          },
+          {
+            "type": "EAST_OF_PERSON",
+            "other": "C"
+          }
+        ],
+        "G": [
+          {
+            "type": "CORNER",
+            "room": "R5"
+          }
+        ]
+      },
+      "solution": {
+        "A": "R7C3",
+        "B": "R3C5",
+        "C": "R1C1",
+        "D": "R4C6",
+        "E": "R6C7",
+        "F": "R2C2",
+        "G": "R5C4"
+      },
+      "initialDomains": {
+        "A": [
+          "R1C3",
+          "R2C3",
+          "R3C3",
+          "R7C3"
+        ],
+        "B": [
+          "R1C3",
+          "R2C5",
+          "R3C4",
+          "R3C5"
+        ],
+        "C": [
+          "R1C1",
+          "R1C2",
+          "R2C2",
+          "R2C3"
+        ],
+        "D": [
+          "R1C1",
+          "R1C2",
+          "R1C3",
+          "R2C1",
+          "R2C2",
+          "R2C3",
+          "R2C5",
+          "R2C6",
+          "R2C7",
+          "R3C1",
+          "R3C2",
+          "R3C3",
+          "R3C4",
+          "R3C5",
+          "R3C6",
+          "R4C1",
+          "R4C2",
+          "R4C5",
+          "R4C6",
+          "R5C1",
+          "R5C2",
+          "R5C4",
+          "R5C5",
+          "R5C6",
+          "R5C7",
+          "R6C1",
+          "R6C2",
+          "R6C4",
+          "R6C5",
+          "R6C6",
+          "R6C7",
+          "R7C1",
+          "R7C2",
+          "R7C3",
+          "R7C4",
+          "R7C6",
+          "R7C7"
+        ],
+        "E": [
+          "R2C7",
+          "R5C7",
+          "R6C7",
+          "R7C7"
+        ],
+        "F": [
+          "R1C1",
+          "R1C2",
+          "R2C2",
+          "R2C3"
+        ],
+        "G": [
+          "R5C1",
+          "R5C4",
+          "R7C1",
+          "R7C4"
+        ]
+      },
+      "solveOrder": [
+        "No one starts fixed: A:4, B:4, C:4, D:37, E:4, F:4, G:4.",
+        "F loses candidate(s) through EAST_OF_PERSON involving C.",
+        "C loses candidate(s) through EAST_OF_PERSON involving F.",
+        "Only D can still occupy row 4.",
+        "Only E can still occupy row 6.",
+        "E is fixed at R6C7 after row-occupancy.",
+        "Only D can still occupy column 6.",
+        "D is fixed at R4C6 after column-occupancy.",
+        "C's remaining squares make F's R1C2 impossible by row/column intersection.",
+        "F's remaining squares make A's R2C3 impossible by row/column intersection.",
+        "Only G can still occupy row 5.",
+        "Only A can still occupy row 7.",
+        "A is fixed at R7C3 after row-occupancy.",
+        "Only B can still occupy column 5.",
+        "All seven placements follow deterministically; advanced=2, material=2, chainPeople=4, advanced→placements=4, searchCalls=0."
+      ]
+    },
+    {
+      "tier": "WEAKEST",
+      "puzzleId": "RULESV2-MEDIUM-012",
+      "classification": "CLEAR MEDIUM",
+      "score": 92,
+      "constraints": {
+        "A": [
+          {
+            "type": "CORNER",
+            "room": "R5"
+          }
+        ],
+        "B": [
+          {
+            "type": "COLUMN",
+            "column": 5
+          }
+        ],
+        "C": [
+          {
+            "type": "SOUTH_OF_PERSON",
+            "other": "B"
+          },
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 8"
+          }
+        ],
+        "D": [
+          {
+            "type": "ROW",
+            "row": 2
+          },
+          {
+            "type": "EAST_OF_OBJECT",
+            "object": "Locked 3"
+          }
+        ],
+        "E": [
+          {
+            "type": "ROW",
+            "row": 1
+          }
+        ],
+        "F": [
+          {
+            "type": "ALONE_IN_ROOM",
+            "room": "R6"
+          }
+        ],
+        "G": []
+      },
+      "solution": {
+        "A": "R6C2",
+        "B": "R5C6",
+        "C": "R7C7",
+        "D": "R3C4",
+        "E": "R2C1",
+        "F": "R4C5",
+        "G": "R1C3"
+      },
+      "initialDomains": {
+        "A": [
+          "R4C2",
+          "R4C4",
+          "R6C2",
+          "R7C2",
+          "R7C4"
+        ],
+        "B": [
+          "R2C6",
+          "R3C6",
+          "R4C6",
+          "R5C6",
+          "R6C6",
+          "R7C6"
+        ],
+        "C": [
+          "R5C7",
+          "R6C6",
+          "R7C6",
+          "R7C7"
+        ],
+        "D": [
+          "R3C4",
+          "R3C5",
+          "R3C6",
+          "R3C7"
+        ],
+        "E": [
+          "R2C1",
+          "R2C2",
+          "R2C6",
+          "R2C7"
+        ],
+        "F": [
+          "R3C7",
+          "R4C5",
+          "R4C6",
+          "R4C7"
+        ],
+        "G": [
+          "R1C1",
+          "R1C2",
+          "R1C3",
+          "R1C4",
+          "R1C5",
+          "R1C7",
+          "R2C1",
+          "R2C2",
+          "R2C6",
+          "R2C7",
+          "R3C1",
+          "R3C2",
+          "R3C3",
+          "R3C4",
+          "R3C5",
+          "R3C6",
+          "R3C7",
+          "R4C1",
+          "R4C2",
+          "R4C3",
+          "R4C4",
+          "R4C5",
+          "R4C6",
+          "R4C7",
+          "R5C1",
+          "R5C2",
+          "R5C3",
+          "R5C4",
+          "R5C5",
+          "R5C6",
+          "R5C7",
+          "R6C1",
+          "R6C2",
+          "R6C3",
+          "R6C4",
+          "R6C6",
+          "R6C7",
+          "R7C1",
+          "R7C2",
+          "R7C4",
+          "R7C5",
+          "R7C6",
+          "R7C7"
+        ]
+      },
+      "solveOrder": [
+        "No one starts fixed: A:5, B:6, C:4, D:4, E:4, F:4, G:43.",
+        "B loses candidate(s) through SOUTH_OF_PERSON involving C.",
+        "B loses candidate(s) through ALONE_IN_ROOM involving F.",
+        "D loses candidate(s) through ALONE_IN_ROOM involving F.",
+        "G loses candidate(s) through ALONE_IN_ROOM involving F.",
+        "Only G can still occupy row 1.",
+        "Only G can still occupy column 3.",
+        "G is fixed at R1C3 after column-occupancy.",
+        "D's remaining squares make B's R3C6 impossible by row/column intersection.",
+        "F's remaining squares make A's R4C2, R4C4 impossible by row/column intersection.",
+        "Only E can still occupy column 1.",
+        "E is fixed at R2C1 after column-occupancy.",
+        "Only A can still occupy column 2.",
+        "Only D can still occupy column 4.",
+        "All seven placements follow deterministically; advanced=2, material=2, chainPeople=5, advanced→placements=4, searchCalls=0."
+      ]
+    },
+    {
+      "tier": "WEAKEST",
+      "puzzleId": "RULESV2-MEDIUM-015",
+      "classification": "BORDERLINE",
+      "score": 93,
+      "constraints": {
+        "A": [
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 3"
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "type": "COLUMN",
+            "column": 1
+          },
+          {
+            "type": "SOUTH_OF_OBJECT",
+            "object": "Object 6"
+          }
+        ],
+        "D": [
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 2"
+          }
+        ],
+        "E": [
+          {
+            "type": "ROW",
+            "row": 3
+          },
+          {
+            "type": "EAST_OF_PERSON",
+            "other": "F"
+          }
+        ],
+        "F": [
+          {
+            "type": "ROW",
+            "row": 4
+          }
+        ],
+        "G": [
+          {
+            "type": "WEST_OF_OBJECT",
+            "object": "Object 1"
+          },
+          {
+            "type": "ONLY_PERSON_ON_OBJECT",
+            "object": "Object 6"
+          }
+        ]
+      },
+      "solution": {
+        "A": "R1C6",
+        "B": "R2C3",
+        "C": "R7C2",
+        "D": "R6C7",
+        "E": "R4C5",
+        "F": "R5C4",
+        "G": "R3C1"
+      },
+      "initialDomains": {
+        "A": [
+          "R1C6",
+          "R2C5",
+          "R2C7",
+          "R3C6"
+        ],
+        "B": [
+          "R1C1",
+          "R1C2",
+          "R1C3",
+          "R1C4",
+          "R1C5",
+          "R1C6",
+          "R1C7",
+          "R2C1",
+          "R2C2",
+          "R2C3",
+          "R2C4",
+          "R2C5",
+          "R2C6",
+          "R2C7",
+          "R3C1",
+          "R3C2",
+          "R3C3",
+          "R3C4",
+          "R3C5",
+          "R3C6",
+          "R3C7",
+          "R4C1",
+          "R4C4",
+          "R4C5",
+          "R4C6",
+          "R4C7",
+          "R5C1",
+          "R5C2",
+          "R5C4",
+          "R5C5",
+          "R5C7",
+          "R6C1",
+          "R6C2",
+          "R6C3",
+          "R6C4",
+          "R6C5",
+          "R6C6",
+          "R6C7",
+          "R7C1",
+          "R7C2",
+          "R7C6",
+          "R7C7"
+        ],
+        "C": [
+          "R3C2",
+          "R5C2",
+          "R6C2",
+          "R7C2"
+        ],
+        "D": [
+          "R1C3",
+          "R2C4",
+          "R6C7",
+          "R7C6"
+        ],
+        "E": [
+          "R4C1",
+          "R4C4",
+          "R4C5",
+          "R4C6",
+          "R4C7"
+        ],
+        "F": [
+          "R5C1",
+          "R5C2",
+          "R5C4",
+          "R5C5",
+          "R5C7"
+        ],
+        "G": [
+          "R3C1",
+          "R4C1",
+          "R5C1"
+        ]
+      },
+      "solveOrder": [
+        "No one starts fixed: A:4, B:42, C:4, D:4, E:5, F:5, G:3.",
+        "E loses candidate(s) through EAST_OF_PERSON involving F.",
+        "F loses candidate(s) through EAST_OF_PERSON involving E.",
+        "B loses candidate(s) through ONLY_PERSON_ON_OBJECT involving G.",
+        "D loses candidate(s) through ONLY_PERSON_ON_OBJECT involving G.",
+        "F loses candidate(s) through ONLY_PERSON_ON_OBJECT involving G.",
+        "Only B can still occupy column 3.",
+        "F's remaining squares make C's R5C2 impossible by row/column intersection.",
+        "Only A can still occupy row 1.",
+        "A is fixed at R1C6 after row-occupancy.",
+        "Only B can still occupy row 2.",
+        "B is fixed at R2C3 after row-occupancy.",
+        "C's remaining squares make F's R5C2 impossible by row/column intersection.",
+        "With A fixed, D loses candidate(s) in the same column.",
+        "All seven placements follow deterministically; advanced=2, material=2, chainPeople=4, advanced→placements=4, searchCalls=0."
+      ]
+    },
+    {
+      "tier": "STRONGEST",
+      "puzzleId": "RULESV2-MEDIUM-010",
+      "classification": "CLEAR MEDIUM",
+      "score": 200,
+      "constraints": {
+        "A": [
+          {
+            "type": "ONLY_PERSON_ON_OBJECT",
+            "object": "Object 6"
+          }
+        ],
+        "B": [
+          {
+            "type": "ROW",
+            "row": 2
+          },
+          {
+            "type": "EAST_OF_PERSON",
+            "other": "C"
+          }
+        ],
+        "C": [
+          {
+            "type": "DIAGONAL_TO_OBJECT",
+            "object": "Object 2"
+          }
+        ],
+        "D": [
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 7"
+          }
+        ],
+        "E": [
+          {
+            "type": "ON_OBJECT",
+            "object": "Object 4"
+          }
+        ],
+        "F": [],
+        "G": [
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 8"
+          }
+        ]
+      },
+      "solution": {
+        "A": "R4C7",
+        "B": "R3C4",
+        "C": "R5C3",
+        "D": "R1C2",
+        "E": "R2C5",
+        "F": "R6C1",
+        "G": "R7C6"
+      },
+      "initialDomains": {
+        "A": [
+          "R3C7",
+          "R4C6",
+          "R4C7"
+        ],
+        "B": [
+          "R3C1",
+          "R3C2",
+          "R3C3",
+          "R3C4",
+          "R3C5",
+          "R3C7"
+        ],
+        "C": [
+          "R3C1",
+          "R4C2",
+          "R5C3",
+          "R5C7",
+          "R6C4",
+          "R6C6"
+        ],
+        "D": [
+          "R1C2",
+          "R2C3",
+          "R3C2"
+        ],
+        "E": [
+          "R1C5",
+          "R2C5",
+          "R2C6"
+        ],
+        "F": [
+          "R1C1",
+          "R1C2",
+          "R1C3",
+          "R1C4",
+          "R1C5",
+          "R1C6",
+          "R1C7",
+          "R2C1",
+          "R2C2",
+          "R2C3",
+          "R2C4",
+          "R2C5",
+          "R2C6",
+          "R2C7",
+          "R3C1",
+          "R3C2",
+          "R3C3",
+          "R3C4",
+          "R3C5",
+          "R3C7",
+          "R4C1",
+          "R4C2",
+          "R4C3",
+          "R4C4",
+          "R4C5",
+          "R4C6",
+          "R4C7",
+          "R5C1",
+          "R5C2",
+          "R5C3",
+          "R5C4",
+          "R5C5",
+          "R5C6",
+          "R5C7",
+          "R6C1",
+          "R6C3",
+          "R6C4",
+          "R6C5",
+          "R6C6",
+          "R6C7",
+          "R7C1",
+          "R7C3",
+          "R7C4",
+          "R7C5",
+          "R7C6",
+          "R7C7"
+        ],
+        "G": [
+          "R3C5",
+          "R4C6",
+          "R5C5",
+          "R7C6"
+        ]
+      },
+      "solveOrder": [
+        "No one starts fixed: A:3, B:6, C:6, D:3, E:3, F:46, G:4.",
+        "B loses candidate(s) through ONLY_PERSON_ON_OBJECT involving A.",
+        "F loses candidate(s) through ONLY_PERSON_ON_OBJECT involving A.",
+        "G loses candidate(s) through ONLY_PERSON_ON_OBJECT involving A.",
+        "B loses candidate(s) through EAST_OF_PERSON involving C.",
+        "C loses candidate(s) through EAST_OF_PERSON involving B.",
+        "D's remaining squares make F's R2C2 impossible by row/column intersection.",
+        "E's remaining squares make F's R2C5 impossible by row/column intersection.",
+        "G's remaining squares make F's R7C5 impossible by row/column intersection.",
+        "E/G collectively own columns 5, 6, excluding A.",
+        "C loses candidate(s) through EAST_OF_PERSON involving B.",
+        "Only F can still occupy row 6.",
+        "Only G can still occupy row 7.",
+        "G is fixed at R7C6 after row-occupancy.",
+        "All seven placements follow deterministically; advanced=7, material=7, chainPeople=7, advanced→placements=6, searchCalls=0."
+      ]
+    },
+    {
+      "tier": "STRONGEST",
+      "puzzleId": "RULESV2-MEDIUM-002",
+      "classification": "CLEAR MEDIUM",
+      "score": 174,
+      "constraints": {
+        "A": [
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 6"
+          }
+        ],
+        "B": [
+          {
+            "type": "EAST_OF_PERSON",
+            "other": "E"
+          },
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 11"
+          }
+        ],
+        "C": [
+          {
+            "type": "DIAGONAL_TO_OBJECT",
+            "object": "Object 2"
+          }
+        ],
+        "D": [
+          {
+            "type": "CORNER",
+            "room": "R1"
+          },
+          {
+            "type": "WEST_OF_OBJECT",
+            "object": "Object 4"
+          }
+        ],
+        "E": [
+          {
+            "type": "BESIDE_OBJECT",
+            "object": "Object 11"
+          }
+        ],
+        "F": [
+          {
+            "type": "ROW",
+            "row": 1
+          }
+        ],
+        "G": [
+          {
+            "type": "COLUMN",
+            "column": 5
+          }
+        ]
+      },
+      "solution": {
+        "A": "R1C1",
+        "B": "R5C4",
+        "C": "R4C5",
+        "D": "R6C3",
+        "E": "R7C2",
+        "F": "R2C7",
+        "G": "R3C6"
+      },
+      "initialDomains": {
+        "A": [
+          "R1C1",
+          "R2C2",
+          "R5C2",
+          "R6C3"
+        ],
+        "B": [
+          "R5C1",
+          "R5C4",
+          "R6C2",
+          "R6C3",
+          "R7C2"
+        ],
+        "C": [
+          "R2C1",
+          "R2C7",
+          "R3C2",
+          "R3C6",
+          "R4C3",
+          "R4C5",
+          "R6C3",
+          "R6C5",
+          "R7C2",
+          "R7C6"
+        ],
+        "D": [
+          "R4C1",
+          "R5C1",
+          "R6C2",
+          "R6C3"
+        ],
+        "E": [
+          "R5C1",
+          "R5C4",
+          "R6C2",
+          "R6C3",
+          "R7C2"
+        ],
+        "F": [
+          "R2C1",
+          "R2C2",
+          "R2C3",
+          "R2C4",
+          "R2C5",
+          "R2C6",
+          "R2C7"
+        ],
+        "G": [
+          "R1C6",
+          "R2C6",
+          "R3C6",
+          "R4C6",
+          "R5C6",
+          "R6C6",
+          "R7C6"
+        ]
+      },
+      "solveOrder": [
+        "No one starts fixed: A:4, B:5, C:10, D:4, E:5, F:7, G:7.",
+        "B loses candidate(s) through EAST_OF_PERSON involving E.",
+        "E loses candidate(s) through EAST_OF_PERSON involving B.",
+        "A/D/E collectively own columns 1, 2, 3, excluding B.",
+        "B is fixed at R5C4 after multi-column-ownership.",
+        "With B fixed, A loses candidate(s) in the same row.",
+        "With B fixed, D loses candidate(s) in the same row.",
+        "With B fixed, E loses candidate(s) in the same row.",
+        "With B fixed, F loses candidate(s) in the same column.",
+        "With B fixed, G loses candidate(s) in the same row.",
+        "E's remaining squares make D's R6C2 impossible by row/column intersection.",
+        "F's remaining squares make A's R2C2 impossible by row/column intersection.",
+        "A/D collectively own columns 1, 3, excluding E.",
+        "Only F can still occupy column 7.",
+        "All seven placements follow deterministically; advanced=5, material=5, chainPeople=7, advanced→placements=7, searchCalls=0."
+      ]
+    }
+  ]
+}
