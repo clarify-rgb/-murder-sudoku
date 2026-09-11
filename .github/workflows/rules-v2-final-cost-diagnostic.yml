@@ -1,0 +1,40 @@
+name: Rules v2 final cost diagnostic
+on:
+  push:
+    branches: [medium-7x7]
+    paths:
+      - '.github/workflows/rules-v2-final-cost-diagnostic.yml'
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard exact compliance engine and frozen Easy
+        run: |
+          test "$(git hash-object engine/medium-7x7.js)" = "cd7138204f9559e1dd454bef21b8a69836d67f2d"
+          test "$(git hash-object engine/easy-6x6-profiles.js)" = "2ebdf4c3dac3afec23f9d2f1996ff49477676abb"
+          test "$(git hash-object index.html)" = "1966017903d747b22b50491de932208a1f0cd448"
+      - name: Scan one independent seed
+        env:
+          SEED: ${{ matrix.seed }}
+        run: |
+          node - <<'NODE'
+          const M=require('./engine/medium-7x7.js');
+          const id=`RULESV2-COST-${process.env.SEED}`;
+          M.resetGeneratorStats();
+          const start=Date.now();
+          const P=M.generateById(id,100,{n:7,difficulty:'medium',require:{},forbid:[]});
+          const elapsedMs=Date.now()-start;
+          const out={id,success:!!P,elapsedMs,generatorStats:M.getGeneratorStats()};
+          if(P){const m=P.validation.metrics;out.generationAttempts=P.generationAttempts;out.selectionAttempts=P.selectionAttempts;out.atomicPerPerson=Object.fromEntries(M.PEOPLE.map(p=>[p,P.constraints[p].length]));out.totalAtomic=m.totalAtomicConstraintCount;out.classification=P.validation.mediumClassification;out.depth=m.dependencyDepth;out.chainPeople=m.multiPersonChainPeople;out.advancedDependentPlacements=m.advancedDependentPlacements;out.advanced=m.advancedDeductionCount;out.necessity=P.validation.necessity.ok;}
+          console.log('RULESV2_COST_DIAG '+JSON.stringify(out));
+          NODE
