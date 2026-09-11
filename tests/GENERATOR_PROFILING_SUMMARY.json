@@ -1,0 +1,877 @@
+{
+  "checkpointBase": "afa1f68f03ffce5cde6e956c9f484082896f9e73",
+  "productionEngineBlob": "59ef95e500ddb39fd43c905fc0f5c60b7bf52e96",
+  "productionEngineByteIdentical": true,
+  "summary": {
+    "boards": 10,
+    "mediumSuccesses": 1,
+    "averageTimeMs": 4967.4,
+    "medianTimeMs": 5001,
+    "maxTimeMs": 5009,
+    "budgetFailures": 9,
+    "totalUniqueLeaves": 13891,
+    "coverageValidUniqueLeaves": 11984,
+    "coverageInvalidUniqueLeaves": 1907,
+    "necessityFailedLeaves": 1358,
+    "averageRedundantCluesPerFailedLeaf": 4.25699558173785,
+    "medianRedundantCluesPerFailedLeaf": 4,
+    "maxRedundantCluesPerFailedLeaf": 10,
+    "singleRedundantLeaves": 84,
+    "multipleRedundantLeaves": 1274,
+    "privateWitnessKnownRate": 0.2515028554253081
+  },
+  "earlyUnique": {
+    "total": 13891,
+    "coverageValid": 11984,
+    "coverageInvalid": 1907,
+    "coverageInvalidRate": 0.1372831329637895,
+    "byClueCount": {
+      "6": 23,
+      "7": 527,
+      "8": 3722,
+      "9": 4432,
+      "10": 2896,
+      "11": 2155,
+      "12": 136
+    },
+    "byCoveredPeople": {
+      "5": 13,
+      "6": 1894,
+      "7": 11984
+    },
+    "topConstraintPatterns": [
+      [
+        "1/1/2/1/1/1/1",
+        816
+      ],
+      [
+        "2/1/1/1/1/1/1",
+        755
+      ],
+      [
+        "2/1/2/1/1/1/1",
+        534
+      ],
+      [
+        "2/2/1/2/1/1/2",
+        508
+      ],
+      [
+        "2/2/1/1/1/1/1",
+        497
+      ],
+      [
+        "1/2/1/1/1/1/1",
+        486
+      ],
+      [
+        "2/2/2/1/1/1/2",
+        460
+      ],
+      [
+        "1/1/2/2/1/1/1",
+        449
+      ],
+      [
+        "1/2/2/1/1/1/1",
+        335
+      ],
+      [
+        "2/2/1/1/1/1/2",
+        309
+      ],
+      [
+        "2/2/1/2/1/1/1",
+        280
+      ],
+      [
+        "1/1/1/1/1/1/1",
+        239
+      ],
+      [
+        "1/1/1/1/1/2/1",
+        237
+      ],
+      [
+        "2/1/1/2/2/1/2",
+        236
+      ],
+      [
+        "1/1/1/2/1/2/1",
+        235
+      ],
+      [
+        "2/1/1/1/1/2/1",
+        225
+      ],
+      [
+        "2/1/2/1/2/1/2",
+        221
+      ],
+      [
+        "1/1/1/1/1/1/2",
+        201
+      ],
+      [
+        "2/1/1/2/1/1/2",
+        199
+      ],
+      [
+        "1/1/2/1/2/1/1",
+        193
+      ]
+    ],
+    "topUncoveredPatterns": [
+      [
+        "none",
+        11984
+      ],
+      [
+        "F",
+        522
+      ],
+      [
+        "B",
+        480
+      ],
+      [
+        "C",
+        363
+      ],
+      [
+        "A",
+        269
+      ],
+      [
+        "G",
+        228
+      ],
+      [
+        "D",
+        32
+      ],
+      [
+        "B,C",
+        8
+      ],
+      [
+        "A,F",
+        3
+      ],
+      [
+        "A,C",
+        2
+      ]
+    ],
+    "lastClueTypes": [
+      [
+        "SOUTH_OF_PERSON",
+        1421
+      ],
+      [
+        "DIAGONAL_TO_OBJECT",
+        1363
+      ],
+      [
+        "BESIDE_OBJECT",
+        1218
+      ],
+      [
+        "ROW",
+        1209
+      ],
+      [
+        "WEST_OF_PERSON",
+        1092
+      ],
+      [
+        "EAST_OF_PERSON",
+        1087
+      ],
+      [
+        "SOUTH_OF_OBJECT",
+        881
+      ],
+      [
+        "COLUMN",
+        826
+      ],
+      [
+        "NORTH_OF_PERSON",
+        775
+      ],
+      [
+        "EAST_OF_OBJECT",
+        556
+      ],
+      [
+        "NORTH_OF_OBJECT",
+        547
+      ],
+      [
+        "CORNER",
+        495
+      ],
+      [
+        "IN_ROOM",
+        464
+      ],
+      [
+        "NOT_BESIDE_OBJECT",
+        463
+      ],
+      [
+        "ON_OBJECT",
+        368
+      ],
+      [
+        "WEST_OF_OBJECT",
+        316
+      ],
+      [
+        "ALONE_IN_ROOM",
+        302
+      ],
+      [
+        "NOT_IN_ROOM",
+        211
+      ],
+      [
+        "ONLY_PERSON_ON_OBJECT",
+        168
+      ],
+      [
+        "ALONE_WITH",
+        129
+      ]
+    ],
+    "causeSignals": {
+      "twoPlusWithZero": 1889,
+      "oneZeroNoTwos": 18,
+      "implicitDeterminationWithUncovered": 1907
+    }
+  },
+  "redundancy": {
+    "failedLeaves": 1358,
+    "single": 84,
+    "multiple": 1274,
+    "average": 4.25699558173785,
+    "median": 4,
+    "max": 10,
+    "ownedByOneCluePerson": 2424,
+    "ownedByTwoCluePerson": 3357,
+    "byFamily": [
+      {
+        "family": "ONLY_PERSON_ON_OBJECT",
+        "tested": 4175,
+        "redundant": 1484,
+        "redundancyRate": 0.3554491017964072
+      },
+      {
+        "family": "ALONE_IN_ROOM",
+        "tested": 2757,
+        "redundant": 1654,
+        "redundancyRate": 0.5999274573812114
+      },
+      {
+        "family": "BESIDE_OBJECT",
+        "tested": 1295,
+        "redundant": 470,
+        "redundancyRate": 0.36293436293436293
+      },
+      {
+        "family": "NORTH_OF_PERSON",
+        "tested": 950,
+        "redundant": 94,
+        "redundancyRate": 0.09894736842105263
+      },
+      {
+        "family": "WEST_OF_PERSON",
+        "tested": 681,
+        "redundant": 595,
+        "redundancyRate": 0.8737151248164464
+      },
+      {
+        "family": "COLUMN",
+        "tested": 611,
+        "redundant": 220,
+        "redundancyRate": 0.36006546644844517
+      },
+      {
+        "family": "EAST_OF_PERSON",
+        "tested": 467,
+        "redundant": 354,
+        "redundancyRate": 0.7580299785867237
+      },
+      {
+        "family": "ROW",
+        "tested": 457,
+        "redundant": 107,
+        "redundancyRate": 0.23413566739606126
+      },
+      {
+        "family": "SOUTH_OF_PERSON",
+        "tested": 411,
+        "redundant": 223,
+        "redundancyRate": 0.5425790754257908
+      },
+      {
+        "family": "CORNER",
+        "tested": 242,
+        "redundant": 17,
+        "redundancyRate": 0.07024793388429752
+      },
+      {
+        "family": "IN_ROOM",
+        "tested": 239,
+        "redundant": 40,
+        "redundancyRate": 0.16736401673640167
+      },
+      {
+        "family": "ALONE_WITH",
+        "tested": 216,
+        "redundant": 189,
+        "redundancyRate": 0.875
+      },
+      {
+        "family": "DIAGONAL_TO_OBJECT",
+        "tested": 182,
+        "redundant": 83,
+        "redundancyRate": 0.45604395604395603
+      },
+      {
+        "family": "NOT_BESIDE_OBJECT",
+        "tested": 145,
+        "redundant": 46,
+        "redundancyRate": 0.31724137931034485
+      },
+      {
+        "family": "NORTH_OF_OBJECT",
+        "tested": 99,
+        "redundant": 30,
+        "redundancyRate": 0.30303030303030304
+      },
+      {
+        "family": "WEST_OF_OBJECT",
+        "tested": 98,
+        "redundant": 76,
+        "redundancyRate": 0.7755102040816326
+      },
+      {
+        "family": "SOUTH_OF_OBJECT",
+        "tested": 85,
+        "redundant": 56,
+        "redundancyRate": 0.6588235294117647
+      },
+      {
+        "family": "EAST_OF_OBJECT",
+        "tested": 73,
+        "redundant": 10,
+        "redundancyRate": 0.136986301369863
+      },
+      {
+        "family": "ON_OBJECT",
+        "tested": 69,
+        "redundant": 1,
+        "redundancyRate": 0.014492753623188406
+      },
+      {
+        "family": "NOT_IN_ROOM",
+        "tested": 56,
+        "redundant": 32,
+        "redundancyRate": 0.5714285714285714
+      }
+    ],
+    "classifications": {
+      "relational chain makes it unnecessary": 116,
+      "same person's other constraint already implies it": 1,
+      "row/column uniqueness makes it unnecessary": 15
+    }
+  },
+  "privateWitness": {
+    "knownPass": 3347,
+    "knownFail": 0,
+    "unknownPass": 4180,
+    "unknownFail": 5781,
+    "total": 13308,
+    "knownRate": 0.2515028554253081
+  },
+  "runtime": {
+    "diagnosticTotalMs": 49674,
+    "operations": [
+      {
+        "operation": "candidateDomainCalculation",
+        "ms": 7304.943513999344,
+        "calls": 79944,
+        "avgMs": 0.0913757569548602,
+        "percentDiagnosticRuntime": 0.14705768639528413
+      },
+      {
+        "operation": "partialPuzzleConstructionCloning",
+        "ms": 4273.333505002374,
+        "calls": 98457,
+        "avgMs": 0.043403044019240625,
+        "percentDiagnosticRuntime": 0.08602756985550539
+      },
+      {
+        "operation": "sameObjectPairAndFinalDomainQualityChecks",
+        "ms": 3946.8717710011406,
+        "calls": 11984,
+        "avgMs": 0.3293451077270645,
+        "percentDiagnosticRuntime": 0.0794554851834187
+      },
+      {
+        "operation": "factPoolGeneration",
+        "ms": 3305.1242179998662,
+        "calls": 10,
+        "avgMs": 330.5124217999866,
+        "percentDiagnosticRuntime": 0.06653630104279636
+      },
+      {
+        "operation": "rowColumnCandidatePropagationGeneration",
+        "ms": 3007.7781020015245,
+        "calls": 864,
+        "avgMs": 3.481224655094357,
+        "percentDiagnosticRuntime": 0.06055035032414391
+      },
+      {
+        "operation": "branchScoringSorting",
+        "ms": 2232.148646998161,
+        "calls": 32842,
+        "avgMs": 0.06796628241270815,
+        "percentDiagnosticRuntime": 0.0449359553689689
+      },
+      {
+        "operation": "uniquenessTerminalDetectionOutsideFreshCESolver",
+        "ms": 970.6981710011605,
+        "calls": 1366,
+        "avgMs": 0.7106135951692244,
+        "percentDiagnosticRuntime": 0.0195413731731119
+      },
+      {
+        "operation": "branchCandidateCollectionOther",
+        "ms": 312.7637209967361,
+        "calls": 4612,
+        "avgMs": 0.0678152040322498,
+        "percentDiagnosticRuntime": 0.006296326468509403
+      },
+      {
+        "operation": "factPoolUnaryDomainCalculation",
+        "ms": 270.0793629998225,
+        "calls": 2850,
+        "avgMs": 0.09476468877186754,
+        "percentDiagnosticRuntime": 0.005437036739538239
+      },
+      {
+        "operation": "selectedClueEvaluation",
+        "ms": 232.4616199823795,
+        "calls": 1716158,
+        "avgMs": 0.00013545467257815392,
+        "percentDiagnosticRuntime": 0.0046797443326967725
+      },
+      {
+        "operation": "selectedClueWitnessStateEvaluation",
+        "ms": 194.81473000120604,
+        "calls": 22163,
+        "avgMs": 0.008790088435735506,
+        "percentDiagnosticRuntime": 0.003921865160873013
+      },
+      {
+        "operation": "profilingRecordOverhead",
+        "ms": 129.69974500132957,
+        "calls": 15257,
+        "avgMs": 0.008500999213562926,
+        "percentDiagnosticRuntime": 0.0026110187422259045
+      },
+      {
+        "operation": "postSearchRedundancyClassification",
+        "ms": 116.82282000005944,
+        "calls": 135,
+        "avgMs": 0.8653542222226625,
+        "percentDiagnosticRuntime": 0.002351790071265842
+      },
+      {
+        "operation": "coverageFeasibilityChecks",
+        "ms": 53.73490601067897,
+        "calls": 84108,
+        "avgMs": 0.0006388798450882076,
+        "percentDiagnosticRuntime": 0.001081751137630933
+      },
+      {
+        "operation": "canonicalClueSetSignatureGeneration",
+        "ms": 52.31564900337253,
+        "calls": 22173,
+        "avgMs": 0.0023594303433623113,
+        "percentDiagnosticRuntime": 0.0010531797117883104
+      },
+      {
+        "operation": "ceFactBitsetIntersectionTesting",
+        "ms": 52.17215199448401,
+        "calls": 298467,
+        "avgMs": 0.00017480040337619908,
+        "percentDiagnosticRuntime": 0.0010502909367976006
+      },
+      {
+        "operation": "duplicateSetLookup",
+        "ms": 41.54301800398389,
+        "calls": 36064,
+        "avgMs": 0.0011519248559223572,
+        "percentDiagnosticRuntime": 0.0008363131216327231
+      },
+      {
+        "operation": "cePoolScanning",
+        "ms": 39.87746200792026,
+        "calls": 23115,
+        "avgMs": 0.0017251768119368486,
+        "percentDiagnosticRuntime": 0.0008027833878471687
+      },
+      {
+        "operation": "ceFactBitsetConstruction",
+        "ms": 22.704855999618303,
+        "calls": 132,
+        "avgMs": 0.1720064848455932,
+        "percentDiagnosticRuntime": 0.0004570772637520293
+      },
+      {
+        "operation": "sameObjectPairQualityChecks",
+        "ms": 16.603666006878484,
+        "calls": 52430,
+        "avgMs": 0.0003166825482906444,
+        "percentDiagnosticRuntime": 0.0003342526473986086
+      },
+      {
+        "operation": "privateWitnessAnalysis",
+        "ms": 7.194634000072256,
+        "calls": 1366,
+        "avgMs": 0.005266935578383789,
+        "percentDiagnosticRuntime": 0.0001448370173545971
+      },
+      {
+        "operation": "serializationDebugReportOverhead",
+        "ms": 0.3472710000933148,
+        "calls": 8,
+        "avgMs": 0.04340887501166435,
+        "percentDiagnosticRuntime": 0.000006991001330541426
+      }
+    ]
+  },
+  "factPool": {
+    "totalFacts": 3714,
+    "totalGenerationMs": 3305.1242179998662,
+    "averageFactsPerBoard": 371.4,
+    "byFamily": [
+      {
+        "family": "ONLY_PERSON_ON_OBJECT",
+        "count": 26,
+        "avgDomain": 2.9615384615384617,
+        "minDomain": 2,
+        "maxDomain": 6
+      },
+      {
+        "family": "ON_OBJECT",
+        "count": 32,
+        "avgDomain": 3.28125,
+        "minDomain": 2,
+        "maxDomain": 6
+      },
+      {
+        "family": "CORNER",
+        "count": 35,
+        "avgDomain": 3.4,
+        "minDomain": 1,
+        "maxDomain": 6
+      },
+      {
+        "family": "BESIDE_OBJECT",
+        "count": 55,
+        "avgDomain": 3.9272727272727272,
+        "minDomain": 1,
+        "maxDomain": 8
+      },
+      {
+        "family": "ALONE_IN_ROOM",
+        "count": 33,
+        "avgDomain": 5.151515151515151,
+        "minDomain": 1,
+        "maxDomain": 12
+      },
+      {
+        "family": "ROW",
+        "count": 70,
+        "avgDomain": 5.485714285714286,
+        "minDomain": 3,
+        "maxDomain": 7
+      },
+      {
+        "family": "COLUMN",
+        "count": 70,
+        "avgDomain": 5.485714285714286,
+        "minDomain": 2,
+        "maxDomain": 7
+      },
+      {
+        "family": "IN_ROOM",
+        "count": 70,
+        "avgDomain": 7.671428571428572,
+        "minDomain": 1,
+        "maxDomain": 17
+      },
+      {
+        "family": "DIAGONAL_TO_OBJECT",
+        "count": 113,
+        "avgDomain": 16.061946902654867,
+        "minDomain": 4,
+        "maxDomain": 32
+      },
+      {
+        "family": "NORTH_OF_OBJECT",
+        "count": 305,
+        "avgDomain": 22.99344262295082,
+        "minDomain": 3,
+        "maxDomain": 38
+      },
+      {
+        "family": "WEST_OF_OBJECT",
+        "count": 316,
+        "avgDomain": 23.575949367088608,
+        "minDomain": 2,
+        "maxDomain": 38
+      },
+      {
+        "family": "EAST_OF_OBJECT",
+        "count": 343,
+        "avgDomain": 23.60932944606414,
+        "minDomain": 2,
+        "maxDomain": 40
+      },
+      {
+        "family": "SOUTH_OF_OBJECT",
+        "count": 342,
+        "avgDomain": 23.96783625730994,
+        "minDomain": 4,
+        "maxDomain": 38
+      },
+      {
+        "family": "NORTH_OF_PERSON",
+        "count": 210,
+        "avgDomain": 32.6,
+        "minDomain": 25,
+        "maxDomain": 38
+      },
+      {
+        "family": "SOUTH_OF_PERSON",
+        "count": 210,
+        "avgDomain": 32.8,
+        "minDomain": 25,
+        "maxDomain": 38
+      },
+      {
+        "family": "EAST_OF_PERSON",
+        "count": 210,
+        "avgDomain": 33.3,
+        "minDomain": 25,
+        "maxDomain": 40
+      },
+      {
+        "family": "WEST_OF_PERSON",
+        "count": 210,
+        "avgDomain": 33.3,
+        "minDomain": 23,
+        "maxDomain": 38
+      },
+      {
+        "family": "NOT_IN_ROOM",
+        "count": 413,
+        "avgDomain": 33.40193704600484,
+        "minDomain": 16,
+        "maxDomain": 43
+      },
+      {
+        "family": "NOT_BESIDE_OBJECT",
+        "count": 627,
+        "avgDomain": 35.23444976076555,
+        "minDomain": 23,
+        "maxDomain": 44
+      },
+      {
+        "family": "ALONE_WITH",
+        "count": 24,
+        "avgDomain": 38.5,
+        "minDomain": 29,
+        "maxDomain": 45
+      }
+    ]
+  },
+  "boardCompact": [
+    {
+      "id": "RULESV2-PROFILE-DIAG-01",
+      "time": 5007,
+      "nodes": 1467,
+      "unique": 1001,
+      "coverageValid": 884,
+      "coverageInvalid": 117,
+      "commonUncoveredPattern": [
+        "none",
+        884
+      ],
+      "necessityChecks": 237,
+      "necessityPasses": 0,
+      "necessityFailures": 237,
+      "redundantAtomicCount": 931,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-02",
+      "time": 5001,
+      "nodes": 1341,
+      "unique": 1212,
+      "coverageValid": 839,
+      "coverageInvalid": 373,
+      "commonUncoveredPattern": [
+        "none",
+        839
+      ],
+      "necessityChecks": 12,
+      "necessityPasses": 0,
+      "necessityFailures": 12,
+      "redundantAtomicCount": 57,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-03",
+      "time": 4637,
+      "nodes": 633,
+      "unique": 568,
+      "coverageValid": 568,
+      "coverageInvalid": 0,
+      "commonUncoveredPattern": [
+        "none",
+        568
+      ],
+      "necessityChecks": 304,
+      "necessityPasses": 1,
+      "necessityFailures": 303,
+      "redundantAtomicCount": 1462,
+      "mediumFound": true
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-04",
+      "time": 5009,
+      "nodes": 996,
+      "unique": 675,
+      "coverageValid": 460,
+      "coverageInvalid": 215,
+      "commonUncoveredPattern": [
+        "none",
+        460
+      ],
+      "necessityChecks": 331,
+      "necessityPasses": 2,
+      "necessityFailures": 329,
+      "redundantAtomicCount": 1296,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-05",
+      "time": 5000,
+      "nodes": 2770,
+      "unique": 2372,
+      "coverageValid": 1795,
+      "coverageInvalid": 577,
+      "commonUncoveredPattern": [
+        "none",
+        1795
+      ],
+      "necessityChecks": 0,
+      "necessityPasses": 0,
+      "necessityFailures": 0,
+      "redundantAtomicCount": 0,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-06",
+      "time": 5009,
+      "nodes": 2708,
+      "unique": 1861,
+      "coverageValid": 1861,
+      "coverageInvalid": 0,
+      "commonUncoveredPattern": [
+        "none",
+        1861
+      ],
+      "necessityChecks": 27,
+      "necessityPasses": 0,
+      "necessityFailures": 27,
+      "redundantAtomicCount": 226,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-07",
+      "time": 5000,
+      "nodes": 2233,
+      "unique": 1262,
+      "coverageValid": 1262,
+      "coverageInvalid": 0,
+      "commonUncoveredPattern": [
+        "none",
+        1262
+      ],
+      "necessityChecks": 0,
+      "necessityPasses": 0,
+      "necessityFailures": 0,
+      "redundantAtomicCount": 0,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-08",
+      "time": 5001,
+      "nodes": 2011,
+      "unique": 1877,
+      "coverageValid": 1469,
+      "coverageInvalid": 408,
+      "commonUncoveredPattern": [
+        "none",
+        1469
+      ],
+      "necessityChecks": 0,
+      "necessityPasses": 0,
+      "necessityFailures": 0,
+      "redundantAtomicCount": 0,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-09",
+      "time": 5001,
+      "nodes": 2066,
+      "unique": 1676,
+      "coverageValid": 1511,
+      "coverageInvalid": 165,
+      "commonUncoveredPattern": [
+        "none",
+        1511
+      ],
+      "necessityChecks": 293,
+      "necessityPasses": 5,
+      "necessityFailures": 288,
+      "redundantAtomicCount": 828,
+      "mediumFound": false
+    },
+    {
+      "id": "RULESV2-PROFILE-DIAG-10",
+      "time": 5009,
+      "nodes": 2278,
+      "unique": 1387,
+      "coverageValid": 1335,
+      "coverageInvalid": 52,
+      "commonUncoveredPattern": [
+        "none",
+        1335
+      ],
+      "necessityChecks": 162,
+      "necessityPasses": 0,
+      "necessityFailures": 162,
+      "redundantAtomicCount": 981,
+      "mediumFound": false
+    }
+  ]
+}
