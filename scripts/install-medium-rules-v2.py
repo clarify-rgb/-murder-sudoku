@@ -25,4 +25,8 @@ assert required.issubset(members), f"missing payload members: {required - set(me
 Path("engine/medium-7x7.js").write_bytes(members["medium-rules-v2.js"])
 Path("tests/rules-v2-semantics.test.js").write_bytes(members["rules-v2-semantics.test.js"])
 Path("tests/rules-v2-medium-20.js").write_bytes(members["rules-v2-medium-20.js"])
-print("installed Rules v2 engine/tests from verified chunks")
+
+# Apply the approved final compliance policy on top of the immutable Rules-v2 semantic payload.
+patch = Path("scripts/apply-rules-v2-final-compliance.py").read_text()
+exec(compile(patch, "scripts/apply-rules-v2-final-compliance.py", "exec"), {"__name__": "__main__"})
+print("installed Rules v2 engine/tests with final compliance policy")
