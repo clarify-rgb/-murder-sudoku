@@ -30,6 +30,7 @@ for script in [
     "scripts/apply-rules-v2-final-compliance.py",
     "scripts/fix-final-compliance-base-fixture.py",
     "scripts/fix-final-compliance-regression-fixture.py",
+    "scripts/fix-final-compliance-repro-test.py",
 ]:
     code = Path(script).read_text()
     exec(compile(code, script, "exec"), {"__name__": "__main__"})
