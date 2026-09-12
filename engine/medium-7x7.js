@@ -12,6 +12,7 @@ const OBJECT_RELATIONS=new Set(['ON_OBJECT','ONLY_PERSON_ON_OBJECT','BESIDE_OBJE
 const PERSON_RELATIONS=new Set(['WEST_OF_PERSON','EAST_OF_PERSON','NORTH_OF_PERSON','SOUTH_OF_PERSON','ALONE_WITH']);
 const ADVANCED_REASONS=new Set(['row-ownership','column-ownership','multi-row-ownership','multi-column-ownership','intersecting-square-elimination']);
 const WIDE_FIRST_PENALTY=200000;
+const PRIVATE_WITNESS_LOSS_PENALTY=4000;
 
 function seedHash(s){let h=2166136261>>>0;for(let i=0;i<String(s).length;i++){h^=String(s).charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function seededRandom(seed){let a=seedHash(seed);return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -149,7 +150,7 @@ function createEngine(N=7){
   function finalPersonalClueQuality(P){for(const p of PEOPLE){const cs=constraintList(P,p);if(cs.length<1||cs.length>2||!sameObjectPairValid(P,p,cs))return false;const n=ownCandidates(P,p).length;if(n<2||n>Math.max(9,N+1))return false}return true}
   function extensionLegal(P,selected,item){const own=selected.filter(x=>x.subject===item.subject);if(own.length>=2)return false;const cs=[...own.map(x=>x.constraint),item.constraint];if(!sameObjectPairValid(P,item.subject,cs))return false;const Q=applySelectedFacts(P,[...selected,item]);const n=ownCandidates(Q,item.subject).length;if(n<2)return false;if(cs.length===2&&n>Math.max(9,N+1))return false;return true}
   function searchIrredundantClueSet(P,request={forbid:[]},budget={}){
-    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,wideFirstPenalty:WIDE_FIRST_PENALTY,...budget};
+    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,wideFirstPenalty:WIDE_FIRST_PENALTY,privateWitnessLossPenalty:PRIVATE_WITNESS_LOSS_PENALTY,...budget};
     const start=Date.now(),base={...P,constraints:emptyConstraintMap(),globalConstraints:[]},baseCandidateCount=baseCandidates(P).length,personalDomainLimit=Math.max(9,N+1);
     const pool=buildAtomicFactPool(base,request);pool.forEach((item,i)=>item.factIndex=i);
     const visited=new Set,completeLeafSignatures=new Set,redundantLeafSignatures=new Set;
@@ -166,6 +167,12 @@ function createEngine(N=7){
       wideFirstPeopleRescuedBySecondClue:0,wideFirstRescuedUniqueLeaves:0,wideFirstRescuedPeopleAtUniqueLeaves:0,
       firstPassingLeafIndex:null,mediumValidationTimeMs:0,
       retainedValidWitnesses:0,witnessStatesMarkedUnknown:0,freshPartialWitnessRepairSearches:0,
+      witnessExtensionSelections:0,selectedCluesObservedOnExtensions:0,selectedCluesWithLivePrivateWitnesses:0,
+      privateWitnessesPreservedOnExtension:0,privateWitnessesDestroyed:0,poolWitnessRepairsFound:0,
+      witnessUnknownSelectedClues:0,poolCertifiedNecessaryClues:0,selectedCluesAtCertifiedLeaves:0,
+      completeLeavesAllCluesPoolCertified:0,completeLeavesPartiallyPoolCertified:0,completeLeavesNoCluesPoolCertified:0,
+      poolCertificationCorrelation:{all:{necessityPass:0,necessityFail:0},partial:{necessityPass:0,necessityFail:0},none:{necessityPass:0,necessityFail:0}},
+      privateWitnessNecessityContradictions:0,
       irredundantFound:false,mediumFound:false,elapsedMs:0,budget:{...cfg},budgetExceeded:false,failureReason:null,
       firstCompliantLeaf:null,passingLeaf:null
     };
@@ -231,14 +238,39 @@ function createEngine(N=7){
       if(['ROW','COLUMN'].includes(item.constraint.type))score-=45;
       return score
     }
-    function updateWitnessStates(witnesses,selected,newItem,newWitness){
-      const next=new Map(witnesses);next.set(newItem.id,newWitness);
+    function poolPrivateWitness(item,selected){
+      return counterexamplePool.find(entry=>entry.violated[item.factIndex]&&selected.every(other=>other.id===item.id||!entry.violated[other.factIndex]))||null
+    }
+    function witnessLossOnExtension(witnesses,selected,newItem){
+      const nextSelected=[...selected,newItem];let destroyed=0,repaired=0;
       for(const old of selected){
-        const w=next.get(old.id);
-        if(!w)continue;
-        if(constraintSatisfied(base,newItem.subject,newItem.constraint,w))diag.retainedValidWitnesses++;
-        else{next.set(old.id,null);diag.witnessStatesMarkedUnknown++}
+        const witness=witnesses.get(old.id);
+        if(!witness||!witness.violated[newItem.factIndex])continue;
+        destroyed++;
+        if(poolPrivateWitness(old,nextSelected))repaired++
       }
+      return{destroyed,repaired,unrepaired:destroyed-repaired}
+    }
+    function refreshWitnessStates(witnesses,selected){
+      const next=new Map(witnesses);
+      for(const item of selected)if(!next.get(item.id)){const witness=poolPrivateWitness(item,selected);if(witness)next.set(item.id,witness)}
+      return next
+    }
+    function updateWitnessStates(witnesses,selected,newItem,newWitness){
+      const nextSelected=[...selected,newItem],next=new Map(witnesses);next.set(newItem.id,newWitness);
+      let preserved=0,destroyed=0,repairs=0;
+      for(const old of selected){
+        const witness=next.get(old.id);
+        if(witness&&!witness.violated[newItem.factIndex]){preserved++;continue}
+        if(witness)destroyed++;
+        const replacement=poolPrivateWitness(old,nextSelected);
+        if(replacement){next.set(old.id,replacement);if(witness)repairs++}else next.set(old.id,null)
+      }
+      const live=[...next.values()].filter(Boolean).length,unknown=nextSelected.length-live;
+      diag.witnessExtensionSelections++;diag.selectedCluesObservedOnExtensions+=nextSelected.length;
+      diag.selectedCluesWithLivePrivateWitnesses+=live;diag.privateWitnessesPreservedOnExtension+=preserved;
+      diag.privateWitnessesDestroyed+=destroyed;diag.poolWitnessRepairsFound+=repairs;diag.witnessUnknownSelectedClues+=unknown;
+      diag.retainedValidWitnesses+=preserved;diag.witnessStatesMarkedUnknown+=destroyed-repairs;
       return next
     }
     function dfs(selected,witnesses,wideFirstPeople){
@@ -259,8 +291,19 @@ function createEngine(N=7){
         if(!finalPersonalClueQuality(Q)){diag.finalPersonalClueQualityFailures++;return null}
         diag.finalPersonalClueQualityPasses++;
         if(countSolutions(Q,2)!==1)return null;
+        const certified=selected.filter(item=>poolPrivateWitness(item,selected)),certifiedIds=new Set(certified.map(item=>item.id));
+        const certification=certified.length===selected.length?'all':certified.length?'partial':'none';
+        diag.poolCertifiedNecessaryClues+=certified.length;diag.selectedCluesAtCertifiedLeaves+=selected.length;
+        if(certification==='all')diag.completeLeavesAllCluesPoolCertified++;
+        else if(certification==='partial')diag.completeLeavesPartiallyPoolCertified++;
+        else diag.completeLeavesNoCluesPoolCertified++;
         diag.necessityValidations++;
         const nt0=Date.now(),necessity=validateNecessity(Q);diag.necessityValidationTimeMs+=Date.now()-nt0;
+        diag.poolCertificationCorrelation[certification][necessity.ok?'necessityPass':'necessityFail']++;
+        if(!necessity.ok){
+          const contradiction=(necessity.redundantConstraints||[]).find(x=>certifiedIds.has(`${x.subject}|${JSON.stringify(x.constraint)}`));
+          if(contradiction){diag.privateWitnessNecessityContradictions++;throw Error(`pool private-witness contradiction for ${contradiction.subject}|${JSON.stringify(contradiction.constraint)}`)}
+        }
         if(!necessity.ok){
           diag.completeLeavesFailingNecessity++;diag.redundantCluesFoundAtFailedLeaves+=necessity.redundantCount||0;
           redundantLeafSignatures.add(key);
@@ -284,7 +327,7 @@ function createEngine(N=7){
         return null
       }
       if(overBudget())return null;
-      const counts=selectedCounts(selected),selectedIds=new Set(selected.map(x=>x.id));
+      const activeWitnesses=refreshWitnessStates(witnesses,selected),counts=selectedCounts(selected),selectedIds=new Set(selected.map(x=>x.id));
       const surviving=counterexamplePool.filter(entry=>counterexampleSurvives(entry,selected));
       const candidates=[];
       for(const item of pool){
@@ -295,8 +338,9 @@ function createEngine(N=7){
         const coverageBonus=counts[item.subject]===0?100000:0,directPenalty=combinedDomain===1?1000000:0;
         const domainGain=Math.max(0,baseCandidateCount-item.candidateDomainSize);
         const wideFirst=counts[item.subject]===0&&combinedDomain>personalDomainLimit,wideFirstPenalty=wideFirst?cfg.wideFirstPenalty:0;
-        const score=coverageBonus+hits*500+domainGain*3-Math.abs(combinedDomain-4)*2-directPenalty+mediumHeuristicBonus(item,combinedDomain,counts)-wideFirstPenalty;
-        candidates.push({item,score,wideFirst,combinedDomain})
+        const witnessLoss=witnessLossOnExtension(activeWitnesses,selected,item),witnessPenalty=witnessLoss.unrepaired*cfg.privateWitnessLossPenalty;
+        const score=coverageBonus+hits*500+domainGain*3-Math.abs(combinedDomain-4)*2-directPenalty+mediumHeuristicBonus(item,combinedDomain,counts)-wideFirstPenalty-witnessPenalty;
+        candidates.push({item,score,wideFirst,combinedDomain,witnessLoss})
       }
       candidates.sort((a,b)=>b.score-a.score||a.item.id.localeCompare(b.item.id));
       const branch=candidates.slice(0,cfg.maxBranchesPerNode);
@@ -306,7 +350,7 @@ function createEngine(N=7){
         const nextWideFirstPeople=new Set(wideFirstPeople);
         if(wideFirst){diag.wideFirstCluesSelected++;nextWideFirstPeople.add(item.subject)}
         if(counts[item.subject]===1&&nextWideFirstPeople.has(item.subject)&&combinedDomain<=personalDomainLimit)diag.wideFirstPeopleRescuedBySecondClue++;
-        const nextWitnesses=updateWitnessStates(witnesses,selected,item,ce.arrangement);
+        const nextWitnesses=updateWitnessStates(activeWitnesses,selected,item,ce);
         const hitResult=dfs(next,nextWitnesses,nextWideFirstPeople);if(hitResult)return hitResult
       }
       return null
@@ -386,8 +430,8 @@ function createEngine(N=7){
 
   function resetSearchCallCount(){searchCalls=0;searchCallBreakdown={countSolutions:0,findArrangement:0}}function getSearchCallCount(){return searchCalls}function getSearchCallBreakdown(){return{...searchCallBreakdown,total:searchCalls}}function getGeneratorStats(){return{...generatorStats}}function resetGeneratorStats(){for(const k of Object.keys(generatorStats))generatorStats[k]=0}
 
-  return{version:2,N,PEOPLE,ATOMIC_TYPES,OBJECT_TAGS,WIDE_FIRST_PENALTY,createEngine,roomWall,isCornerCell,cornerCells,objectByName,objectOccurrences,objectCells,onObject,besideObject,directionalToObject,directionalToPerson,diagonalToObject,constraintList,atomicConstraintCount,constraintTagValid,sameObjectPairValid,unaryHolds,constraintSatisfied,baseCandidates,ownCandidates,validateStoredSolutionAgainstClues,fullValid,initialDomainsWithTrace,propagateDomains,strictSolve,assertNoSearch,applyOwnership,applyIntersectingSquare,countSolutions,findCounterexample,validateObjects,validateStructural,validateNecessity,validateSampledCandidatePolicy,deriveMetadata,deriveRenderData,diagonalRays,lineCells,roomBoundaryEdges,printConstraint,printPersonConstraints,validateObjective,objectiveAnswer,assignObjective,validateRequest,buildAtomicFactPool,extensionLegal,searchIrredundantClueSet,generateBoardById,generateDiagnosticBoardById,generateById,validate,metrics,analyzeMediumStructure,mediumAcceptance,classifyMedium,resetSearchCallCount,getSearchCallCount,getSearchCallBreakdown,getGeneratorStats,resetGeneratorStats};
+  return{version:2,N,PEOPLE,ATOMIC_TYPES,OBJECT_TAGS,WIDE_FIRST_PENALTY,PRIVATE_WITNESS_LOSS_PENALTY,createEngine,roomWall,isCornerCell,cornerCells,objectByName,objectOccurrences,objectCells,onObject,besideObject,directionalToObject,directionalToPerson,diagonalToObject,constraintList,atomicConstraintCount,constraintTagValid,sameObjectPairValid,unaryHolds,constraintSatisfied,baseCandidates,ownCandidates,validateStoredSolutionAgainstClues,fullValid,initialDomainsWithTrace,propagateDomains,strictSolve,assertNoSearch,applyOwnership,applyIntersectingSquare,countSolutions,findCounterexample,validateObjects,validateStructural,validateNecessity,validateSampledCandidatePolicy,deriveMetadata,deriveRenderData,diagonalRays,lineCells,roomBoundaryEdges,printConstraint,printPersonConstraints,validateObjective,objectiveAnswer,assignObjective,validateRequest,buildAtomicFactPool,extensionLegal,searchIrredundantClueSet,generateBoardById,generateDiagnosticBoardById,generateById,validate,metrics,analyzeMediumStructure,mediumAcceptance,classifyMedium,resetSearchCallCount,getSearchCallCount,getSearchCallBreakdown,getGeneratorStats,resetGeneratorStats};
 }
 
-const api=createEngine(7);api.createEngine=createEngine;api.ATOMIC_TYPES=ATOMIC_TYPES;api.OBJECT_TAGS=OBJECT_TAGS;return api;
+const api=createEngine(7);api.createEngine=createEngine;api.ATOMIC_TYPES=ATOMIC_TYPES;api.OBJECT_TAGS=OBJECT_TAGS;api.PRIVATE_WITNESS_LOSS_PENALTY=PRIVATE_WITNESS_LOSS_PENALTY;return api;
 });

@@ -16,7 +16,8 @@ const REQUEST={n:7,difficulty:'medium',require:{},forbid:[]};
 
 function withoutElapsed(value){
  const copy=JSON.parse(JSON.stringify(value));
- function stripTimings(x){if(!x||typeof x!=='object')return;for(const key of Object.keys(x)){if(key==='elapsedMs'||key.endsWith('TimeMs'))delete x[key];else stripTimings(x[key])}}
+ const witnessDiagnostics=new Set(['retainedValidWitnesses','witnessStatesMarkedUnknown','witnessExtensionSelections','selectedCluesObservedOnExtensions','selectedCluesWithLivePrivateWitnesses','privateWitnessesPreservedOnExtension','privateWitnessesDestroyed','poolWitnessRepairsFound','witnessUnknownSelectedClues','poolCertifiedNecessaryClues','selectedCluesAtCertifiedLeaves','completeLeavesAllCluesPoolCertified','completeLeavesPartiallyPoolCertified','completeLeavesNoCluesPoolCertified','poolCertificationCorrelation','privateWitnessNecessityContradictions']);
+ function stripTimings(x){if(!x||typeof x!=='object')return;for(const key of Object.keys(x)){if(key==='elapsedMs'||key.endsWith('TimeMs')||witnessDiagnostics.has(key)||key==='privateWitnessLossPenalty')delete x[key];else stripTimings(x[key])}}
  stripTimings(copy);
  return copy;
 }
@@ -24,7 +25,7 @@ function withoutElapsed(value){
 const rows=[];
 for(const id of IDS){
  const before=approved.generateDiagnosticBoardById(id,BUDGET,REQUEST);
- const after=optimized.generateDiagnosticBoardById(id,BUDGET,REQUEST);
+ const after=optimized.generateDiagnosticBoardById(id,{...BUDGET,privateWitnessLossPenalty:0},REQUEST);
  assert.deepStrictEqual(withoutElapsed(after),withoutElapsed(before),`${id}: fixed-node search behavior changed`);
  rows.push({id,nodes:after.search.nodesExplored,completeUniqueLeaves:after.search.completeUniqueLeaves,coverageValidUniqueLeaves:after.search.coverageValidUniqueLeaves,finalQualityPasses:after.search.finalPersonalClueQualityPasses,necessityValidations:after.search.necessityValidations,irredundantLeaves:after.search.irredundantLeaves,mediumPasses:after.search.leavesPassingMedium,producedPuzzle:!!after.puzzle});
 }
