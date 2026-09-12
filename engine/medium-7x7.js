@@ -117,7 +117,8 @@ function createEngine(N=7){
   function strictSolve(P){const guarded=assertNoSearch(()=>propagateDomains(P)),res=guarded.result;const placements={};if(res.solved)for(const p of PEOPLE)placements[p]=cell([...res.domains[p]][0]);const ok=res.solved&&!res.contradiction&&fullValid(P,placements);return{ok,reason:ok?'complete deterministic propagation':'No complete deterministic solve; guessing would be required',trace:res.events,placements,domains:res.domains,searchCalls:guarded.searchCalls,searchCallBreakdown:guarded.searchCallBreakdown,rounds:res.rounds}}
 
   function partialConsistent(P,assigned){for(const [p,x] of Object.entries(assigned)){for(const cl of constraintList(P,p)){if(['WEST_OF_PERSON','EAST_OF_PERSON','NORTH_OF_PERSON','SOUTH_OF_PERSON'].includes(cl.type)&&assigned[cl.other]&&!directionalToPerson(cl.type,x,assigned[cl.other]))return false;if(cl.type==='ONLY_PERSON_ON_OBJECT')for(const [q,y] of Object.entries(assigned))if(q!==p&&onObject(P,y,cl.object))return false;if(cl.type==='ALONE_IN_ROOM')for(const [q,y] of Object.entries(assigned))if(q!==p&&roomName(P,y)===cl.room)return false;if(cl.type==='ALONE_WITH'){if(assigned[cl.other]&&roomId(P,x)!==roomId(P,assigned[cl.other]))return false;const rid=roomId(P,x);for(const [q,y] of Object.entries(assigned))if(q!==p&&q!==cl.other&&roomId(P,y)===rid)return false}}}for(const cl of P.globalConstraints||[])if(cl.type==='EMPTY_ROOM')for(const y of Object.values(assigned))if(roomName(P,y)===cl.room)return false;return true}
-  function countSolutions(P,limit=2){searchCalls++;searchCallBreakdown.countSolutions++;const domains=Object.fromEntries(PEOPLE.map(p=>[p,ownCandidates(P,p)]));let count=0;const assigned={},usedR=new Set,usedC=new Set;function rec(){if(count>=limit)return;if(Object.keys(assigned).length===N){if(fullValid(P,assigned))count++;return}let best=null,bestOpts=null;for(const p of PEOPLE)if(!assigned[p]){const opts=domains[p].filter(x=>!usedR.has(x.r)&&!usedC.has(x.c));if(!best||opts.length<bestOpts.length){best=p;bestOpts=opts}}if(!bestOpts.length)return;for(const x of bestOpts){assigned[best]=x;usedR.add(x.r);usedC.add(x.c);if(partialConsistent(P,assigned))rec();usedR.delete(x.r);usedC.delete(x.c);delete assigned[best];if(count>=limit)return}}rec();return count}
+  function copyArrangement(A){return Object.fromEntries(PEOPLE.map(p=>[p,{...A[p]}]))}
+  function countSolutions(P,limit=2,{onSolution=null}={}){searchCalls++;searchCallBreakdown.countSolutions++;const domains=Object.fromEntries(PEOPLE.map(p=>[p,ownCandidates(P,p)]));let count=0;const assigned={},usedR=new Set,usedC=new Set;function rec(){if(count>=limit)return;if(Object.keys(assigned).length===N){if(fullValid(P,assigned)){count++;if(onSolution)onSolution(copyArrangement(assigned))}return}let best=null,bestOpts=null;for(const p of PEOPLE)if(!assigned[p]){const opts=domains[p].filter(x=>!usedR.has(x.r)&&!usedC.has(x.c));if(!best||opts.length<bestOpts.length){best=p;bestOpts=opts}}if(!bestOpts.length)return;for(const x of bestOpts){assigned[best]=x;usedR.add(x.r);usedC.add(x.c);if(partialConsistent(P,assigned))rec();usedR.delete(x.r);usedC.delete(x.c);delete assigned[best];if(count>=limit)return}}rec();return count}
 
   function arrangementSignature(A){return PEOPLE.map(p=>`${p}:${A[p].r},${A[p].c}`).join('|')}
   function differsFromStored(P,A){return PEOPLE.some(p=>!same(P.solution[p],A[p]))}
@@ -149,9 +150,9 @@ function createEngine(N=7){
   function finalPersonalClueQuality(P){for(const p of PEOPLE){const cs=constraintList(P,p);if(cs.length<1||cs.length>2||!sameObjectPairValid(P,p,cs))return false;const n=ownCandidates(P,p).length;if(n<2||n>Math.max(9,N+1))return false}return true}
   function extensionLegal(P,selected,item){const own=selected.filter(x=>x.subject===item.subject);if(own.length>=2)return false;const cs=[...own.map(x=>x.constraint),item.constraint];if(!sameObjectPairValid(P,item.subject,cs))return false;const Q=applySelectedFacts(P,[...selected,item]);const n=ownCandidates(Q,item.subject).length;if(n<2)return false;if(cs.length===2&&n>Math.max(9,N+1))return false;return true}
   function searchIrredundantClueSet(P,request={forbid:[]},budget={}){
-    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,wideFirstPenalty:WIDE_FIRST_PENALTY,...budget};
+    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,wideFirstPenalty:WIDE_FIRST_PENALTY,harvestNecessityWitnesses:true,...budget};
     const start=Date.now(),base={...P,constraints:emptyConstraintMap(),globalConstraints:[]},baseCandidateCount=baseCandidates(P).length,personalDomainLimit=Math.max(9,N+1);
-    const pool=buildAtomicFactPool(base,request);pool.forEach((item,i)=>item.factIndex=i);
+    const pool=buildAtomicFactPool(base,request);pool.forEach((item,i)=>item.factIndex=i);const factById=new Map(pool.map(item=>[item.id,item]));
     const visited=new Set,completeLeafSignatures=new Set,redundantLeafSignatures=new Set;
     const counterexamplePool=[],counterexampleBySignature=new Map;
     const diag={
@@ -166,6 +167,13 @@ function createEngine(N=7){
       wideFirstPeopleRescuedBySecondClue:0,wideFirstRescuedUniqueLeaves:0,wideFirstRescuedPeopleAtUniqueLeaves:0,
       firstPassingLeafIndex:null,mediumValidationTimeMs:0,
       retainedValidWitnesses:0,witnessStatesMarkedUnknown:0,freshPartialWitnessRepairSearches:0,
+      necessityWitnessesDiscovered:0,uniqueNecessityWitnessesHarvested:0,duplicateNecessityWitnessesIgnored:0,
+      cePoolSizeBeforeNecessityTotal:0,cePoolSizeAfterNecessityTotal:0,
+      selectedCluesAtNecessityLeaves:0,poolCertifiedCluesBeforeNecessity:0,poolCertifiedCluesAfterNecessity:0,
+      completeLeavesAllCluesPoolCertifiedBefore:0,completeLeavesAllCluesPoolCertifiedAfter:0,
+      poolCertificationBeforeCorrelation:{all:{necessityPass:0,necessityFail:0},partial:{necessityPass:0,necessityFail:0},none:{necessityPass:0,necessityFail:0}},
+      poolCertificationAfterCorrelation:{all:{necessityPass:0,necessityFail:0},partial:{necessityPass:0,necessityFail:0},none:{necessityPass:0,necessityFail:0}},
+      necessityCertificationSamples:[],privateWitnessNecessityContradictions:0,
       irredundantFound:false,mediumFound:false,elapsedMs:0,budget:{...cfg},budgetExceeded:false,failureReason:null,
       firstCompliantLeaf:null,passingLeaf:null
     };
@@ -188,14 +196,15 @@ function createEngine(N=7){
       for(const item of selected)if(entry.violated[item.factIndex])return false;
       return true
     }
-    function addCounterexample(alt){
+    function addCounterexample(alt,source='search'){
       const sig=arrangementSignature(alt);
-      if(counterexampleBySignature.has(sig))return counterexampleBySignature.get(sig);
+      if(counterexampleBySignature.has(sig)){if(source==='necessity')diag.duplicateNecessityWitnessesIgnored++;return counterexampleBySignature.get(sig)}
       const violated=new Uint8Array(pool.length);
       for(let i=0;i<pool.length;i++)if(!constraintSatisfied(base,pool[i].subject,pool[i].constraint,alt))violated[i]=1;
       const entry={signature:sig,arrangement:alt,violated};
       counterexamplePool.push(entry);counterexampleBySignature.set(sig,entry);
-      diag.newCounterexamplesSolved++;diag.sharedCounterexamplePoolSize=counterexamplePool.length;
+      if(source==='necessity')diag.uniqueNecessityWitnessesHarvested++;else diag.newCounterexamplesSolved++;
+      diag.sharedCounterexamplePoolSize=counterexamplePool.length;
       return entry
     }
     function getCounterexample(Q,selected){
@@ -241,6 +250,10 @@ function createEngine(N=7){
       }
       return next
     }
+    function poolCertifiedItems(selected){
+      return selected.filter(item=>counterexamplePool.some(entry=>entry.violated[item.factIndex]&&selected.every(other=>other.id===item.id||!entry.violated[other.factIndex])))
+    }
+    function certificationClass(count,total){return count===total?'all':count?'partial':'none'}
     function dfs(selected,witnesses,wideFirstPeople){
       if(overBudget())return null;
       const key=keyFor(selected);if(visited.has(key))return null;
@@ -259,8 +272,24 @@ function createEngine(N=7){
         if(!finalPersonalClueQuality(Q)){diag.finalPersonalClueQualityFailures++;return null}
         diag.finalPersonalClueQualityPasses++;
         if(countSolutions(Q,2)!==1)return null;
+        const certifiedBefore=poolCertifiedItems(selected),poolSizeBefore=counterexamplePool.length;
+        diag.cePoolSizeBeforeNecessityTotal+=poolSizeBefore;diag.selectedCluesAtNecessityLeaves+=selected.length;
+        diag.poolCertifiedCluesBeforeNecessity+=certifiedBefore.length;
+        if(certifiedBefore.length===selected.length)diag.completeLeavesAllCluesPoolCertifiedBefore++;
         diag.necessityValidations++;
-        const nt0=Date.now(),necessity=validateNecessity(Q);diag.necessityValidationTimeMs+=Date.now()-nt0;
+        const capture=cfg.harvestNecessityWitnesses?{onWitness:({item,arrangement})=>{
+          const fact=factById.get(`${item.subject}|${JSON.stringify(item.constraint)}`);if(!fact)return;
+          diag.necessityWitnessesDiscovered++;addCounterexample(arrangement,'necessity')
+        }}:undefined;
+        const nt0=Date.now(),necessity=validateNecessity(Q,capture);diag.necessityValidationTimeMs+=Date.now()-nt0;
+        const certifiedAfter=poolCertifiedItems(selected),poolSizeAfter=counterexamplePool.length;
+        diag.cePoolSizeAfterNecessityTotal+=poolSizeAfter;diag.poolCertifiedCluesAfterNecessity+=certifiedAfter.length;
+        if(certifiedAfter.length===selected.length)diag.completeLeavesAllCluesPoolCertifiedAfter++;
+        const beforeClass=certificationClass(certifiedBefore.length,selected.length),afterClass=certificationClass(certifiedAfter.length,selected.length),necessityResult=necessity.ok?'necessityPass':'necessityFail';
+        diag.poolCertificationBeforeCorrelation[beforeClass][necessityResult]++;diag.poolCertificationAfterCorrelation[afterClass][necessityResult]++;
+        const certifiedIds=new Set(certifiedAfter.map(item=>item.id)),contradiction=(necessity.redundantConstraints||[]).find(x=>certifiedIds.has(`${x.subject}|${JSON.stringify(x.constraint)}`));
+        if(contradiction){diag.privateWitnessNecessityContradictions++;throw Error(`pool private-witness contradiction for ${contradiction.subject}|${JSON.stringify(contradiction.constraint)}`)}
+        if(diag.necessityCertificationSamples.length<20)diag.necessityCertificationSamples.push({selectedClues:selected.length,certifiedBefore:certifiedBefore.length,certifiedAfter:certifiedAfter.length,allCertifiedAfter:certifiedAfter.length===selected.length,necessityOk:necessity.ok,poolSizeBefore,poolSizeAfter});
         if(!necessity.ok){
           diag.completeLeavesFailingNecessity++;diag.redundantCluesFoundAtFailedLeaves+=necessity.redundantCount||0;
           redundantLeafSignatures.add(key);
@@ -346,7 +375,7 @@ function createEngine(N=7){
   function classifyMedium(m){const a=mediumAcceptance(m);if(!a.ok)return'TOO EASY';if(m.dependencyDepth>=3&&m.materialAdvancedDeductions>=2&&m.multiPersonChainPeople>=5&&m.advancedDependentPlacements>=4)return'CLEAR MEDIUM';if(m.dependencyDepth===2&&m.advancedDeductionCount>=4&&m.multiPersonChainPeople>=6&&m.advancedDependentPlacements>=6)return'CLEAR MEDIUM';return'BORDERLINE'}
 
   function removeAtomic(P,item){const Q={...P,constraints:Object.fromEntries(PEOPLE.map(p=>[p,constraintList(P,p).map(copyConstraint)])),globalConstraints:(P.globalConstraints||[]).map(copyConstraint)};if(item.global)Q.globalConstraints.splice(item.index,1);else Q.constraints[item.subject].splice(item.index,1);return Q}
-  function validateNecessity(P){const redundantConstraints=[];for(const item of allAtomicConstraints(P)){const Q=removeAtomic(P,item),n=countSolutions(Q,2);if(n<2)redundantConstraints.push({...item,solutionCountWithoutConstraint:n})}return redundantConstraints.length?{ok:false,redundant:redundantConstraints[0],redundantConstraints,redundantCount:redundantConstraints.length,solutionCountWithoutConstraint:redundantConstraints[0].solutionCountWithoutConstraint}:{ok:true,redundantConstraints:[],redundantCount:0}}
+  function validateNecessity(P,{onWitness=null}={}){const redundantConstraints=[];for(const item of allAtomicConstraints(P)){const Q=removeAtomic(P,item),n=countSolutions(Q,2,onWitness?{onSolution:arrangement=>{if(differsFromStored(P,arrangement)&&!constraintSatisfied(P,item.subject,item.constraint,arrangement))onWitness({item,arrangement})}}:undefined);if(n<2)redundantConstraints.push({...item,solutionCountWithoutConstraint:n})}return redundantConstraints.length?{ok:false,redundant:redundantConstraints[0],redundantConstraints,redundantCount:redundantConstraints.length,solutionCountWithoutConstraint:redundantConstraints[0].solutionCountWithoutConstraint}:{ok:true,redundantConstraints:[],redundantCount:0}}
   function validateSampledCandidatePolicy(P){const structural=validateStructural(P);if(!structural.ok)return{ok:false,reason:structural.reason,structural};const necessity=validateNecessity(P);if(!necessity.ok)return{ok:false,reason:'redundant atomic constraint',necessity};return{ok:true,necessity}}
 
   function deriveMetadata(P){const occ=roomOccupants(P),pairs=[],singletons=[],empty_rooms=[];for(const [room,ps] of Object.entries(occ)){if(ps.length===2)pairs.push({room,people:ps.slice().sort()});else if(ps.length===1)singletons.push({room,person:ps[0]});else if(ps.length===0)empty_rooms.push(room)}const on_object=[];for(const p of PEOPLE)for(const o of P.objects)if(allowsOn(o)&&onObject(P,P.solution[p],o.name))on_object.push({person:p,object:o.name});const negative_clues=allAtomicConstraints(P).filter(x=>x.constraint.type.startsWith('NOT_')).map(x=>({person:x.subject,constraint:x.constraint}));return{pairs,singletons,empty_rooms,on_object,negative_clues}}
