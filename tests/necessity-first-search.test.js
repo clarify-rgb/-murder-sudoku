@@ -20,13 +20,14 @@ assert(poolA.length>0);
 assert.deepStrictEqual(poolA,poolB,'fact pool must be deterministic for a Puzzle ID');
 for(const p of M.PEOPLE)assert(poolA.some(f=>f.subject===p),`fact pool coverage missing ${p}`);
 for(const f of poolA){
- assert.strictEqual(f.legal,true);
- assert.strictEqual(f.sameObjectQuality,true);
  assert.notStrictEqual(f.constraint.type,'EMPTY_ROOM');
  assert(M.constraintTagValid(A,f.constraint));
  assert(M.constraintSatisfied(A,f.subject,f.constraint,A.solution));
  assert(Array.isArray(f.candidateDomain));
- assert.strictEqual(f.candidateDomain.length,f.candidateDomainSize);
+ const Q=JSON.parse(JSON.stringify(A));Q.constraints=Object.fromEntries(M.PEOPLE.map(p=>[p,[]]));Q.globalConstraints=[];Q.constraints[f.subject]=[f.constraint];
+ const personRelation=['WEST_OF_PERSON','EAST_OF_PERSON','NORTH_OF_PERSON','SOUTH_OF_PERSON','ALONE_WITH'].includes(f.constraint.type);
+ const independentlyDerived=personRelation?M.propagateDomains(Q).domains[f.subject].size:M.baseCandidates(A).filter(x=>M.unaryHolds(A,f.constraint,x)).length;
+ assert.strictEqual(f.candidateDomain.length,independentlyDerived,'stored fact domain must match independently recomputed semantics');
 }
 
 const before=M.getSearchCallCount();

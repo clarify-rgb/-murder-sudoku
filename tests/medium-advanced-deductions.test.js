@@ -2,7 +2,7 @@
 const assert=require('assert');
 const M=require('../engine/medium-7x7.js');
 const I=(r,c)=>r*M.N+c;
-function baseP(){return{people:[...M.PEOPLE],victim:'G',objective:{type:'locatePerson',person:'G'},regionOf:Array.from({length:7},()=>Array(7).fill(0)),roomNames:['R1'],objects:[],clues:Object.fromEntries(M.PEOPLE.map(p=>[p,[]])),globalRules:[],solution:Object.fromEntries(M.PEOPLE.map((p,i)=>[p,{r:i,c:i}]))}}
+function baseP(){return{version:2,n:7,difficulty:'medium',people:[...M.PEOPLE],regionOf:Array.from({length:7},()=>Array(7).fill(0)),roomNames:['R1'],objects:[],constraints:Object.fromEntries(M.PEOPLE.map(p=>[p,[]])),globalConstraints:[],solution:Object.fromEntries(M.PEOPLE.map((p,i)=>[p,{r:i,c:i}]))}}
 function D(map){const d={};for(const p of M.PEOPLE)d[p]=new Set((map[p]||[[6,6]]).map(([r,c])=>I(r,c)));return d}
 function has(events,reason){return events.some(e=>e.reason===reason)}
 
@@ -38,6 +38,17 @@ M.resetSearchCallCount();
  assert(has(events,'intersecting-square-elimination'),'trace must classify intersecting-square elimination');
 }
 assert.strictEqual(M.getSearchCallCount(),0,'advanced human deductions must not invoke uniqueness search');
+
+// The human-solver guard must detect either backtracking entry point.
+{
+ const P=baseP();
+ M.resetSearchCallCount();
+ assert.throws(()=>M.assertNoSearch(()=>M.countSolutions(P,2)),/countSolutions=1, findArrangement=0/);
+ let calls=M.getSearchCallBreakdown();assert.deepStrictEqual(calls,{countSolutions:1,findArrangement:0,total:1});
+ M.resetSearchCallCount();
+ assert.throws(()=>M.assertNoSearch(()=>M.findCounterexample(P)),/countSolutions=0, findArrangement=1/);
+ calls=M.getSearchCallBreakdown();assert.deepStrictEqual(calls,{countSolutions:0,findArrangement:1,total:1});
+}
 
 // Full propagation must retain explicit classifications and zero search.
 {

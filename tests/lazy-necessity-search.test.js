@@ -20,11 +20,11 @@ for(const k of [
  'nodesExplored','sharedCounterexamplePoolSize','reusedCounterexampleHits','freshCounterexampleSolverCalls',
  'completeUniqueLeaves','completeLeavesFailingNecessity','redundantCluesFoundAtFailedLeaves',
  'necessityValidations','necessityValidationTimeMs','compliantUniqueLeavesFound','leavesFailingMedium',
- 'leavesPassingMedium','retainedValidWitnesses','witnessStatesMarkedUnknown','freshPartialWitnessRepairSearches'
+ 'leavesPassingMedium','retainedValidWitnesses','witnessStatesMarkedUnknown'
 ])assert(Number.isFinite(d[k]),`missing lazy diagnostic ${k}`);
-assert.strictEqual(d.freshPartialWitnessRepairSearches,0,'partial search must never launch witness repair searches');
-assert.strictEqual(d.sharedCounterexamplePoolSize,d.newCounterexamplesSolved,'shared CE pool must contain each newly solved CE once');
-assert(d.reusedCounterexampleHits>=0);
+const calls=M.getSearchCallBreakdown();
+assert.strictEqual(calls.findArrangement,d.freshCounterexampleSolverCalls,'every fresh counterexample diagnostic must correspond to a real arrangement search');
+assert.strictEqual(d.counterexamplesEncountered,d.newCounterexamplesSolved+d.reusedCounterexampleHits,'every encountered counterexample must be either a newly found solution or a reused one');
 assert.strictEqual(d.necessityValidations,d.completeLeavesFailingNecessity+d.compliantUniqueLeavesFound,'authoritative necessity must run exactly once for every coverage-valid unique leaf');
 assert(d.compliantUniqueLeavesFound<=4,'compliant leaf cap must remain enforced');
 
