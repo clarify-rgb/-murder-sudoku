@@ -14,6 +14,9 @@ on:
       - 'tests/multi-leaf-medium-search.test.js'
       - 'tests/lazy-necessity-search.test.js'
       - 'tests/wide-first-search-order.test.js'
+      - 'tests/medium-pipeline-boundaries.test.js'
+      - 'tests/deduction-log-schema.test.js'
+      - 'tests/deduction-log-equivalence.test.js'
       - '.github/workflows/medium-rules-v2.yml'
   workflow_dispatch:
 permissions:
@@ -45,7 +48,10 @@ jobs:
             tests/necessity-first-search.test.js \
             tests/multi-leaf-medium-search.test.js \
             tests/lazy-necessity-search.test.js \
-            tests/wide-first-search-order.test.js; do
+            tests/wide-first-search-order.test.js \
+            tests/medium-pipeline-boundaries.test.js \
+            tests/deduction-log-schema.test.js \
+            tests/deduction-log-equivalence.test.js; do
             node --check "$file"
           done
       - name: Run complete Medium correctness suite
@@ -61,6 +67,9 @@ jobs:
           node tests/multi-leaf-medium-search.test.js
           node tests/lazy-necessity-search.test.js
           node tests/wide-first-search-order.test.js
+          node tests/medium-pipeline-boundaries.test.js
+          node tests/deduction-log-schema.test.js
+          node tests/deduction-log-equivalence.test.js
       - name: Recheck frozen Easy and clean checkout
         run: |
           set -euo pipefail

@@ -16,7 +16,7 @@ const REQUEST={n:7,difficulty:'medium',require:{},forbid:[]};
 
 function withoutElapsed(value){
  const copy=JSON.parse(JSON.stringify(value));
- const harvestDiagnostics=new Set(['necessityWitnessesDiscovered','uniqueNecessityWitnessesHarvested','duplicateNecessityWitnessesIgnored','cePoolSizeBeforeNecessityTotal','cePoolSizeAfterNecessityTotal','selectedCluesAtNecessityLeaves','poolCertifiedCluesBeforeNecessity','poolCertifiedCluesAfterNecessity','completeLeavesAllCluesPoolCertifiedBefore','completeLeavesAllCluesPoolCertifiedAfter','poolCertificationBeforeCorrelation','poolCertificationAfterCorrelation','necessityCertificationSamples','privateWitnessNecessityContradictions','harvestNecessityWitnesses']);
+ const harvestDiagnostics=new Set(['necessityWitnessesDiscovered','uniqueNecessityWitnessesHarvested','duplicateNecessityWitnessesIgnored','cePoolSizeBeforeNecessityTotal','cePoolSizeAfterNecessityTotal','selectedCluesAtNecessityLeaves','poolCertifiedCluesBeforeNecessity','poolCertifiedCluesAfterNecessity','completeLeavesAllCluesPoolCertifiedBefore','completeLeavesAllCluesPoolCertifiedAfter','poolCertificationBeforeCorrelation','poolCertificationAfterCorrelation','necessityCertificationSamples','privateWitnessNecessityContradictions','harvestNecessityWitnesses','deductionLog']);
  function stripTimings(x){if(!x||typeof x!=='object')return;for(const key of Object.keys(x)){if(key==='elapsedMs'||key.endsWith('TimeMs')||harvestDiagnostics.has(key))delete x[key];else stripTimings(x[key])}}
  stripTimings(copy);
  return copy;
