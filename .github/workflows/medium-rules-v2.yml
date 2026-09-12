@@ -13,6 +13,7 @@ on:
       - 'tests/necessity-first-search.test.js'
       - 'tests/multi-leaf-medium-search.test.js'
       - 'tests/lazy-necessity-search.test.js'
+      - 'tests/wide-first-search-order.test.js'
       - '.github/workflows/medium-rules-v2.yml'
   workflow_dispatch:
 permissions:
@@ -43,7 +44,8 @@ jobs:
             tests/same-object-clue-pairs.test.js \
             tests/necessity-first-search.test.js \
             tests/multi-leaf-medium-search.test.js \
-            tests/lazy-necessity-search.test.js; do
+            tests/lazy-necessity-search.test.js \
+            tests/wide-first-search-order.test.js; do
             node --check "$file"
           done
       - name: Run complete Medium correctness suite
@@ -58,6 +60,7 @@ jobs:
           node tests/necessity-first-search.test.js
           node tests/multi-leaf-medium-search.test.js
           node tests/lazy-necessity-search.test.js
+          node tests/wide-first-search-order.test.js
       - name: Recheck frozen Easy and clean checkout
         run: |
           set -euo pipefail

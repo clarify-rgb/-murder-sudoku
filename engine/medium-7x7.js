@@ -11,6 +11,7 @@ const OBJECT_TAGS=['standable','blocking','reflective'];
 const OBJECT_RELATIONS=new Set(['ON_OBJECT','ONLY_PERSON_ON_OBJECT','BESIDE_OBJECT','NOT_BESIDE_OBJECT','DIAGONAL_TO_OBJECT','WEST_OF_OBJECT','EAST_OF_OBJECT','NORTH_OF_OBJECT','SOUTH_OF_OBJECT']);
 const PERSON_RELATIONS=new Set(['WEST_OF_PERSON','EAST_OF_PERSON','NORTH_OF_PERSON','SOUTH_OF_PERSON','ALONE_WITH']);
 const ADVANCED_REASONS=new Set(['row-ownership','column-ownership','multi-row-ownership','multi-column-ownership','intersecting-square-elimination']);
+const WIDE_FIRST_PENALTY=200000;
 
 function seedHash(s){let h=2166136261>>>0;for(let i=0;i<String(s).length;i++){h^=String(s).charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function seededRandom(seed){let a=seedHash(seed);return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -144,7 +145,7 @@ function createEngine(N=7){
   function finalPersonalClueQuality(P){for(const p of PEOPLE){const cs=constraintList(P,p);if(cs.length<1||cs.length>2||!sameObjectPairValid(P,p,cs))return false;const n=ownCandidates(P,p).length;if(n<2||n>Math.max(9,N+1))return false}return true}
   function extensionLegal(P,selected,item){const own=selected.filter(x=>x.subject===item.subject);if(own.length>=2)return false;const cs=[...own.map(x=>x.constraint),item.constraint];if(!sameObjectPairValid(P,item.subject,cs))return false;const Q=applySelectedFacts(P,[...selected,item]);const n=ownCandidates(Q,item.subject).length;if(n<2)return false;if(cs.length===2&&n>Math.max(9,N+1))return false;return true}
   function searchIrredundantClueSet(P,request={forbid:[]},budget={}){
-    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,...budget};
+    const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,wideFirstPenalty:WIDE_FIRST_PENALTY,...budget};
     const start=Date.now(),base=clone(P);base.constraints=Object.fromEntries(PEOPLE.map(p=>[p,[]]));base.globalConstraints=[];
     const pool=buildAtomicFactPool(base,request);pool.forEach((item,i)=>item.factIndex=i);
     const visited=new Set,completeLeafSignatures=new Set,redundantLeafSignatures=new Set;
@@ -156,6 +157,9 @@ function createEngine(N=7){
       completeUniqueLeaves:0,completeLeavesFailingNecessity:0,redundantCluesFoundAtFailedLeaves:0,
       redundantLeafSignatures:[],necessityValidations:0,necessityValidationTimeMs:0,
       compliantUniqueLeavesFound:0,leavesFailingMedium:0,leavesPassingMedium:0,
+      coverageValidUniqueLeaves:0,finalPersonalClueQualityPasses:0,finalPersonalClueQualityFailures:0,
+      irredundantLeaves:0,mediumSuccesses:0,wideFirstCluesSelected:0,branchesContainingWideFirstClue:0,
+      wideFirstPeopleRescuedBySecondClue:0,wideFirstRescuedUniqueLeaves:0,wideFirstRescuedPeopleAtUniqueLeaves:0,
       firstPassingLeafIndex:null,mediumValidationTimeMs:0,
       retainedValidWitnesses:0,witnessStatesMarkedUnknown:0,freshPartialWitnessRepairSearches:0,
       irredundantFound:false,mediumFound:false,elapsedMs:0,budget:{...cfg},budgetExceeded:false,failureReason:null,
@@ -233,10 +237,11 @@ function createEngine(N=7){
       }
       return next
     }
-    function dfs(selected,witnesses){
+    function dfs(selected,witnesses,wideFirstPeople){
       if(overBudget())return null;
       const key=keyFor(selected);if(visited.has(key))return null;
       visited.add(key);diag.nodesExplored++;diag.distinctClueSetsExplored=visited.size;
+      if(wideFirstPeople.size)diag.branchesContainingWideFirstClue++;
       const Q=applySelectedFacts(base,selected),ce=getCounterexample(Q,selected);
       if(!ce){
         diag.completeUniqueLeaves++;
@@ -244,7 +249,11 @@ function createEngine(N=7){
         completeLeafSignatures.add(key);
         const counts=selectedCounts(selected);
         if(PEOPLE.some(p=>counts[p]<1||counts[p]>2))return null;
-        if(!finalPersonalClueQuality(Q))return null;
+        diag.coverageValidUniqueLeaves++;
+        const rescued=[...wideFirstPeople].filter(p=>counts[p]===2&&ownCandidates(Q,p).length<=Math.max(9,N+1));
+        if(rescued.length){diag.wideFirstRescuedUniqueLeaves++;diag.wideFirstRescuedPeopleAtUniqueLeaves+=rescued.length}
+        if(!finalPersonalClueQuality(Q)){diag.finalPersonalClueQualityFailures++;return null}
+        diag.finalPersonalClueQualityPasses++;
         if(countSolutions(Q,2)!==1)return null;
         diag.necessityValidations++;
         const nt0=Date.now(),necessity=validateNecessity(Q);diag.necessityValidationTimeMs+=Date.now()-nt0;
@@ -254,14 +263,14 @@ function createEngine(N=7){
           if(diag.redundantLeafSignatures.length<20)diag.redundantLeafSignatures.push({signature:key,redundant:(necessity.redundantConstraints||[]).map(x=>({subject:x.subject,index:x.index,constraint:clone(x.constraint),solutionCountWithoutConstraint:x.solutionCountWithoutConstraint}))});
           return null
         }
-        diag.compliantUniqueLeavesFound++;diag.irredundantFound=true;
+        diag.compliantUniqueLeavesFound++;diag.irredundantLeaves++;diag.irredundantFound=true;
         const mt0=Date.now(),human=strictSolve(Q);let m=null,accept;
         if(human.ok){m=metrics(Q,human);accept=mediumAcceptance(m)}else accept={ok:false,reasons:[human.reason]};
         diag.mediumValidationTimeMs+=Date.now()-mt0;
         const summary=leafSummary(Q,key,human,m,accept,diag.compliantUniqueLeavesFound);
         if(!diag.firstCompliantLeaf)diag.firstCompliantLeaf=clone(summary);
         if(accept.ok){
-          diag.leavesPassingMedium++;diag.mediumFound=true;diag.firstPassingLeafIndex=diag.compliantUniqueLeavesFound;diag.passingLeaf=clone(summary);
+          diag.leavesPassingMedium++;diag.mediumSuccesses++;diag.mediumFound=true;diag.firstPassingLeafIndex=diag.compliantUniqueLeavesFound;diag.passingLeaf=clone(summary);
           Q.selectionAttempts=diag.nodesExplored;
           Q.validation={solutions:1,human,metrics:m,necessity,mediumAcceptance:accept,mediumClassification:classifyMedium(m)};
           return{puzzle:Q,necessity,human,metrics:m,mediumAcceptance:accept}
@@ -281,20 +290,24 @@ function createEngine(N=7){
         const temp=applySelectedFacts(base,[...selected,item]),combinedDomain=ownCandidates(temp,item.subject).length;
         const coverageBonus=counts[item.subject]===0?100000:0,directPenalty=combinedDomain===1?1000000:0;
         const domainGain=Math.max(0,baseCandidates(base).length-item.candidateDomainSize);
-        const score=coverageBonus+hits*500+domainGain*3-Math.abs(combinedDomain-4)*2-directPenalty+mediumHeuristicBonus(item,combinedDomain,counts);
-        candidates.push({item,score})
+        const wideFirst=counts[item.subject]===0&&combinedDomain>Math.max(9,N+1),wideFirstPenalty=wideFirst?cfg.wideFirstPenalty:0;
+        const score=coverageBonus+hits*500+domainGain*3-Math.abs(combinedDomain-4)*2-directPenalty+mediumHeuristicBonus(item,combinedDomain,counts)-wideFirstPenalty;
+        candidates.push({item,score,wideFirst,combinedDomain})
       }
       candidates.sort((a,b)=>b.score-a.score||a.item.id.localeCompare(b.item.id));
       const branch=candidates.slice(0,cfg.maxBranchesPerNode);
-      for(const {item} of branch){
+      for(const {item,wideFirst,combinedDomain} of branch){
         if(overBudget())break;
         const next=[...selected,item];
+        const nextWideFirstPeople=new Set(wideFirstPeople);
+        if(wideFirst){diag.wideFirstCluesSelected++;nextWideFirstPeople.add(item.subject)}
+        if(counts[item.subject]===1&&nextWideFirstPeople.has(item.subject)&&combinedDomain<=Math.max(9,N+1))diag.wideFirstPeopleRescuedBySecondClue++;
         const nextWitnesses=updateWitnessStates(witnesses,selected,item,ce.arrangement);
-        const hitResult=dfs(next,nextWitnesses);if(hitResult)return hitResult
+        const hitResult=dfs(next,nextWitnesses,nextWideFirstPeople);if(hitResult)return hitResult
       }
       return null
     }
-    const result=dfs([],new Map);diag.elapsedMs=Date.now()-start;
+    const result=dfs([],new Map,new Set);diag.elapsedMs=Date.now()-start;
     if(diag.budgetExceeded)generatorStats.clueSearchBudgetExceeded++;
     if(result){
       generatorStats.clueSearchSucceeded++;result.puzzle.clueSearchDiagnostics=clone(diag);
@@ -369,7 +382,7 @@ function createEngine(N=7){
 
   function resetSearchCallCount(){searchCalls=0;searchCallBreakdown={countSolutions:0,findArrangement:0}}function getSearchCallCount(){return searchCalls}function getSearchCallBreakdown(){return{...searchCallBreakdown,total:searchCalls}}function getGeneratorStats(){return{...generatorStats}}function resetGeneratorStats(){for(const k of Object.keys(generatorStats))generatorStats[k]=0}
 
-  return{version:2,N,PEOPLE,ATOMIC_TYPES,OBJECT_TAGS,createEngine,roomWall,isCornerCell,cornerCells,objectByName,objectOccurrences,objectCells,onObject,besideObject,directionalToObject,directionalToPerson,diagonalToObject,constraintList,atomicConstraintCount,constraintTagValid,sameObjectPairValid,unaryHolds,constraintSatisfied,baseCandidates,ownCandidates,validateStoredSolutionAgainstClues,fullValid,initialDomainsWithTrace,propagateDomains,strictSolve,assertNoSearch,applyOwnership,applyIntersectingSquare,countSolutions,findCounterexample,validateObjects,validateStructural,validateNecessity,validateSampledCandidatePolicy,deriveMetadata,deriveRenderData,diagonalRays,lineCells,roomBoundaryEdges,printConstraint,printPersonConstraints,validateObjective,objectiveAnswer,assignObjective,validateRequest,buildAtomicFactPool,searchIrredundantClueSet,generateBoardById,generateDiagnosticBoardById,generateById,validate,metrics,analyzeMediumStructure,mediumAcceptance,classifyMedium,resetSearchCallCount,getSearchCallCount,getSearchCallBreakdown,getGeneratorStats,resetGeneratorStats};
+  return{version:2,N,PEOPLE,ATOMIC_TYPES,OBJECT_TAGS,WIDE_FIRST_PENALTY,createEngine,roomWall,isCornerCell,cornerCells,objectByName,objectOccurrences,objectCells,onObject,besideObject,directionalToObject,directionalToPerson,diagonalToObject,constraintList,atomicConstraintCount,constraintTagValid,sameObjectPairValid,unaryHolds,constraintSatisfied,baseCandidates,ownCandidates,validateStoredSolutionAgainstClues,fullValid,initialDomainsWithTrace,propagateDomains,strictSolve,assertNoSearch,applyOwnership,applyIntersectingSquare,countSolutions,findCounterexample,validateObjects,validateStructural,validateNecessity,validateSampledCandidatePolicy,deriveMetadata,deriveRenderData,diagonalRays,lineCells,roomBoundaryEdges,printConstraint,printPersonConstraints,validateObjective,objectiveAnswer,assignObjective,validateRequest,buildAtomicFactPool,extensionLegal,searchIrredundantClueSet,generateBoardById,generateDiagnosticBoardById,generateById,validate,metrics,analyzeMediumStructure,mediumAcceptance,classifyMedium,resetSearchCallCount,getSearchCallCount,getSearchCallBreakdown,getGeneratorStats,resetGeneratorStats};
 }
 
 const api=createEngine(7);api.createEngine=createEngine;api.ATOMIC_TYPES=ATOMIC_TYPES;api.OBJECT_TAGS=OBJECT_TAGS;return api;
