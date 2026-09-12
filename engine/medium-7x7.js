@@ -27,6 +27,7 @@ function createEngine(N=7){
   if(!Number.isInteger(N)||N<6||N>9)throw Error('N must be an integer from 6 to 9');
   const PEOPLE=Array.from({length:N},(_,i)=>String.fromCharCode(65+i));
   const idx=(r,c)=>r*N+c, cell=i=>({r:Math.floor(i/N),c:i%N});
+  const EMPTY_OBJECTS=Object.freeze([]),blockedGeometryCache=new WeakMap,baseCandidateCache=new WeakMap;
   let searchCalls=0,searchCallBreakdown={countSolutions:0,findArrangement:0};
   const generatorStats={candidatePuzzlesEvaluated:0,redundantConstraintCandidates:0,redundantConstraintsDetected:0,zeroConstraintCandidates:0,tagGatingRejected:0,mediumFloorRejected:0,depth2FloorRejected:0,chainBreadthRejected:0,placementBreadthRejected:0,clueSearchBoards:0,clueSearchSucceeded:0,clueSearchBudgetExceeded:0};
   const DEFAULT_CLUE_SEARCH_BUDGET=Object.freeze({maxNodes:25000,maxCounterexamples:6000,maxMs:2500,maxBranchesPerNode:40});
@@ -37,7 +38,8 @@ function createEngine(N=7){
   function objectByName(P,name){return (P.objects||[]).find(o=>o.name===name)||null}
   function objectOccurrences(P,name){const o=objectByName(P,name);return o?o.occurrences||[]:[]}
   function objectCells(P,name){return objectOccurrences(P,name).flatMap(o=>o.cells||[])}
-  function blockedKeys(P){return new Set((P.objects||[]).filter(o=>o.tags?.includes('blocking')).flatMap(o=>o.occurrences||[]).flatMap(o=>o.cells||[]).map(cellKey))}
+  function geometryObjects(P){return Array.isArray(P.objects)?P.objects:EMPTY_OBJECTS}
+  function blockedKeys(P){const objects=geometryObjects(P),cached=blockedGeometryCache.get(objects);if(cached)return cached;const keys=new Set(objects.filter(o=>o.tags?.includes('blocking')).flatMap(o=>o.occurrences||[]).flatMap(o=>o.cells||[]).map(cellKey));blockedGeometryCache.set(objects,keys);return keys}
   function isBlocked(P,x){return blockedKeys(P).has(cellKey(x))}
   function isPlayable(P,x){return inBounds(x.r,x.c)&&!isBlocked(P,x)}
   function onObject(P,x,name){return objectCells(P,name).some(c=>same(c,x))}
@@ -93,7 +95,7 @@ function createEngine(N=7){
     return true;
   }
 
-  function baseCandidates(P){const out=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++){const x={r,c};if(isPlayable(P,x))out.push(x)}return out}
+  function baseCandidates(P){const objects=geometryObjects(P),cached=baseCandidateCache.get(objects);if(cached)return cached;const blocked=blockedKeys(P),out=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++){const x={r,c};if(!blocked.has(cellKey(x)))out.push(x)}baseCandidateCache.set(objects,out);return out}
   function ownCandidates(P,p){return baseCandidates(P).filter(x=>constraintList(P,p).every(cl=>unaryHolds(P,cl,x))&&(P.globalConstraints||[]).every(cl=>cl.type!=='EMPTY_ROOM'||roomName(P,x)!==cl.room))}
   function validateStoredSolutionAgainstClues(P){for(const p of PEOPLE)for(const cl of constraintList(P,p))if(!constraintSatisfied(P,p,cl,P.solution))return{valid:false,person:p,constraint:cl};for(const cl of P.globalConstraints||[])if(!constraintSatisfied(P,null,cl,P.solution))return{valid:false,constraint:cl};return{valid:true}}
   function fullValid(P,placements){if(!placements||PEOPLE.some(p=>!placements[p]))return false;const rows=new Set,cols=new Set;for(const p of PEOPLE){const x=placements[p];if(!isPlayable(P,x)||rows.has(x.r)||cols.has(x.c))return false;rows.add(x.r);cols.add(x.c)}if(rows.size!==N||cols.size!==N)return false;for(const p of PEOPLE)for(const cl of constraintList(P,p))if(!constraintSatisfied(P,p,cl,placements))return false;for(const cl of P.globalConstraints||[])if(!constraintSatisfied(P,null,cl,placements))return false;return true}
@@ -126,7 +128,7 @@ function createEngine(N=7){
     let found=null;
     function rec(){
       if(found)return;
-      if(Object.keys(assigned).length===N){if(fullValid(P,assigned)&&predicate(assigned)){found=clone(assigned)}return}
+      if(Object.keys(assigned).length===N){if(fullValid(P,assigned)&&predicate(assigned)){found=Object.fromEntries(Object.entries(assigned).map(([p,x])=>[p,{...x}]))}return}
       let best=null,bestOpts=null;
       for(const p of PEOPLE)if(!assigned[p]){
         const opts=domains[p].filter(x=>!usedR.has(x.r)&&!usedC.has(x.c));
@@ -140,13 +142,15 @@ function createEngine(N=7){
   }
   function findCounterexample(P){return findArrangement(P,A=>differsFromStored(P,A))}
   function findViolationWitness(P,item){return findArrangement(P,A=>!constraintSatisfied(P,item.subject,item.constraint,A))}
-  function applySelectedFacts(P,selected){const Q=clone(P);Q.constraints=Object.fromEntries(PEOPLE.map(p=>[p,[]]));Q.globalConstraints=[];for(const item of selected)Q.constraints[item.subject].push(clone(item.constraint));return Q}
+  function copyConstraint(cl){return{...cl}}
+  function emptyConstraintMap(){return Object.fromEntries(PEOPLE.map(p=>[p,[]]))}
+  function applySelectedFacts(P,selected){const Q={...P,constraints:emptyConstraintMap(),globalConstraints:[]};for(const item of selected)Q.constraints[item.subject].push(copyConstraint(item.constraint));return Q}
   function selectedCounts(selected){return Object.fromEntries(PEOPLE.map(p=>[p,selected.filter(x=>x.subject===p).length]))}
   function finalPersonalClueQuality(P){for(const p of PEOPLE){const cs=constraintList(P,p);if(cs.length<1||cs.length>2||!sameObjectPairValid(P,p,cs))return false;const n=ownCandidates(P,p).length;if(n<2||n>Math.max(9,N+1))return false}return true}
   function extensionLegal(P,selected,item){const own=selected.filter(x=>x.subject===item.subject);if(own.length>=2)return false;const cs=[...own.map(x=>x.constraint),item.constraint];if(!sameObjectPairValid(P,item.subject,cs))return false;const Q=applySelectedFacts(P,[...selected,item]);const n=ownCandidates(Q,item.subject).length;if(n<2)return false;if(cs.length===2&&n>Math.max(9,N+1))return false;return true}
   function searchIrredundantClueSet(P,request={forbid:[]},budget={}){
     const cfg={...DEFAULT_CLUE_SEARCH_BUDGET,maxNodes:50000,maxCounterexamples:10000,maxMs:5000,maxBranchesPerNode:50,maxCompliantLeaves:20,wideFirstPenalty:WIDE_FIRST_PENALTY,...budget};
-    const start=Date.now(),base=clone(P);base.constraints=Object.fromEntries(PEOPLE.map(p=>[p,[]]));base.globalConstraints=[];
+    const start=Date.now(),base={...P,constraints:emptyConstraintMap(),globalConstraints:[]},baseCandidateCount=baseCandidates(P).length,personalDomainLimit=Math.max(9,N+1);
     const pool=buildAtomicFactPool(base,request);pool.forEach((item,i)=>item.factIndex=i);
     const visited=new Set,completeLeafSignatures=new Set,redundantLeafSignatures=new Set;
     const counterexamplePool=[],counterexampleBySignature=new Map;
@@ -189,7 +193,7 @@ function createEngine(N=7){
       if(counterexampleBySignature.has(sig))return counterexampleBySignature.get(sig);
       const violated=new Uint8Array(pool.length);
       for(let i=0;i<pool.length;i++)if(!constraintSatisfied(base,pool[i].subject,pool[i].constraint,alt))violated[i]=1;
-      const entry={signature:sig,arrangement:clone(alt),violated};
+      const entry={signature:sig,arrangement:alt,violated};
       counterexamplePool.push(entry);counterexampleBySignature.set(sig,entry);
       diag.newCounterexamplesSolved++;diag.sharedCounterexamplePoolSize=counterexamplePool.length;
       return entry
@@ -228,7 +232,7 @@ function createEngine(N=7){
       return score
     }
     function updateWitnessStates(witnesses,selected,newItem,newWitness){
-      const next=new Map(witnesses);next.set(newItem.id,clone(newWitness));
+      const next=new Map(witnesses);next.set(newItem.id,newWitness);
       for(const old of selected){
         const w=next.get(old.id);
         if(!w)continue;
@@ -250,7 +254,7 @@ function createEngine(N=7){
         const counts=selectedCounts(selected);
         if(PEOPLE.some(p=>counts[p]<1||counts[p]>2))return null;
         diag.coverageValidUniqueLeaves++;
-        const rescued=[...wideFirstPeople].filter(p=>counts[p]===2&&ownCandidates(Q,p).length<=Math.max(9,N+1));
+        const rescued=[...wideFirstPeople].filter(p=>counts[p]===2&&ownCandidates(Q,p).length<=personalDomainLimit);
         if(rescued.length){diag.wideFirstRescuedUniqueLeaves++;diag.wideFirstRescuedPeopleAtUniqueLeaves+=rescued.length}
         if(!finalPersonalClueQuality(Q)){diag.finalPersonalClueQualityFailures++;return null}
         diag.finalPersonalClueQualityPasses++;
@@ -289,8 +293,8 @@ function createEngine(N=7){
         let hits=0;for(const entry of surviving)if(entry.violated[item.factIndex])hits++;
         const temp=applySelectedFacts(base,[...selected,item]),combinedDomain=ownCandidates(temp,item.subject).length;
         const coverageBonus=counts[item.subject]===0?100000:0,directPenalty=combinedDomain===1?1000000:0;
-        const domainGain=Math.max(0,baseCandidates(base).length-item.candidateDomainSize);
-        const wideFirst=counts[item.subject]===0&&combinedDomain>Math.max(9,N+1),wideFirstPenalty=wideFirst?cfg.wideFirstPenalty:0;
+        const domainGain=Math.max(0,baseCandidateCount-item.candidateDomainSize);
+        const wideFirst=counts[item.subject]===0&&combinedDomain>personalDomainLimit,wideFirstPenalty=wideFirst?cfg.wideFirstPenalty:0;
         const score=coverageBonus+hits*500+domainGain*3-Math.abs(combinedDomain-4)*2-directPenalty+mediumHeuristicBonus(item,combinedDomain,counts)-wideFirstPenalty;
         candidates.push({item,score,wideFirst,combinedDomain})
       }
@@ -301,7 +305,7 @@ function createEngine(N=7){
         const next=[...selected,item];
         const nextWideFirstPeople=new Set(wideFirstPeople);
         if(wideFirst){diag.wideFirstCluesSelected++;nextWideFirstPeople.add(item.subject)}
-        if(counts[item.subject]===1&&nextWideFirstPeople.has(item.subject)&&combinedDomain<=Math.max(9,N+1))diag.wideFirstPeopleRescuedBySecondClue++;
+        if(counts[item.subject]===1&&nextWideFirstPeople.has(item.subject)&&combinedDomain<=personalDomainLimit)diag.wideFirstPeopleRescuedBySecondClue++;
         const nextWitnesses=updateWitnessStates(witnesses,selected,item,ce.arrangement);
         const hitResult=dfs(next,nextWitnesses,nextWideFirstPeople);if(hitResult)return hitResult
       }
@@ -331,8 +335,8 @@ function createEngine(N=7){
   function roomOccupants(P){const out=Object.fromEntries(P.roomNames.map(r=>[r,[]]));for(const p of PEOPLE)out[roomName(P,P.solution[p])].push(p);return out}
   function objectOccupants(P,name){return PEOPLE.filter(p=>onObject(P,P.solution[p],name))}
   function factPool(P,p,forbid=new Set){const x=P.solution[p],out=[],add=cl=>{if(forbid.has(cl.type))return;if(constraintTagValid(P,cl)&&constraintSatisfied(P,p,cl,P.solution))out.push(cl);else if(OBJECT_RELATIONS.has(cl.type)&&!constraintTagValid(P,cl))generatorStats.tagGatingRejected++};const rn=roomName(P,x),occ=roomOccupants(P);add({type:'IN_ROOM',room:rn});for(const room of P.roomNames)if(room!==rn)add({type:'NOT_IN_ROOM',room});if(isCornerCell(P,x))add({type:'CORNER',room:rn});if(occ[rn].length===1)add({type:'ALONE_IN_ROOM',room:rn});if(occ[rn].length===2){const other=occ[rn].find(q=>q!==p);add({type:'ALONE_WITH',other})}add({type:'ROW',row:x.r});add({type:'COLUMN',column:x.c});for(const q of PEOPLE)if(q!==p){const y=P.solution[q];if(x.c<y.c)add({type:'WEST_OF_PERSON',other:q});if(x.c>y.c)add({type:'EAST_OF_PERSON',other:q});if(x.r<y.r)add({type:'NORTH_OF_PERSON',other:q});if(x.r>y.r)add({type:'SOUTH_OF_PERSON',other:q})}for(const o of P.objects){if(allowsOn(o)&&onObject(P,x,o.name)){add({type:'ON_OBJECT',object:o.name});if(objectOccupants(P,o.name).length===1)add({type:'ONLY_PERSON_ON_OBJECT',object:o.name})}if(allowsBesideOrDirection(o)){if(besideObject(P,x,o.name))add({type:'BESIDE_OBJECT',object:o.name});else if(!onObject(P,x,o.name))add({type:'NOT_BESIDE_OBJECT',object:o.name});for(const t of ['WEST_OF_OBJECT','EAST_OF_OBJECT','NORTH_OF_OBJECT','SOUTH_OF_OBJECT'])if(directionalToObject(P,t,x,o.name))add({type:t,object:o.name})}if(allowsDiagonal(o)&&diagonalToObject(P,x,o.name))add({type:'DIAGONAL_TO_OBJECT',object:o.name})}const seen=new Set;return out.filter(cl=>{const k=JSON.stringify(cl);if(seen.has(k))return false;seen.add(k);return true})}
-  function singleFactDomain(P,p,cl){if(PERSON_RELATIONS.has(cl.type)){const Q=clone(P);Q.constraints=Object.fromEntries(PEOPLE.map(q=>[q,[]]));Q.globalConstraints=[];Q.constraints[p]=[clone(cl)];const r=propagateDomains(Q);return[...r.domains[p]].map(cell)}return baseCandidates(P).filter(x=>unaryHolds(P,cl,x))}
-  function buildAtomicFactPool(P,request={forbid:[]}){const forbid=new Set((request.forbid||[]).map(normalizeForbid)),out=[];for(const p of PEOPLE)for(const cl of factPool(P,p,forbid)){const legal=ATOMIC_TYPES.includes(cl.type)&&constraintTagValid(P,cl)&&constraintSatisfied(P,p,cl,P.solution);if(!legal)continue;const domain=singleFactDomain(P,p,cl),id=`${p}|${JSON.stringify(cl)}`;out.push({id,subject:p,constraint:clone(cl),candidateDomain:domain,candidateDomainSize:domain.length,legal:true,sameObjectQuality:true})}return out}
+  function singleFactDomain(P,p,cl){if(PERSON_RELATIONS.has(cl.type)){const Q={...P,constraints:emptyConstraintMap(),globalConstraints:[]};Q.constraints[p]=[copyConstraint(cl)];const r=propagateDomains(Q);return[...r.domains[p]].map(cell)}return baseCandidates(P).filter(x=>unaryHolds(P,cl,x))}
+  function buildAtomicFactPool(P,request={forbid:[]}){const forbid=new Set((request.forbid||[]).map(normalizeForbid)),out=[];for(const p of PEOPLE)for(const cl of factPool(P,p,forbid)){const legal=ATOMIC_TYPES.includes(cl.type)&&constraintTagValid(P,cl)&&constraintSatisfied(P,p,cl,P.solution);if(!legal)continue;const domain=singleFactDomain(P,p,cl),id=`${p}|${JSON.stringify(cl)}`;out.push({id,subject:p,constraint:copyConstraint(cl),candidateDomain:domain,candidateDomainSize:domain.length,legal:true,sameObjectQuality:true})}return out}
 
   function advancedDeductionKey(e){if(!ADVANCED_REASONS.has(e.reason))return null;if(e.reason==='intersecting-square-elimination'){const supports=(e.supports||[]).map(cellKey).sort().join(';');return`${e.reason}|${e.round||0}|${e.sourcePerson||''}|${supports}`}const owners=(e.owners||[]).slice().sort().join(','),values=(e.values||[]).slice().sort((a,b)=>a-b).join(',');return`${e.reason}|${e.round||0}|${owners}|${values}`}
   function influenceSources(e){const out=new Set;if(e.sourcePerson)out.add(e.sourcePerson);if(e.reference)out.add(e.reference);if(Array.isArray(e.owners))e.owners.forEach(p=>out.add(p));return out}
@@ -341,7 +345,7 @@ function createEngine(N=7){
   function mediumAcceptance(m){const reasons=[];if(m.directClueSingles!==0)reasons.push('initial direct singles');if(m.multiCandidatePeople!==N)reasons.push('not all people unresolved');if(m.advancedDeductionCount<2)reasons.push('advanced deductions < 2');if(m.materialAdvancedDeductions<1)reasons.push('material advanced < 1');if(m.dependencyDepth<2)reasons.push('depth < 2');if(m.multiPersonChainPeople<4)reasons.push('chain people < 4');if(m.advancedDependentPlacements<4)reasons.push('advanced placements < 4');if(m.dependencyDepth===2&&(m.multiPersonChainPeople<5||m.advancedDependentPlacements<5||m.advancedDeductionCount<3))reasons.push('depth-2 floor');return{ok:!reasons.length,reasons}}
   function classifyMedium(m){const a=mediumAcceptance(m);if(!a.ok)return'TOO EASY';if(m.dependencyDepth>=3&&m.materialAdvancedDeductions>=2&&m.multiPersonChainPeople>=5&&m.advancedDependentPlacements>=4)return'CLEAR MEDIUM';if(m.dependencyDepth===2&&m.advancedDeductionCount>=4&&m.multiPersonChainPeople>=6&&m.advancedDependentPlacements>=6)return'CLEAR MEDIUM';return'BORDERLINE'}
 
-  function removeAtomic(P,item){const Q=clone(P);if(item.global)Q.globalConstraints.splice(item.index,1);else Q.constraints[item.subject].splice(item.index,1);return Q}
+  function removeAtomic(P,item){const Q={...P,constraints:Object.fromEntries(PEOPLE.map(p=>[p,constraintList(P,p).map(copyConstraint)])),globalConstraints:(P.globalConstraints||[]).map(copyConstraint)};if(item.global)Q.globalConstraints.splice(item.index,1);else Q.constraints[item.subject].splice(item.index,1);return Q}
   function validateNecessity(P){const redundantConstraints=[];for(const item of allAtomicConstraints(P)){const Q=removeAtomic(P,item),n=countSolutions(Q,2);if(n<2)redundantConstraints.push({...item,solutionCountWithoutConstraint:n})}return redundantConstraints.length?{ok:false,redundant:redundantConstraints[0],redundantConstraints,redundantCount:redundantConstraints.length,solutionCountWithoutConstraint:redundantConstraints[0].solutionCountWithoutConstraint}:{ok:true,redundantConstraints:[],redundantCount:0}}
   function validateSampledCandidatePolicy(P){const structural=validateStructural(P);if(!structural.ok)return{ok:false,reason:structural.reason,structural};const necessity=validateNecessity(P);if(!necessity.ok)return{ok:false,reason:'redundant atomic constraint',necessity};return{ok:true,necessity}}
 
